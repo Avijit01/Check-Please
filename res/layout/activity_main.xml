@@ -14,4 +14,35 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/background" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/ic_launcher" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10" />
+
+    <EditText
+        android:id="@+id/cuadroCalc"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/field_bg"
+        android:ems="10"
+        android:gravity="right"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
 </RelativeLayout>

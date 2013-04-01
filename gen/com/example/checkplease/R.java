@@ -38,29 +38,31 @@ public final class R {
         public static final int red_button=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f090016;
-        public static final int ans=0x7f090014;
-        public static final int button0=0x7f09000f;
-        public static final int button1=0x7f09000a;
-        public static final int button2=0x7f09000b;
-        public static final int button3=0x7f09000c;
-        public static final int button4=0x7f090006;
-        public static final int button5=0x7f090007;
-        public static final int button6=0x7f090008;
-        public static final int button7=0x7f090002;
-        public static final int button8=0x7f090003;
-        public static final int button9=0x7f090004;
-        public static final int cuadroCalc=0x7f090001;
-        public static final int delete=0x7f090013;
-        public static final int divi=0x7f090011;
-        public static final int erase=0x7f090012;
-        public static final int igual=0x7f090015;
+        public static final int action_settings=0x7f090018;
+        public static final int ans=0x7f090016;
+        public static final int button0=0x7f090011;
+        public static final int button1=0x7f09000c;
+        public static final int button2=0x7f09000d;
+        public static final int button3=0x7f09000e;
+        public static final int button4=0x7f090008;
+        public static final int button5=0x7f090009;
+        public static final int button6=0x7f09000a;
+        public static final int button7=0x7f090004;
+        public static final int button8=0x7f090005;
+        public static final int button9=0x7f090006;
+        public static final int cuadroCalc=0x7f090003;
+        public static final int delete=0x7f090015;
+        public static final int divi=0x7f090013;
+        public static final int editText1=0x7f090002;
+        public static final int erase=0x7f090014;
+        public static final int igual=0x7f090017;
         public static final int imageView1=0x7f090000;
-        public static final int mas=0x7f090005;
-        public static final int menos=0x7f090009;
-        public static final int multi=0x7f09000d;
-        public static final int parentD=0x7f090010;
-        public static final int parentI=0x7f09000e;
+        public static final int imageView2=0x7f090001;
+        public static final int mas=0x7f090007;
+        public static final int menos=0x7f09000b;
+        public static final int multi=0x7f09000f;
+        public static final int parentD=0x7f090012;
+        public static final int parentI=0x7f090010;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
