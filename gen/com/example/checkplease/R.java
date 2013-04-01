@@ -35,13 +35,14 @@ public final class R {
         public static final int erase_btn=0x7f020003;
         public static final int facebook_button=0x7f020004;
         public static final int field_calc_bg=0x7f020005;
-        public static final int green_btn=0x7f020006;
-        public static final int green_button=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int number_btn=0x7f020009;
-        public static final int op_btn=0x7f02000a;
-        public static final int red_button=0x7f02000b;
-        public static final int user_icon=0x7f02000c;
+        public static final int flecha=0x7f020006;
+        public static final int green_btn=0x7f020007;
+        public static final int green_button=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int number_btn=0x7f02000a;
+        public static final int op_btn=0x7f02000b;
+        public static final int red_button=0x7f02000c;
+        public static final int user_icon=0x7f02000d;
     }
     public static final class id {
         public static final int Button01=0x7f09001d;
