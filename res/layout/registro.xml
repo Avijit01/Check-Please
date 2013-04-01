@@ -13,7 +13,7 @@
         android:layout_marginTop="80dp"
         android:paddingLeft="10dp"
         android:background="@drawable/field_calc_bg"
-        android:text="@string/user"
+        android:hint="@string/user"
         android:ems="10"
         android:gravity="center_vertical"
         android:textColor="#999999"
@@ -27,12 +27,12 @@
         android:layout_below="@+id/user"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
-        android:background="@drawable/field_pss_bg"
-        android:text="@string/pss"
+        android:background="@drawable/field_calc_bg"
+        android:hint="@string/pss"
         android:ems="10"
         android:gravity="center_vertical"
         android:textColor="#999999"
-        android:inputType="text" />
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/pssConf"
@@ -42,12 +42,12 @@
         android:layout_below="@+id/pss"
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
-        android:background="@drawable/field_pss_bg"
-        android:text="@string/pssConf"
+        android:background="@drawable/field_calc_bg"
+        android:hint="@string/pssConf"
         android:ems="10"
         android:gravity="center_vertical"
         android:textColor="#999999"
-        android:inputType="text" />
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/mail"
@@ -58,7 +58,7 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="10dp" 
         android:background="@drawable/field_calc_bg"
-        android:text="@string/mail"
+        android:hint="@string/mail"
         android:ems="10"
         android:gravity="center_vertical"
         android:textColor="#999999"

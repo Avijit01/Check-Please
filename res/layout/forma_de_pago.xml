@@ -49,7 +49,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="numberDecimal"
-        android:text="@string/propinaDefault"
+        android:hint="@string/propinaDefault"
         android:textColor="@color/textColorDefault" />
 
     <EditText
@@ -63,7 +63,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="numberDecimal"
-        android:text="@string/personasDefault"
+        android:hint="@string/personasDefault"
         android:textColor="@color/textColorDefault" />
 
     <EditText
@@ -76,7 +76,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="numberDecimal"
-        android:text="@string/totalDefault"
+        android:hint="@string/totalDefault"
         android:textColor="@color/textColorDefault">
 
         <requestFocus />
