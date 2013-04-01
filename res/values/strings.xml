@@ -12,5 +12,6 @@
     <color  name="facebook_bg">#ff286bcc</color>
     <string name="facebook">Facebook</string>
     <string name="Logo">logo</string>
+    <color name="blanco">#ffffffff</color>
 
 </resources>
