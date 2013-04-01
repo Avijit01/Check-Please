@@ -2,14 +2,30 @@ package com.example.checkplease;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class MainActivity extends Activity {
+	private Button entrar;
+	private Button registrar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		entrar = (Button)findViewById(R.id.entrarbtn);
+		registrar = (Button)findViewById(R.id.registrobtn);
+
+		entrar.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		Intent intent = new Intent(view.getContext(), Registro.class);
+                startActivity(intent);
+        	}
+        });
 	}
 
 	@Override
