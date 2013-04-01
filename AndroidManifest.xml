@@ -29,6 +29,11 @@
              
                  android:screenOrientation="portrait">
         </activity>
+                 <activity android:name="com.example.checkplease.Entra"
+             
+                 android:screenOrientation="portrait">
+        </activity>
+         
     </application>
 
 </manifest>
