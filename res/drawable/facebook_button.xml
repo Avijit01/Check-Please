@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item android:state_pressed="true" >
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+ <item android:state_pressed="true" >
     <shape>
         <solid
-            android:color="#ff000000" />
+            android:color="#ff00286b" />
         <stroke
             android:width="3dp"
             android:color="#ffffffff" />
@@ -17,7 +17,7 @@
 <item>
     <shape>
         <solid
-            android:color="@color/number_bg" />
+            android:color="@color/facebook_bg" />
         <stroke
             android:width="3dp"
             android:color="#ffffffff" />
@@ -27,5 +27,6 @@
             android:right="5dp"
             android:bottom="5dp" />
     </shape>
-</item>
+</item>   
+
 </selector>
