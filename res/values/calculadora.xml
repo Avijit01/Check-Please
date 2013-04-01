@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color  name="number_bg">#ff666666</color>
+    <color  name="delete_bg">#ffff9d40</color>
+    <color  name="op_bg">#ffe33933</color>
+    <color  name="igual_bg">#ff74c14a</color>
+</resources>

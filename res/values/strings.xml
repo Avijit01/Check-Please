@@ -5,9 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <color  name="text_bg">#ffffffff</color>
-    <color  name="number_bg">#ff666666</color>
-    <color  name="delete_bg">#ffff9d40</color>
-    <color  name="op_bg">#ffe33933</color>
-    <color  name="igual_bg">#ff74c14a</color>
 
 </resources>

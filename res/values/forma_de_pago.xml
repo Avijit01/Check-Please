@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="divCuenta">Dividir cuenta</string>
+    <string name="cuentaIgual">Igual</string>
+    <string name="cuentaIndiv">Individual</string>
+    <string name="totalDefault">Total</string>
+    <string name="propinaDefault">% de propina</string>
+    <string name="personasDefault"># de personas</string>
+    <string name="pagoDefault">$Cantidad por personas</string>
+    <color name="textColorDefault">#ff999999</color>
+</resources>
