@@ -30,12 +30,21 @@ public final class R {
     }
     public static final class drawable {
         public static final int background=0x7f020000;
+<<<<<<< HEAD
+        public static final int bg=0x7f020001;
+        public static final int blanco_btn=0x7f020002;
+        public static final int erase_btn=0x7f020003;
+        public static final int facebook_button=0x7f020004;
+        public static final int field_calc_bg=0x7f020005;
+        public static final int flecha=0x7f020006;
+=======
         public static final int bar_color=0x7f020001;
         public static final int bg=0x7f020002;
         public static final int blanco_btn=0x7f020003;
         public static final int erase_btn=0x7f020004;
         public static final int facebook_button=0x7f020005;
         public static final int field_calc_bg=0x7f020006;
+>>>>>>> 532ac38dcdc5562d8b0a0860db560c22b11b821d
         public static final int green_btn=0x7f020007;
         public static final int green_button=0x7f020008;
         public static final int ic_launcher=0x7f020009;
