@@ -5,54 +5,78 @@
     android:background="@drawable/background" >
 
     <EditText
-        android:id="@+id/cuadroCalc"
+        android:id="@+id/user"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
+        android:paddingLeft="10dp"
         android:background="@drawable/field_calc_bg"
+        android:text="@string/user"
         android:ems="10"
-        android:gravity="right"
-        android:inputType="number" />
+        android:gravity="center_vertical"
+        android:textColor="#999999"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/EditText01"
+        android:id="@+id/pss"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_alignLeft="@+id/cuadroCalc"
-        android:layout_below="@+id/cuadroCalc"
+        android:layout_alignLeft="@+id/user"
+        android:layout_below="@+id/user"
         android:layout_marginTop="20dp"
-        android:background="@drawable/field_calc_bg"
+        android:paddingLeft="10dp"
+        android:background="@drawable/field_pss_bg"
+        android:text="@string/pss"
         android:ems="10"
-        android:gravity="right"
-        android:inputType="number" />
+        android:gravity="center_vertical"
+        android:textColor="#999999"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/EditText02"
+        android:id="@+id/pssConf"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_alignLeft="@+id/EditText01"
-        android:layout_below="@+id/EditText01"
+        android:layout_alignLeft="@+id/pss"
+        android:layout_below="@+id/pss"
         android:layout_marginTop="20dp"
-        android:background="@drawable/field_calc_bg"
+        android:paddingLeft="10dp"
+        android:background="@drawable/field_pss_bg"
+        android:text="@string/pssConf"
         android:ems="10"
-        android:gravity="right"
-        android:inputType="number" />
+        android:gravity="center_vertical"
+        android:textColor="#999999"
+        android:inputType="text" />
 
     <EditText
-        android:id="@+id/EditText03"
+        android:id="@+id/mail"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_alignLeft="@+id/EditText02"
-        android:layout_below="@+id/EditText02"
+        android:layout_alignLeft="@+id/pssConf"
+        android:layout_below="@+id/pssConf"
         android:layout_marginTop="20dp"
+        android:paddingLeft="10dp" 
         android:background="@drawable/field_calc_bg"
+        android:text="@string/mail"
         android:ems="10"
-        android:gravity="right"
-        android:inputType="number" >
+        android:gravity="center_vertical"
+        android:textColor="#999999"
+        android:inputType="text" >
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/registrobtn"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/mail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/green_btn"
+        android:text="@string/registrar"
+        android:textColor="#ffffffff"
+        android:textSize="8pt" />
 
 </RelativeLayout>
