@@ -48,7 +48,7 @@ public final class R {
         public static final int Button01=0x7f09001d;
         public static final int EditText01=0x7f090002;
         public static final int EditText02=0x7f090003;
-        public static final int action_settings=0x7f090026;
+        public static final int action_settings=0x7f090027;
         public static final int ans=0x7f09001a;
         public static final int button0=0x7f090015;
         public static final int button1=0x7f090010;
@@ -81,6 +81,7 @@ public final class R {
         public static final int pss=0x7f090023;
         public static final int pssConf=0x7f090024;
         public static final int registrobtn=0x7f090005;
+        public static final int regresabtn=0x7f090026;
         public static final int textView1=0x7f09001c;
         public static final int total=0x7f09001f;
         public static final int user=0x7f090022;
