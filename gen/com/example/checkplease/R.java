@@ -40,6 +40,7 @@ public final class R {
         public static final int number_btn=0x7f020009;
         public static final int op_btn=0x7f02000a;
         public static final int red_button=0x7f02000b;
+        public static final int user_icon=0x7f02000c;
     }
     public static final class id {
         public static final int Button01=0x7f09001d;
