@@ -30,18 +30,19 @@ public final class R {
     }
     public static final class drawable {
         public static final int background=0x7f020000;
-        public static final int bg=0x7f020001;
-        public static final int blanco_btn=0x7f020002;
-        public static final int erase_btn=0x7f020003;
-        public static final int facebook_button=0x7f020004;
-        public static final int field_calc_bg=0x7f020005;
-        public static final int green_btn=0x7f020006;
-        public static final int green_button=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int number_btn=0x7f020009;
-        public static final int op_btn=0x7f02000a;
-        public static final int red_button=0x7f02000b;
-        public static final int user_icon=0x7f02000c;
+        public static final int bar_color=0x7f020001;
+        public static final int bg=0x7f020002;
+        public static final int blanco_btn=0x7f020003;
+        public static final int erase_btn=0x7f020004;
+        public static final int facebook_button=0x7f020005;
+        public static final int field_calc_bg=0x7f020006;
+        public static final int green_btn=0x7f020007;
+        public static final int green_button=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int number_btn=0x7f02000a;
+        public static final int op_btn=0x7f02000b;
+        public static final int red_button=0x7f02000c;
+        public static final int user_icon=0x7f02000d;
     }
     public static final class id {
         public static final int Button01=0x7f09001d;
@@ -105,6 +106,7 @@ public final class R {
         public static final int facebook=0x7f060013;
         public static final int hello_world=0x7f06000e;
         public static final int mail=0x7f06000b;
+        public static final int mayor=0x7f060015;
         public static final int pagoDefault=0x7f060006;
         public static final int personasDefault=0x7f060005;
         public static final int propinaDefault=0x7f060004;
