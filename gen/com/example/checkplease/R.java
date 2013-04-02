@@ -30,12 +30,14 @@ public final class R {
     }
     public static final class drawable {
         public static final int background=0x7f020000;
+<<<<<<< HEAD
         public static final int bg=0x7f020001;
 <<<<<<< HEAD
         public static final int blanco_btn=0x7f020002;
         public static final int erase_btn=0x7f020003;
         public static final int facebook_button=0x7f020004;
         public static final int field_calc_bg=0x7f020005;
+<<<<<<< HEAD
         public static final int green_btn=0x7f020006;
         public static final int green_button=0x7f020007;
         public static final int ic_launcher=0x7f020008;
@@ -49,6 +51,17 @@ public final class R {
         public static final int field_bg=0x7f020004;
         public static final int field_black_bg=0x7f020005;
         public static final int field_calc_bg=0x7f020006;
+=======
+        public static final int flecha=0x7f020006;
+=======
+        public static final int bar_color=0x7f020001;
+        public static final int bg=0x7f020002;
+        public static final int blanco_btn=0x7f020003;
+        public static final int erase_btn=0x7f020004;
+        public static final int facebook_button=0x7f020005;
+        public static final int field_calc_bg=0x7f020006;
+>>>>>>> 532ac38dcdc5562d8b0a0860db560c22b11b821d
+>>>>>>> 36ca6eb3d5d881e866dc5b9c2f33a4a05ccc791f
         public static final int green_btn=0x7f020007;
         public static final int green_button=0x7f020008;
         public static final int ic_launcher=0x7f020009;
@@ -56,17 +69,24 @@ public final class R {
         public static final int op_btn=0x7f02000b;
         public static final int red_button=0x7f02000c;
         public static final int user_icon=0x7f02000d;
+<<<<<<< HEAD
 >>>>>>> list
+=======
+>>>>>>> 36ca6eb3d5d881e866dc5b9c2f33a4a05ccc791f
     }
     public static final class id {
         public static final int Button01=0x7f09001d;
         public static final int EditText01=0x7f090002;
         public static final int EditText02=0x7f090003;
 <<<<<<< HEAD
+<<<<<<< HEAD
         public static final int action_settings=0x7f090026;
 =======
         public static final int action_settings=0x7f090036;
 >>>>>>> list
+=======
+        public static final int action_settings=0x7f090027;
+>>>>>>> 36ca6eb3d5d881e866dc5b9c2f33a4a05ccc791f
         public static final int ans=0x7f09001a;
         public static final int bAgregar=0x7f09002b;
         public static final int bEliminar=0x7f09002e;
@@ -118,9 +138,13 @@ public final class R {
         public static final int pss=0x7f090023;
         public static final int pssConf=0x7f090024;
         public static final int registrobtn=0x7f090005;
+<<<<<<< HEAD
         public static final int scrollView1=0x7f090028;
         public static final int teFalta=0x7f090032;
         public static final int teTotalBottom=0x7f090030;
+=======
+        public static final int regresabtn=0x7f090026;
+>>>>>>> 36ca6eb3d5d881e866dc5b9c2f33a4a05ccc791f
         public static final int textView1=0x7f09001c;
         public static final int total=0x7f09001f;
 <<<<<<< HEAD
@@ -159,6 +183,7 @@ public final class R {
         public static final int facebook=0x7f060013;
         public static final int hello_world=0x7f06000e;
         public static final int mail=0x7f06000b;
+<<<<<<< HEAD
 =======
         public static final int Logo=0x7f060011;
         public static final int action_settings=0x7f06000a;
@@ -171,6 +196,9 @@ public final class R {
         public static final int facebook=0x7f060010;
         public static final int hello_world=0x7f06000b;
 >>>>>>> list
+=======
+        public static final int mayor=0x7f060015;
+>>>>>>> 36ca6eb3d5d881e866dc5b9c2f33a4a05ccc791f
         public static final int pagoDefault=0x7f060006;
         public static final int personasDefault=0x7f060005;
         public static final int propina=0x7f060008;
