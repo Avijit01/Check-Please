@@ -8,4 +8,5 @@
     <string name="personasDefault"># de personas</string>
     <string name="pagoDefault">$Cantidad por personas</string>
     <color name="textColorDefault">#ff999999</color>
+    <string name="formaPago">Forma de Pago</string>
 </resources>
