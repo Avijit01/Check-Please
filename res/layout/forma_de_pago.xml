@@ -28,7 +28,7 @@
         android:textColor="#ffffffff" />
 
     <Button
-        android:id="@+id/Button01"
+        android:id="@+id/individual"
         android:layout_width="100dp"
         android:layout_height="35dp"
         android:layout_alignBaseline="@+id/igual"
