@@ -25,10 +25,12 @@ public class Entra extends Activity {
 		final EditText total = (EditText)findViewById(R.id.total);
 		final EditText propina = (EditText)findViewById(R.id.propina);
 		final EditText personas = (EditText)findViewById(R.id.personas);
+		final TextView pagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
+		final RelativeLayout divIgual = (RelativeLayout)findViewById(R.id.divIgual);
 
-		total.setVisibility(EditText.INVISIBLE);
-		propina.setVisibility(EditText.INVISIBLE);
-		personas.setVisibility(EditText.INVISIBLE);
+		divIgual.setVisibility(RelativeLayout.INVISIBLE);
+		
+
 		TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Forma de Pago");
 		regresa.setOnClickListener(new  View.OnClickListener(){
@@ -38,9 +40,8 @@ public class Entra extends Activity {
         });
 		igual.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		total.setVisibility(view.VISIBLE);
-        		propina.setVisibility(view.VISIBLE);
-        		personas.setVisibility(view.VISIBLE);
+        		divIgual.setVisibility(view.VISIBLE);
+        		
 
         	}
         	
