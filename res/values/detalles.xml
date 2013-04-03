@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name">Nombre</string>
+    <string name="fb">Fb</string>
+    <string name="totalDetalles">0.00</string>
+    <string name="precio">Precio</string>
+    <string name="producto">Producto</string>
+    
+</resources>
