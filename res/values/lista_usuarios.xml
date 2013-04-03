@@ -2,5 +2,6 @@
 <resources>
     <string name="total">Total</string>
     <string name="propina">Propina</string>
+    <string name="persona">Persona</string>
     
 </resources>
