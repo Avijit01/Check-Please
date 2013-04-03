@@ -6,7 +6,8 @@
     <string name="totalDefault">Total</string>
     <string name="propinaDefault">% de propina</string>
     <string name="personasDefault"># de personas</string>
-    <string name="pagoDefault">$Cantidad por personas</string>
+    <string name="pagoDefault">$0.00 por Persona</string>
     <color name="textColorDefault">#ff999999</color>
     <string name="formaPago">Forma de Pago</string>
+    <string name="textoPago">Introduce:</string>
 </resources>
