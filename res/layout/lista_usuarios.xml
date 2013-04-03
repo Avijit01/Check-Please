@@ -77,19 +77,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" >
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:padding="8dp" >
 
-        <Button
-            android:id="@+id/bAgregar"
+        <ImageButton
+            android:id="@+id/ibAgregar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:background="@android:color/holo_green_light"
-            android:text="+"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/add" />
 
         <Button
             android:id="@+id/bInvitar"
@@ -113,16 +114,16 @@
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/bEliminar"
+        <ImageButton
+            android:id="@+id/ibEliminar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="@android:color/holo_red_light"
-            android:text="Eliminar"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/delete_bin" />
 
     </LinearLayout>
 
