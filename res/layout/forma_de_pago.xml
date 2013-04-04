@@ -70,6 +70,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="8dp"
+            android:src="@drawable/logo"
             android:background="@drawable/logo" />
 
         <TextView
@@ -163,7 +164,11 @@
             android:hint="@string/totalDefault"
             android:inputType="numberDecimal"
             android:paddingLeft="10dp"
-            android:textColor="@color/textColorDefault" />
+            android:textColor="@color/textColorDefault" >
+
+            <requestFocus />
+
+        </EditText>
     </RelativeLayout>
 
 </RelativeLayout>

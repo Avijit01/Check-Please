@@ -54,9 +54,9 @@
             android:layout_weight="1"
             android:background="@drawable/blanco_btn"
             android:ems="10"
-            android:gravity="center"
-            android:inputType="number"
-            android:hint="0" >
+            android:gravity="left"
+            android:hint="10%"
+            android:inputType="number" >
 
             <requestFocus />
         </EditText>

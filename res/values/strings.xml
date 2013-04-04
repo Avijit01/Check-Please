@@ -14,5 +14,6 @@
     <string name="Logo">logo</string>
     <color name="blanco">#ffffffff</color>
     <string name="mayor">&lt;</string>
+    <string name="checkplease">Check Please</string>
 
 </resources>

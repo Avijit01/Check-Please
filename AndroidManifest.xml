@@ -39,7 +39,14 @@
              
                  android:screenOrientation="portrait">
         </activity>
-         
+             <activity android:name="com.example.checkplease.Acerca"
+             
+                 android:screenOrientation="portrait">
+        </activity>
+          <activity android:name="com.example.checkplease.Calculadora"
+             
+                 android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
