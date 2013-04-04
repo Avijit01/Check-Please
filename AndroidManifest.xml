@@ -36,8 +36,8 @@
                  android:screenOrientation="portrait">
         </activity>
          <activity android:name="com.example.checkplease.Lista"
-             
-                 android:screenOrientation="portrait">
+             android:windowSoftInputMode="adjustPan"
+             android:screenOrientation="portrait">
         </activity>
              <activity android:name="com.example.checkplease.Acerca"
              

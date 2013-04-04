@@ -2,10 +2,10 @@ package com.example.checkplease;
 
 public class Person {
 	private String picture;
-    private int total;
+    private float total;
     private boolean paid;
     
-    public Person(String picture, int total, boolean paid) {
+    public Person(String picture, float total, boolean paid) {
     	this.picture = picture;
     	this.total = total;
     	this.paid = paid;
@@ -17,18 +17,18 @@ public class Person {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	public int getTotal() {
+	public float getTotal() {
 		return total;
 	}
-	public void setTotal(int total) {
+	public void setTotal(float total) {
 		this.total = total;
 	}
+
 	public boolean isPaid() {
 		return paid;
 	}
+
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
-    
-    
 }
