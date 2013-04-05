@@ -36,14 +36,21 @@
                  android:screenOrientation="portrait">
         </activity>
          <activity android:name="com.example.checkplease.Lista"
+             android:windowSoftInputMode="adjustPan"
+             android:screenOrientation="portrait">
+        </activity>
+             <activity android:name="com.example.checkplease.Acerca"
+             
+                 android:screenOrientation="portrait">
+        </activity>
+          <activity android:name="com.example.checkplease.Calculadora"
              
                  android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.example.checkplease.Detalles"
              
                  android:screenOrientation="portrait">
-        </activity>
-         
-    </application>
+        </activity> 
+</application>
 
 </manifest>

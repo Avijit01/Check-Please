@@ -56,25 +56,36 @@
             android:ems="10"
             android:gravity="center"
             android:inputType="number"
-            android:hint="0" >
+            android:text="0" >
 
             <requestFocus />
         </EditText>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="8dp"
+            android:text="%"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black" />
+
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <ListView
+        android:id="@+id/lvUsuarios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/linearLayout3"
         android:layout_below="@+id/linearLayout2" >
 
-        <ListView
-            android:id="@+id/lvUsuarios"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-        </ListView>
-    </ScrollView>
+    </ListView>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -87,7 +98,7 @@
         android:padding="8dp" >
 
         <ImageButton
-            android:id="@+id/ibAgregar"
+            android:id="@+id/bAgregar"
             android:layout_width="20dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
@@ -108,19 +119,20 @@
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/bFb"
-            android:layout_width="20dp"
+        <ImageButton
+            android:id="@+id/bFacebook"
+            android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:background="@drawable/facebook_button"
-            android:text="Fb"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:cropToPadding="true"
+            android:padding="1dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/fb_logo" />
 
         <ImageButton
-            android:id="@+id/ibEliminar"
+            android:id="@+id/bEliminar"
             android:layout_width="20dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
@@ -204,17 +216,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/total"
+            android:text="Total:"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/teTotalBottom"
+            android:id="@+id/tvgTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/field_black_bg"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:gravity="left"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvFalta"
@@ -222,17 +236,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Falta"
+            android:text="Falta:"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/teFalta"
+            android:id="@+id/tvgFalta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/field_black_bg"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:gravity="left"
+            android:text="0.0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black" />
+
     </LinearLayout>
 
 </RelativeLayout>

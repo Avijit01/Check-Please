@@ -42,6 +42,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	                EditText etTotal = (EditText)view.findViewById(R.id.etTotal);
 	                EditText etTotalTip = (EditText)view.findViewById(R.id.etTotalTip);
 	                CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
+	                cb.setChecked(p.isPaid());
 	                etTotal.setText(String.valueOf(p.getTotal()));
 	                tTip = p.getTotal() * (propina / 10.0f) + p.getTotal();
 	                etTotalTip.setText(String.valueOf(tTip));

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="divCuenta">Dividir cuenta</string>
+    <string name="divCuenta">Dividir cuenta:</string>
     <string name="cuentaIgual">Igual</string>
     <string name="cuentaIndiv">Individual</string>
     <string name="totalDefault">Total</string>

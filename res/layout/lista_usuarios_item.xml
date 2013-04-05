@@ -2,21 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@android:color/transparent"
     android:orientation="vertical" >
 	<View
     android:layout_width="fill_parent"
     android:layout_height="1dp"
     android:background="@android:color/darker_gray"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:padding="5dp" >
 		
         <ImageButton
             android:id="@+id/ibPicture"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/user_icon" />
@@ -24,7 +26,7 @@
         <EditText
             android:id="@+id/etTotal"
             android:layout_width="54dp"
-            android:layout_height="50dp"
+            android:layout_height="32dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@drawable/field_bg"
@@ -34,12 +36,14 @@
         <EditText
             android:id="@+id/etTotalTip"
             android:layout_width="54dp"
-            android:layout_height="50dp"
+            android:layout_height="32dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@drawable/field_black_bg"
             android:ems="10"
-            android:inputType="number" />
+            android:enabled="false"
+            android:inputType="number"
+            android:textColor="@android:color/black" />
 
         <CheckBox
             android:id="@+id/cbPaid"
