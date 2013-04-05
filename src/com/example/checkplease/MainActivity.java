@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 
 		entrar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Entra.class);
+        		Intent intent = new Intent(view.getContext(), Detalles.class);
                 startActivity(intent);
         	}
         });
