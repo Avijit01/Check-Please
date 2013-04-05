@@ -98,7 +98,7 @@
         android:padding="8dp" >
 
         <ImageButton
-            android:id="@+id/ibAgregar"
+            android:id="@+id/bAgregar"
             android:layout_width="20dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
@@ -119,19 +119,20 @@
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
-        <Button
-            android:id="@+id/bFb"
-            android:layout_width="20dp"
+        <ImageButton
+            android:id="@+id/bFacebook"
+            android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:background="@drawable/facebook_button"
-            android:text="Fb"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:cropToPadding="true"
+            android:padding="1dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/fb_logo" />
 
         <ImageButton
-            android:id="@+id/ibEliminar"
+            android:id="@+id/bEliminar"
             android:layout_width="20dp"
             android:layout_height="45dp"
             android:layout_margin="4dp"
