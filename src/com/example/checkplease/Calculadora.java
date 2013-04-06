@@ -7,21 +7,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class Calculadora extends Activity{
-	private Button regresa;
+	private Button regresa, igual;
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.acerca_check);
+		setContentView(R.layout.calculadora);
 		TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Calculadora");
 		regresa = (Button)findViewById(R.id.regresabtn);
+		igual = (Button)findViewById(R.id.igual);
 
 		regresa.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Calculadora.this.finish();
+        	}
+        });
+		igual.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		Intent intent = new Intent(view.getContext(), Lista.class);
+                startActivity(intent);
         	}
         });
 	}
