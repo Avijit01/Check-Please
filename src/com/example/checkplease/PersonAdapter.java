@@ -44,10 +44,9 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	                TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
 	                TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
 	                CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
-	                
 	                ib.setOnClickListener(new  View.OnClickListener(){
 	                	public void onClick(View view){
-	                		Intent intent = new Intent(view.getContext(), Calculadora.class);
+	                		Intent intent = new Intent(view.getContext(), Detalles.class);
 	                       	context.startActivity(intent);
 	                	}
 	                });
@@ -57,12 +56,25 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	                       	context.startActivity(intent);
 	                	}
 	                });
+	                cb.setOnClickListener(new  View.OnClickListener(){
+	                	public void onClick(View view){
+	                		Lista lista = (Lista)context;
+	                		lista.updateSum();
+	                	}
+	                });
 	                cb.setChecked(p.isPaid());
 	                tvTotal.setText(String.valueOf(p.getTotal()));
-	                tTip = p.getTotal() * (propina / 10.0f) + p.getTotal();
+	                tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
 	                tvTotalTip.setText(String.valueOf(tTip));
 	        }
 	        return view;
 	}
+	
+	public ArrayList<Person> getUsuarios() {
+		return usuarios;
+	}
 
+	public void setUsuarios(ArrayList<Person> usuarios) {
+		this.usuarios = usuarios;
+	}
 }

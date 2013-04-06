@@ -56,7 +56,7 @@
             android:ems="10"
             android:gravity="center"
             android:inputType="number"
-            android:text="0" >
+            android:text="10" >
 
             <requestFocus />
         </EditText>
