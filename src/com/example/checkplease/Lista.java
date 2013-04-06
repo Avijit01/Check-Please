@@ -2,6 +2,7 @@ package com.example.checkplease;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -74,6 +76,8 @@ public class Lista extends Activity implements OnClickListener {
 		layout.setAdapter(adapter);
 		TextView tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		TextView tvFalta = (TextView)findViewById(R.id.tvgFalta);
+		
+
 		for(Person p : usuarios)
 			gTotal += p.getTotal();
 		for(Person p : usuarios) {
@@ -87,6 +91,7 @@ public class Lista extends Activity implements OnClickListener {
         		Lista.this.finish();
         	}
         });
+		
 		
 	}
 	@Override
@@ -127,5 +132,11 @@ public class Lista extends Activity implements OnClickListener {
 			break;
 		}
 		toast.show();
+	}
+	public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
+			long arg3) {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, Detalles.class);
+        startActivity(intent);
 	}
 }

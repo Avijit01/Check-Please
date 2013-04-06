@@ -10,10 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private Button entrar;
-	private Button registrar;
+	private Button registrar, facebook;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,10 @@ public class MainActivity extends Activity {
 		
 		entrar = (Button)findViewById(R.id.entrarbtn);
 		registrar = (Button)findViewById(R.id.registrobtn);
-
+		facebook = (Button)findViewById(R.id.facebookbtn);
 		entrar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Detalles.class);
+        		Intent intent = new Intent(view.getContext(), Registro.class);
                 startActivity(intent);
         	}
         });
@@ -33,6 +34,13 @@ public class MainActivity extends Activity {
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Registro.class);
                 startActivity(intent);
+        	}
+        });
+		facebook.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		
+				Toast.makeText(getApplicationContext(),"Se desplegara con funcionalidad la ventana de Facebook",Toast.LENGTH_SHORT).show();
+        		
         	}
         });
 	}
