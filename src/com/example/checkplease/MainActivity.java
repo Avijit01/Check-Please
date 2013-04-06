@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
 		facebook = (Button)findViewById(R.id.facebookbtn);
 		entrar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Detalles.class);
+        		Intent intent = new Intent(view.getContext(), Entra.class);
         		startActivity(intent);
         	}
         });

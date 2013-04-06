@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,7 +34,11 @@ public class Lista extends Activity implements OnClickListener {
 	ImageButton eliminar;
 	
 	// Variables que maneja la vista para calculos
+	PersonAdapter adapter;
+	ArrayList<Person> usuarios;
 	EditText etTip;
+	TextView tvgTotal;
+	TextView tvFalta;
 	float gTotal;
 	float falta;
 	
@@ -44,6 +48,8 @@ public class Lista extends Activity implements OnClickListener {
 		setContentView(R.layout.lista_usuarios);
 		TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Pago Individual");
+		
+		etTip = (EditText)findViewById(R.id.etTip);
 		
 		regresa = (Button)findViewById(R.id.regresabtn);
 		invitar = (Button)findViewById(R.id.bInvitar);
@@ -63,40 +69,43 @@ public class Lista extends Activity implements OnClickListener {
 					facebook.setColorFilter(Color.argb(100, 0, 0, 0));
 					dispatchTouchEvent(me);
 				} else if (me.getAction() == MotionEvent.ACTION_UP) {
-					facebook.setColorFilter(null); // or null
+					facebook.setColorFilter(null);
 				}
 				return false;
 			}
 		 });
         
-		ArrayList<Person> usuarios = new ArrayList<Person>();
+		usuarios = new ArrayList<Person>();
 		usuarios.add(new Person("Derp", 120.0f, false));
 		usuarios.add(new Person("Hurr", 137.50f, false));
 		usuarios.add(new Person("Herpa", 85.0f, true));
 		usuarios.add(new Person("Derpa", 32.75f, true));
-		PersonAdapter adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, 0.0f);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, Float.valueOf(etTip.getText().toString()));
 		ListView layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
-		TextView tvgTotal = (TextView)findViewById(R.id.tvgTotal);
-		TextView tvFalta = (TextView)findViewById(R.id.tvgFalta);
-		
+		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
+		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
 		for(Person p : usuarios)
 			gTotal += p.getTotal();
-		for(Person p : usuarios) {
-			if(!p.isPaid())
-				falta += p.getTotal();
-		}
+		updateSum();
 		tvgTotal.setText(String.valueOf(gTotal));
-		tvFalta.setText(String.valueOf(falta));
 		regresa.setOnClickListener(new View.OnClickListener(){
         	public void onClick(View view){
         		Lista.this.finish();
         	}
         });
-		
-		
 	}
+	
+	public void updateSum() {
+		falta = 0;
+		for(Person p : usuarios) {
+			if(!p.isPaid())
+				falta += p.getTotal();
+		}
+		tvFalta.setText(String.valueOf(falta));
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -132,6 +141,9 @@ public class Lista extends Activity implements OnClickListener {
 			break;
 		case R.id.bEliminar:
 			toast = Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
+			break;
+		case R.id.cbPaid:
+			updateSum();
 			break;
 		}
 		toast.show();
