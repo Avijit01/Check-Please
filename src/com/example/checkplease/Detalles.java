@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 	
@@ -43,6 +44,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
                 startActivity(intent);
         	}
         });
+		
 		
 		/*Spinner spinner = (Spinner)findViewById(R.id.spinner);
 		// Create an ArrayAdapter using the string array and a default spinner layout
