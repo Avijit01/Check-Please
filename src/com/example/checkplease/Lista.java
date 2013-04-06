@@ -2,6 +2,7 @@ package com.example.checkplease;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -77,6 +79,8 @@ public class Lista extends Activity implements OnClickListener {
 		layout.setAdapter(adapter);
 		TextView tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		TextView tvFalta = (TextView)findViewById(R.id.tvgFalta);
+		
+
 		for(Person p : usuarios)
 			gTotal += p.getTotal();
 		for(Person p : usuarios) {
@@ -90,6 +94,7 @@ public class Lista extends Activity implements OnClickListener {
         		Lista.this.finish();
         	}
         });
+		
 		
 	}
 	@Override
