@@ -58,7 +58,7 @@ public class Lista extends Activity implements OnClickListener {
 					facebook.setColorFilter(Color.argb(100, 0, 0, 0));
 					dispatchTouchEvent(me);
 				} else if (me.getAction() == MotionEvent.ACTION_UP) {
-					facebook.setColorFilter(null); // or null
+					facebook.setColorFilter(null);
 				}
 				return false;
 			}

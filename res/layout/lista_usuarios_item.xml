@@ -23,26 +23,22 @@
             android:scaleType="fitCenter"
             android:src="@drawable/user_icon" />
 
-        <EditText
-            android:id="@+id/etTotal"
+        <TextView
+            android:id="@+id/tvTotal"
             android:layout_width="54dp"
             android:layout_height="32dp"
-            android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="@drawable/field_bg"
-            android:ems="10"
-            android:inputType="number" />
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black" />
 
-        <EditText
-            android:id="@+id/etTotalTip"
+        <TextView
+            android:id="@+id/tvTotalTip"
             android:layout_width="54dp"
             android:layout_height="32dp"
-            android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="@drawable/field_black_bg"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 
         <CheckBox

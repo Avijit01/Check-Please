@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -39,13 +41,26 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	        float tTip;
 	        if (p != null) {
 	                ImageButton ib = (ImageButton)view.findViewById(R.id.ibPicture);
-	                EditText etTotal = (EditText)view.findViewById(R.id.etTotal);
-	                EditText etTotalTip = (EditText)view.findViewById(R.id.etTotalTip);
+	                TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
+	                TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
 	                CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
+	                
+	                ib.setOnClickListener(new  View.OnClickListener(){
+	                	public void onClick(View view){
+	                		Intent intent = new Intent(view.getContext(), Calculadora.class);
+	                       	context.startActivity(intent);
+	                	}
+	                });
+	                tvTotal.setOnClickListener(new  View.OnClickListener(){
+	                	public void onClick(View view){
+	                		Intent intent = new Intent(view.getContext(), Calculadora.class);
+	                       	context.startActivity(intent);
+	                	}
+	                });
 	                cb.setChecked(p.isPaid());
-	                etTotal.setText(String.valueOf(p.getTotal()));
+	                tvTotal.setText(String.valueOf(p.getTotal()));
 	                tTip = p.getTotal() * (propina / 10.0f) + p.getTotal();
-	                etTotalTip.setText(String.valueOf(tTip));
+	                tvTotalTip.setText(String.valueOf(tTip));
 	        }
 	        return view;
 	}
