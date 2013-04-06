@@ -80,20 +80,16 @@
         android:layout_below="@+id/linearLayout2"
         android:layout_marginTop="0dp"
         android:background="@android:color/darker_gray" />
-    
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout2" >
 
-        <ListView
-            android:id="@+id/preciosList"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" >
-        </ListView>
-    </ScrollView>
+    <ListView
+        android:id="@+id/preciosList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/agregaOrden"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/view1" >
+
+    </ListView>
 
     <ImageView
         android:id="@+id/foto"

@@ -1,12 +1,9 @@
 package com.example.checkplease;
 
-
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,7 +22,7 @@ public class MainActivity extends Activity {
 
 		entrar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Detalles.class);
+        		Intent intent = new Intent(view.getContext(), Entra.class);
                 startActivity(intent);
         	}
         });
@@ -43,21 +40,5 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	  /**
-     * Metodo onOptionsItemSelected
-     * Defiene las acciones que se tomaran al seleccionar cada menu
-     *pone el valor de despliega en 0 para tomar acciones en los metodos de animacion
-     */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //respond to menu item selection
-    	switch (item.getItemId()) {
-        case R.id.acerca://se cierra el menu
-        	startActivity(new Intent(this, Acerca.class));
-        return true;
-        
-        default:
-        return super.onOptionsItemSelected(item);
-    }
-    }
 
 }
