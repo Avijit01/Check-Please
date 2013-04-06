@@ -2,16 +2,21 @@ package com.example.checkplease;
 
 import java.util.ArrayList;
 
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -74,6 +79,8 @@ public class Lista extends Activity implements OnClickListener {
 		layout.setAdapter(adapter);
 		TextView tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		TextView tvFalta = (TextView)findViewById(R.id.tvgFalta);
+		
+
 		for(Person p : usuarios)
 			gTotal += p.getTotal();
 		for(Person p : usuarios) {
@@ -87,6 +94,7 @@ public class Lista extends Activity implements OnClickListener {
         		Lista.this.finish();
         	}
         });
+		
 		
 	}
 	@Override
@@ -117,7 +125,7 @@ public class Lista extends Activity implements OnClickListener {
 			toast = Toast.makeText(this, "Agregar una persona", Toast.LENGTH_SHORT);
 			break;
 		case R.id.bInvitar:
-			toast = Toast.makeText(this, "Invitar a un amigo", Toast.LENGTH_SHORT);
+			showInfo();
 			break;
 		case R.id.bFacebook:
 			toast = Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
@@ -128,4 +136,46 @@ public class Lista extends Activity implements OnClickListener {
 		}
 		toast.show();
 	}
+	
+	public void showInfo() {
+		   
+	    //se crea una nueva alerta de dialogo
+	    AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+	   	//se le asigna el titulo a la ventana de dialogo
+	    helpBuilder.setTitle("Invitar");
+	   	 
+	    //helpBuilder.setMessage("This is a Simple Pop Up");
+	    
+	    /*String precios[] = {"Cesar","Mario","Raul"};
+		
+		//se declara la lista asociada con la lista del layout
+		ListView list = (ListView) findViewById(R.id.preciosList);
+		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
+		LazyAdapter adapter = new LazyAdapter(this, precios);
+		//se agrega los elementos a la lista
+		list.setAdapter( adapter );
+		//se habilita el evente OnCLick en cada elemto de la lista*/
+	   	 
+	    //se toma el Layout Inflater
+	  LayoutInflater inflater = getLayoutInflater();
+	  //se toma el layout correspondiente a la ventana del pop up
+	  View checkboxLayout = inflater.inflate(R.layout.invitar, null);
+	  //se asigna esa vista a la ventana de dialogo
+	  helpBuilder.setView(checkboxLayout);
+	   
+	   
+	  //para manejar la acción del boton OK, de la ventana de dialogo
+	  helpBuilder.setPositiveButton("Ok",
+	    new DialogInterface.OnClickListener() {
+	     public void onClick(DialogInterface dialog, int which) {
+	      // No hace nada mas que cerrar la ventana de dialogo
+	     }
+	    });
+
+	  // Se crea la ventana de dialogo
+	  AlertDialog helpDialog = helpBuilder.create();
+	  //se muestra la ventana de dialogo
+	  helpDialog.show();
+	   }
+
 }
