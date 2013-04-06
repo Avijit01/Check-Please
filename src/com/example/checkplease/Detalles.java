@@ -40,7 +40,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		Button btn = (Button) findViewById(R.id.agregaOrden);
 		btn.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), MainActivity.class);
+        		Intent intent = new Intent(view.getContext(), Lista.class);
                 startActivity(intent);
         	}
         });

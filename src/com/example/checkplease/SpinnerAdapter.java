@@ -1,4 +1,4 @@
-package com.example.checkplease;
+/*package com.example.checkplease;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -36,4 +36,4 @@ public class SpinnerAdapter extends Activity implements
 
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
-}
+}*/
