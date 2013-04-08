@@ -30,7 +30,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:background="@drawable/number_btn"
+            android:background="@drawable/btn_calcu"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 

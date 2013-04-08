@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 	
 	List<String> precios = new ArrayList<String>();
-
+	Button regresa;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,12 +37,20 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		list.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
 		list.setOnItemClickListener(this);
-		
+		TextView titulo = (TextView)findViewById(R.id.titulo);
+		titulo.setText("Detalles");
 		Button btn = (Button) findViewById(R.id.agregaOrden);
 		btn.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Lista.class);
                 startActivity(intent);
+        	}
+        });
+		regresa = (Button)findViewById(R.id.regresabtn);
+
+		regresa.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		Detalles.this.finish();
         	}
         });
 		
