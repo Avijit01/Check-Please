@@ -3,6 +3,9 @@ package com.example.checkplease;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,10 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class Entra extends Activity {
-	
+
+	EditText etTotal;
+	EditText etPropina;
+	EditText etPersonas;
+	TextView tvPagoPorPersona;
+	RelativeLayout divIgual;
 	
 	private Button regresa, igual, individual;
-	
+	private float total, propina;
+	private int personas;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -24,40 +34,95 @@ public class Entra extends Activity {
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
 
-		final EditText total = (EditText)findViewById(R.id.total);
-		final EditText propina = (EditText)findViewById(R.id.propina);
-		final EditText personas = (EditText)findViewById(R.id.personas);
-		final TextView pagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
-		final RelativeLayout divIgual = (RelativeLayout)findViewById(R.id.divIgual);
+		etTotal = (EditText)findViewById(R.id.total);
+		etPropina = (EditText)findViewById(R.id.propina);
+		etPersonas = (EditText)findViewById(R.id.personas);
+		tvPagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
+		divIgual = (RelativeLayout)findViewById(R.id.divIgual);
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
-		
+
 
 		final TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Forma de Pago");
-		
+
 		regresa.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		Entra.this.finish();
-        	}
-        });
+			public void onClick(View view){
+				Entra.this.finish();
+			}
+		});
 		igual.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		titulo.setText("Pago Igual");
-        		divIgual.setVisibility(view.VISIBLE);
-        		
+			public void onClick(View view){
+				titulo.setText("Pago Igual");
+				divIgual.setVisibility(view.VISIBLE);
+			}
 
-        	}
-        	
-        });
+		});
 		individual.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		divIgual.setVisibility(RelativeLayout.INVISIBLE);
+			public void onClick(View view){
+				divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-        		Intent intent = new Intent(view.getContext(), Lista.class);
-                startActivity(intent);
-        	}
-        });
+				Intent intent = new Intent(view.getContext(), Lista.class);
+				startActivity(intent);
+			}
+		});
+
+		etTotal.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence seq, int start, int before, int count) {
+				if(etTotal.getText() != null)
+					total = Float.parseFloat(etTotal.getText().toString());
+				getTotalPerPerson();
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+		});
+		
+		etPropina.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence seq, int start, int before, int count) {
+				if(etPropina.getText() != null)
+					propina = Float.parseFloat(etPropina.getText().toString());
+				getTotalPerPerson();
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+		});
+		
+		etPersonas.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence seq, int start, int before, int count) {
+				if(etPersonas.getText() != null)
+					personas = Integer.parseInt(etPersonas.getText().toString());
+				getTotalPerPerson();
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+		});
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,19 +130,28 @@ public class Entra extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	  /**
-     * Metodo onOptionsItemSelected
-     * Defiene las acciones que se tomaran al seleccionar cada menu
-     */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //respond to menu item selection
-    	switch (item.getItemId()) {
-        case R.id.acerca://se cierra el menu
-        	startActivity(new Intent(this, Acerca.class));
-        return true;
-        
-        default:
-        return super.onOptionsItemSelected(item);
-    }
-    }
+	/**
+	 * Metodo onOptionsItemSelected
+	 * Defiene las acciones que se tomaran al seleccionar cada menu
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//respond to menu item selection
+		switch (item.getItemId()) {
+		case R.id.acerca://se cierra el menu
+			startActivity(new Intent(this, Acerca.class));
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	/**
+	 * Calcula el total de cada persona
+	 */
+	private void getTotalPerPerson() {
+		float ppp = (total + (total * (propina / 100.0f))) / personas;
+		if(!Float.isNaN(ppp) && !Float.isInfinite(ppp))
+			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
+	}
 }

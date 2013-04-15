@@ -17,29 +17,29 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		entrar = (Button)findViewById(R.id.entrarbtn);
 		registrar = (Button)findViewById(R.id.registrobtn);
 		facebook = (Button)findViewById(R.id.facebookbtn);
 		entrar.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Entra.class);
-        		startActivity(intent);
-        	}
-        });
+			public void onClick(View view){
+				Intent intent = new Intent(view.getContext(), Entra.class);
+				startActivity(intent);
+			}
+		});
 		registrar.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		Intent intent = new Intent(view.getContext(), Registro.class);
-                startActivity(intent);
-        	}
-        });
+			public void onClick(View view){
+				Intent intent = new Intent(view.getContext(), Registro.class);
+				startActivity(intent);
+			}
+		});
 		facebook.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		
+			public void onClick(View view){
+
 				Toast.makeText(getApplicationContext(),"Se desplegara con funcionalidad la ventana de Facebook",Toast.LENGTH_SHORT).show();
-        		
-        	}
-        });
+
+			}
+		});
 	}
 
 	@Override
