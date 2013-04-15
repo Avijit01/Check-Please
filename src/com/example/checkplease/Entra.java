@@ -21,7 +21,7 @@ public class Entra extends Activity {
 	EditText etPersonas;
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
-	
+
 	private Button regresa, igual, individual;
 	private float total, propina;
 	private int personas;
@@ -70,8 +70,11 @@ public class Entra extends Activity {
 		etTotal.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				if(etTotal.getText() != null)
+				try {
 					total = Float.parseFloat(etTotal.getText().toString());
+				} catch(Exception e) {
+					total = 0.0f;
+				}
 				getTotalPerPerson();
 			}
 
@@ -85,12 +88,15 @@ public class Entra extends Activity {
 
 			}
 		});
-		
+
 		etPropina.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				if(etPropina.getText() != null)
+				try {
 					propina = Float.parseFloat(etPropina.getText().toString());
+				} catch (Exception e) {
+					propina = 0.0f;
+				}
 				getTotalPerPerson();
 			}
 
@@ -104,12 +110,15 @@ public class Entra extends Activity {
 
 			}
 		});
-		
+
 		etPersonas.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				if(etPersonas.getText() != null)
+				try {
 					personas = Integer.parseInt(etPersonas.getText().toString());
+				} catch (Exception e) {
+					personas = 0;
+				}
 				getTotalPerPerson();
 			}
 
@@ -140,7 +149,6 @@ public class Entra extends Activity {
 		case R.id.acerca://se cierra el menu
 			startActivity(new Intent(this, Acerca.class));
 			return true;
-
 		default:
 			return super.onOptionsItemSelected(item);
 		}
