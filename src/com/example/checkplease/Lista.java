@@ -52,6 +52,7 @@ public class Lista extends Activity implements OnClickListener {
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			int totalIndi = extras.getInt("totalIndi");
+			String preciosArray[] = extras.getStringArray("calculos");
 		}
 
 		etTip = (EditText)findViewById(R.id.etTip);
@@ -91,10 +92,6 @@ public class Lista extends Activity implements OnClickListener {
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-		for(Person p : usuarios)
-			gTotal += p.getTotal();
-		updateSum();
-		tvgTotal.setText(String.valueOf(gTotal));
 		regresa.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				Lista.this.finish();
@@ -102,11 +99,18 @@ public class Lista extends Activity implements OnClickListener {
 		});
 	}
 
-	public void updateSum() {
+	public void updateTotal() {
+		gTotal = 0;
+		for(Person p : usuarios)
+			gTotal += p.getTotalTip();
+		tvgTotal.setText(String.valueOf(gTotal));
+	}
+
+	public void updateRemaining() {
 		falta = 0;
 		for(Person p : usuarios) {
 			if(!p.isPaid())
-				falta += p.getTotal();
+				falta += p.getTotalTip();
 		}
 		tvFalta.setText(String.valueOf(falta));
 	}
@@ -146,9 +150,6 @@ public class Lista extends Activity implements OnClickListener {
 			break;
 		case R.id.bEliminar:
 			toast = Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
-			break;
-		case R.id.cbPaid:
-			updateSum();
 			break;
 		}
 		toast.show();
