@@ -3,16 +3,20 @@
     package="com.example.checkplease"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
+        <uses-permission android:name="android.permission.INTERNET"/>
+    
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:theme="@android:style/Theme.NoTitleBar"
+          android:name=".FriendPickerApplication"
+        >
         <activity
 
             android:name="com.example.checkplease.MainActivity"
@@ -27,7 +31,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.facebook.LoginActivity"
+          android:label="@string/app_name" />
+            <activity android:name="com.example.checkplease.FriendPicker"
+                  android:label="Pick Friends">
+        </activity>
          <activity android:name="com.example.checkplease.Registro"
+             
+                 android:screenOrientation="portrait">
+        </activity>
+         <activity android:name="com.example.checkplease.Facebook"
              
                  android:screenOrientation="portrait">
         </activity>
@@ -50,7 +63,13 @@
         <activity android:name="com.example.checkplease.Detalles"
              
                  android:screenOrientation="portrait">
-        </activity> 
+        </activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+        <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
+        
 </application>
 
+    
+  <!-- Allow to connect with internet -->
+  
 </manifest>

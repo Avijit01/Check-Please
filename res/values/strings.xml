@@ -15,5 +15,6 @@
     <color name="blanco">#ffffffff</color>
     <string name="mayor">&lt;</string>
     <string name="checkplease">Check Please</string>
+    <string name="app_id">533323013384570</string>
 
 </resources>
