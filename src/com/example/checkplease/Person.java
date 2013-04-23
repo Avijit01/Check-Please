@@ -3,6 +3,7 @@ package com.example.checkplease;
 public class Person {
 	private String picture;
     private float total;
+    private float totalTip;
     private boolean paid;
     
     public Person(String picture, float total, boolean paid) {
@@ -30,5 +31,13 @@ public class Person {
 
 	public void setPaid(boolean paid) {
 		this.paid = paid;
+	}
+
+	public float getTotalTip() {
+		return totalTip;
+	}
+
+	public void setTotalTip(float totalTip) {
+		this.totalTip = totalTip;
 	}
 }

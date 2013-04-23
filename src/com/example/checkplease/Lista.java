@@ -50,6 +50,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
     private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.lista:PendingAction";
     
+
 	// Definicion de los botones presentes en la vista
 	Button regresa;
 	Button invitar;
@@ -57,7 +58,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
-	
+
 	// Variables que maneja la vista para calculos
 	PersonAdapter adapter;
 	ArrayList<Person> usuarios;
@@ -71,7 +72,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	    private ViewGroup controlsContainer;
 	    private GraphUser user;
 	
-	protected void onCreate(Bundle savedInstanceState) {
+protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
@@ -79,13 +80,22 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		titulo.setText("Pago Individual");
 		
 	etTip = (EditText)findViewById(R.id.etTip);
-		
+
+
+		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
+		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
+			int totalIndi = extras.getInt("totalIndi");
+			String preciosArray[] = extras.getStringArray("calculos");
+		}
+
+		etTip = (EditText)findViewById(R.id.etTip);
+
 		regresa = (Button)findViewById(R.id.regresabtn);
 		invitar = (Button)findViewById(R.id.bInvitar);
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
-		
+
 		// Agregar click listener
 		agregar.setOnClickListener(this);
 		invitar.setOnClickListener(this);
@@ -102,8 +112,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				return false;
 			}
-		 });
-        
+		});
+
 		usuarios = new ArrayList<Person>();
 		usuarios.add(new Person("Derp", 120.0f, false));
 		usuarios.add(new Person("Hurr", 137.50f, false));
@@ -115,46 +125,49 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-		for(Person p : usuarios)
-			gTotal += p.getTotal();
-		updateSum();
-		tvgTotal.setText(String.valueOf(gTotal));
 		regresa.setOnClickListener(new View.OnClickListener(){
-        	public void onClick(View view){
-        		Lista.this.finish();
-        	}
-        });
+			public void onClick(View view){
+				Lista.this.finish();
+			}
+		});
 	}
-	
-	public void updateSum() {
+
+	public void updateTotal() {
+		gTotal = 0;
+		for(Person p : usuarios)
+			gTotal += p.getTotalTip();
+		tvgTotal.setText(String.valueOf(gTotal));
+	}
+
+	public void updateRemaining() {
 		falta = 0;
 		for(Person p : usuarios) {
 			if(!p.isPaid())
-				falta += p.getTotal();
+				falta += p.getTotalTip();
 		}
 		tvFalta.setText(String.valueOf(falta));
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	  /**
-     * Metodo onOptionsItemSelected
-     * Defiene las acciones que se tomaran al seleccionar cada menu
-     */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //respond to menu item selection
-    	switch (item.getItemId()) {
-    	case R.id.acerca://se cierra el menu
-    		startActivity(new Intent(this, Acerca.class));
-    		return true;
-    	default:
-    		return super.onOptionsItemSelected(item);
-    	}
-    }
+	/**
+	 * Metodo onOptionsItemSelected
+	 * Defiene las acciones que se tomaran al seleccionar cada menu
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//respond to menu item selection
+		switch (item.getItemId()) {
+		case R.id.acerca://se cierra el menu
+			startActivity(new Intent(this, Acerca.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
@@ -192,9 +205,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			break;
 		case R.id.bEliminar:
 			Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
-			break;
-		case R.id.cbPaid:
-			updateSum();
 			break;
 		}
 	}
@@ -270,17 +280,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	                .setPositiveButton(R.string.aceptar, null)
 	                .show();
 	    }
+
 	public void showInfo() {
-		   
-	    //se crea una nueva alerta de dialogo
-	    AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-	   	//se le asigna el titulo a la ventana de dialogo
-	    helpBuilder.setTitle("Invitar");
-	   	 
-	    //helpBuilder.setMessage("This is a Simple Pop Up");
-	    
-	    /*String precios[] = {"Cesar","Mario","Raul"};
-		
+
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		helpBuilder.setTitle("Invitar");
+
+		//helpBuilder.setMessage("This is a Simple Pop Up");
+
+		/*String precios[] = {"Cesar","Mario","Raul"};
+
 		//se declara la lista asociada con la lista del layout
 		ListView list = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
@@ -288,28 +299,28 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//se agrega los elementos a la lista
 		list.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista*/
-	   	 
-	    //se toma el Layout Inflater
-	  LayoutInflater inflater = getLayoutInflater();
-	  //se toma el layout correspondiente a la ventana del pop up
-	  View checkboxLayout = inflater.inflate(R.layout.invitar, null);
-	  //se asigna esa vista a la ventana de dialogo
-	  helpBuilder.setView(checkboxLayout);
-	   
-	   
-	  //para manejar la acción del boton OK, de la ventana de dialogo
-	  helpBuilder.setPositiveButton("Ok",
-	    new DialogInterface.OnClickListener() {
-	     public void onClick(DialogInterface dialog, int which) {
-	      // No hace nada mas que cerrar la ventana de dialogo
-	     }
-	    });
 
-	  // Se crea la ventana de dialogo
-	  AlertDialog helpDialog = helpBuilder.create();
-	  //se muestra la ventana de dialogo
-	  helpDialog.show();
-	   }
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		//se toma el layout correspondiente a la ventana del pop up
+		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
+		//se asigna esa vista a la ventana de dialogo
+		helpBuilder.setView(checkboxLayout);
+
+
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		helpBuilder.setPositiveButton("Ok",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// No hace nada mas que cerrar la ventana de dialogo
+			}
+		});
+
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = helpBuilder.create();
+		//se muestra la ventana de dialogo
+		helpDialog.show();
+	}
 
     private void onClickPickFriends() {
     	 FriendPickerApplication application = (FriendPickerApplication) getApplication();
