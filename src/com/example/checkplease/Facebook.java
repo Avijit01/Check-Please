@@ -32,7 +32,6 @@ import android.widget.Toast;
 public class Facebook extends FragmentActivity{
     private UserSettingsFragment userSettingsFragment;
     private Button regresa, acepta, rechaza;
-    FragmentManager fragmentManager = getSupportFragmentManager();
     ImageView fondo;
     private ViewGroup controlsContainer;
     private static final int PICK_FRIENDS_ACTIVITY = 1;
@@ -50,7 +49,6 @@ public class Facebook extends FragmentActivity{
 		acepta = (Button)findViewById(R.id.sigue);
 		rechaza = (Button)findViewById(R.id.regresa);
 		Session session = Session.getActiveSession();
-
 		if (session == null) {
 			Toast.makeText(getApplicationContext(),"session",Toast.LENGTH_SHORT).show();
 
@@ -74,6 +72,7 @@ public class Facebook extends FragmentActivity{
         }
 		}
       //  fondo.setBackgroundColor(getResources().getColor(R.color.com_facebook_blue));
+	    FragmentManager fragmentManager = getSupportFragmentManager();
 
 	    userSettingsFragment = (UserSettingsFragment) fragmentManager.findFragmentById(R.id.login_fragment);
 	    
@@ -96,11 +95,11 @@ public class Facebook extends FragmentActivity{
         });	    
 	    acepta.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		onClickPickFriends();
-        		/*Intent intent = new Intent(view.getContext(), Entra.class);
+
+        		Intent intent = new Intent(view.getContext(), Entra.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         		startActivity(intent);
-        		finish();*/
+        		finish();
         	}
         });	   
 	    rechaza.setOnClickListener(new  View.OnClickListener(){
@@ -161,6 +160,10 @@ public class Facebook extends FragmentActivity{
         showPickerFragment(fragment);*/
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        userSettingsFragment.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+   /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_FRIENDS_ACTIVITY:
                 displaySelectedFriends(resultCode);
@@ -169,7 +172,7 @@ public class Facebook extends FragmentActivity{
                 Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
                 break;
         }
-    }
+    }*/
 
     private void displaySelectedFriends(int resultCode) {
         String results = "";

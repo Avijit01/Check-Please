@@ -1,34 +1,59 @@
 package com.example.checkplease;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
-
+import com.facebook.FacebookException;
+import com.facebook.FacebookRequestError;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphObject;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.FriendPickerFragment;
+import com.facebook.widget.PickerFragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Lista extends Activity implements OnClickListener {
+
+public class Lista extends FragmentActivity  implements OnClickListener {
 	
+    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+    private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.lista:PendingAction";
+    
 	// Definicion de los botones presentes en la vista
 	Button regresa;
 	Button invitar;
+	ImageButton  pickFriendsButton;
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
@@ -41,6 +66,10 @@ public class Lista extends Activity implements OnClickListener {
 	TextView tvFalta;
 	float gTotal;
 	float falta;
+    private static final int PICK_FRIENDS_ACTIVITY = 1;
+
+	    private ViewGroup controlsContainer;
+	    private GraphUser user;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -49,7 +78,7 @@ public class Lista extends Activity implements OnClickListener {
 		TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Pago Individual");
 		
-		etTip = (EditText)findViewById(R.id.etTip);
+	etTip = (EditText)findViewById(R.id.etTip);
 		
 		regresa = (Button)findViewById(R.id.regresabtn);
 		invitar = (Button)findViewById(R.id.bInvitar);
@@ -128,27 +157,119 @@ public class Lista extends Activity implements OnClickListener {
     }
 	@Override
 	public void onClick(View v) {
-		Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 		switch(v.getId()) {
 		case R.id.bAgregar:
-			toast = Toast.makeText(this, "Agregar una persona", Toast.LENGTH_SHORT);
+			Session session = Session.getActiveSession();
+			if (session == null) {
+				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
+			}else{
+	        if (session.isOpened()) {
+	    		onClickPickFriends();
+	        }else{
+				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
+
+	        }
+	        }
 			break;
 		case R.id.bInvitar:
+			
 			showInfo();
 			break;
 		case R.id.bFacebook:
-			toast = Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
+			Session session2 = Session.getActiveSession();
+
+			if (session2 == null) {
+				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
+			}else{
+	        if (session2.isOpened()) {
+				postStatusUpdate();
+	        }else{
+				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
+
+	        }
+	        }
+			Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
 			break;
 		case R.id.bEliminar:
-			toast = Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
+			Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
 			break;
 		case R.id.cbPaid:
 			updateSum();
 			break;
 		}
-		toast.show();
 	}
-	
+	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        switch (requestCode) {
+	            case PICK_FRIENDS_ACTIVITY:
+	                displaySelectedFriends(resultCode);
+	                break;
+	            default:
+	                Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	                break;
+	        }
+	    }
+	   private void displaySelectedFriends(int resultCode) {
+	        String results = "";
+	        FriendPickerApplication application = (FriendPickerApplication) getApplication();
+
+	        Collection<GraphUser> selection = application.getSelectedUsers();
+	        if (selection != null && selection.size() > 0) {
+	            ArrayList<String> names = new ArrayList<String>();
+	            for (GraphUser user : selection) {
+	    			Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
+
+	                names.add(user.getName());
+	            }
+	            results = TextUtils.join(", ", names);
+	        } else {
+	            results = "<No friends selected>";
+	        }
+			Toast.makeText(getApplicationContext(),results,Toast.LENGTH_SHORT).show();
+
+	       // mensajeFace.setText(results);
+	    }
+	   private void postStatusUpdate() {
+	        if (user != null ) {
+	            final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
+	            Request request = Request
+	            		
+	                    .newStatusUpdateRequest(Session.getActiveSession(), message, new Request.Callback() {
+	                    	
+	                        @Override
+	                        public void onCompleted(Response response) {
+	                            showPublishResult(message, response.getGraphObject(), response.getError());
+	                        }
+	                    });
+	            Log.d("entra", "ONCLICK");
+
+	            request.executeAsync();
+	        } else {
+	            Log.d("sale", "ONCLICK");
+	            
+	            //pendingAction = PendingAction.POST_STATUS_UPDATE;
+	        }
+	    }
+	   private interface GraphObjectWithId extends GraphObject {
+	        String getId();
+	    }
+	   private void showPublishResult(String message, GraphObject result, FacebookRequestError error) {
+	        String title = null;
+	        String alertMessage = null;
+	        if (error == null) {
+	            title = getString(R.string.aceptar);
+	            String id = result.cast(GraphObjectWithId.class).getId();
+	            alertMessage = getString(R.string.aceptar, message, id);
+	        } else {
+	            title = getString(R.string.rechazar);
+	            alertMessage = error.getErrorMessage();
+	        }
+
+	        new AlertDialog.Builder(this)
+	                .setTitle(title)
+	                .setMessage(alertMessage)
+	                .setPositiveButton(R.string.aceptar, null)
+	                .show();
+	    }
 	public void showInfo() {
 		   
 	    //se crea una nueva alerta de dialogo
@@ -189,5 +310,25 @@ public class Lista extends Activity implements OnClickListener {
 	  //se muestra la ventana de dialogo
 	  helpDialog.show();
 	   }
+
+    private void onClickPickFriends() {
+    	 FriendPickerApplication application = (FriendPickerApplication) getApplication();
+         application.setSelectedUsers(null);
+
+         Intent intent = new Intent(this, FriendPicker.class);
+         // Note: The following line is optional, as multi-select behavior is the default for
+         // FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
+         // friend picker if single-select functionality was desired, or if a different user ID was
+         // desired (for instance, to see friends of a friend).
+         FriendPicker.populateParameters(intent, null, true, true);
+         startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
+       /* final FriendPickerFragment fragment = new FriendPickerFragment();
+        Log.d("1", "ONCLICK");
+
+        setFriendPickerListeners(fragment);
+        Log.d("2", "ONCLICK");
+
+        showPickerFragment(fragment);*/
+    }
 
 }

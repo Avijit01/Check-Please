@@ -1,11 +1,18 @@
 package com.example.checkplease;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import com.facebook.FacebookException;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.PickerFragment;
 
@@ -55,13 +62,13 @@ public class FriendPicker extends FragmentActivity {
                 // We just store our selection in the Application for other activities to look at.
                 FriendPickerApplication application = (FriendPickerApplication) getApplication();
                 application.setSelectedUsers(friendPickerFragment.getSelection());
-
+                
                 setResult(RESULT_OK, null);
                 finish();
             }
         });
     }
-
+   
     private void onError(Exception error) {
         new AlertDialog.Builder(this)
                 //.setTitle(R.string.error_dialog_title)
