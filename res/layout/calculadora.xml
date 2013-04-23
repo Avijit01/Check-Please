@@ -13,10 +13,10 @@
         android:layout_marginLeft="35dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="35dp"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="7" />
+        android:text="7"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button8"
@@ -26,10 +26,10 @@
         android:layout_alignBottom="@+id/button7"
         android:layout_marginRight="15dp"
         android:layout_toRightOf="@+id/button7"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="8" />
+        android:text="8"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button9"
@@ -39,10 +39,10 @@
         android:layout_alignBottom="@+id/button8"
         android:layout_marginRight="15dp"
         android:layout_toRightOf="@+id/button8"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="9" />
+        android:text="9"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/divi"
@@ -51,10 +51,10 @@
         android:layout_alignBaseline="@+id/button9"
         android:layout_alignBottom="@+id/button9"
         android:layout_toRightOf="@+id/button9"
-        android:textColor="#ffffffff"
         android:background="@drawable/op_btn"
-        android:textSize="12pt"
-        android:text="/" />
+        android:text="/"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button4"
@@ -63,10 +63,10 @@
         android:layout_alignLeft="@+id/button7"
         android:layout_below="@+id/button7"
         android:layout_marginTop="15dp"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="4" />
+        android:text="4"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button5"
@@ -75,10 +75,10 @@
         android:layout_alignBaseline="@+id/button4"
         android:layout_alignBottom="@+id/button4"
         android:layout_toRightOf="@+id/button7"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="5" />
+        android:text="5"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button6"
@@ -87,10 +87,10 @@
         android:layout_alignBaseline="@+id/button5"
         android:layout_alignBottom="@+id/button5"
         android:layout_alignLeft="@+id/button9"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="6" />
+        android:text="6"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/multi"
@@ -99,10 +99,10 @@
         android:layout_alignBaseline="@+id/button6"
         android:layout_alignBottom="@+id/button6"
         android:layout_alignLeft="@+id/divi"
-        android:textColor="#ffffffff"
         android:background="@drawable/op_btn"
-        android:textSize="12pt"
-        android:text="*" />
+        android:text="*"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button1"
@@ -111,10 +111,10 @@
         android:layout_alignLeft="@+id/button4"
         android:layout_below="@+id/button4"
         android:layout_marginTop="15dp"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="1" />
+        android:text="1"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button2"
@@ -123,10 +123,10 @@
         android:layout_alignBaseline="@+id/button1"
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@+id/button7"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="2" />
+        android:text="2"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/button3"
@@ -135,10 +135,10 @@
         android:layout_alignBaseline="@+id/button2"
         android:layout_alignBottom="@+id/button2"
         android:layout_alignLeft="@+id/button6"
-        android:textColor="#ffffffff"
         android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="3" />
+        android:text="3"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/menos"
@@ -147,102 +147,20 @@
         android:layout_alignBaseline="@+id/button3"
         android:layout_alignBottom="@+id/button3"
         android:layout_alignLeft="@+id/multi"
-        android:textColor="#ffffffff"
         android:background="@drawable/op_btn"
-        android:textSize="12pt"
-        android:text="-" />
-
-    <Button
-        android:id="@+id/parentI"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="15dp"
+        android:text="-"
         android:textColor="#ffffffff"
-        android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="(" />
-
-    <Button
-        android:id="@+id/button0"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/parentI"
-        android:layout_alignBottom="@+id/parentI"
-        android:layout_alignLeft="@+id/button2"
-        android:textColor="#ffffffff"
-        android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="0" />
-
-    <Button
-        android:id="@+id/parentD"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/button0"
-        android:layout_alignBottom="@+id/button0"
-        android:layout_alignLeft="@+id/button3"
-        android:textColor="#ffffffff"
-        android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text=")" />
+        android:textSize="12pt" />
 
     <Button
         android:id="@+id/mas"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/parentD"
-        android:layout_alignBottom="@+id/parentD"
+        android:layout_alignBaseline="@+id/button0"
+        android:layout_alignBottom="@+id/button0"
         android:layout_alignLeft="@+id/menos"
-        android:textColor="#ffffffff"
         android:background="@drawable/op_btn"
-        android:textSize="12pt"
-        android:text="+" />
-
-    <Button
-        android:id="@+id/erase"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/parentI"
-        android:layout_below="@+id/parentI"
-        android:layout_marginTop="15dp"
-        android:textColor="#ffffffff"
-        android:background="@drawable/number_btn"
-        android:textSize="12pt"
-        android:text="C" />
-
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/erase"
-        android:layout_alignBottom="@+id/erase"
-        android:layout_toRightOf="@+id/button7"
-        android:textColor="#ffffffff"
-        android:background="@drawable/erase_btn"
-        android:textSize="12pt"
-        android:text="CE" />
-
-    <Button
-        android:id="@+id/ans"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/parentD"
-        android:layout_alignTop="@+id/delete"
-        android:background="@drawable/number_btn"
-        android:text="Ans"
-        android:textColor="#ffffffff"
-        android:textSize="9pt" />
-
-    <Button
-        android:id="@+id/igual"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/divi"
-        android:layout_alignTop="@+id/ans"
-        android:background="@drawable/green_btn"
-        android:text="="
+        android:text="+"
         android:textColor="#ffffffff"
         android:textSize="12pt" />
 
@@ -292,16 +210,90 @@
     <EditText
         android:id="@+id/cuadroCalc"
         android:layout_width="500dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/header"
         android:layout_marginTop="14dp"
         android:background="@drawable/blanco_btn"
         android:ems="10"
         android:gravity="right"
+        android:editable="false"
         android:inputType="number" >
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/erase"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/number_btn"
+        android:text="C"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/erase"
+        android:layout_alignBottom="@+id/erase"
+        android:layout_alignLeft="@+id/button2"
+        android:background="@drawable/number_btn"
+        android:text="0"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/asignar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/erase"
+        android:layout_alignRight="@+id/button0"
+        android:layout_below="@+id/erase"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/facebook_button"
+        android:text="Asignar"
+        android:textColor="#ffffffff"
+        android:textSize="9pt" />
+
+    <Button
+        android:id="@+id/igual"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/asignar"
+        android:layout_alignBottom="@+id/asignar"
+        android:layout_alignLeft="@+id/mas"
+        android:background="@drawable/green_btn"
+        android:text="="
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/igual"
+        android:layout_alignBottom="@+id/igual"
+        android:layout_alignLeft="@+id/button3"
+        android:background="@drawable/erase_btn"
+        android:text="CE"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/point"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/mas"
+        android:layout_alignBottom="@+id/mas"
+        android:layout_alignLeft="@+id/delete"
+        android:background="@drawable/number_btn"
+        android:text="."
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
 
 </RelativeLayout>
