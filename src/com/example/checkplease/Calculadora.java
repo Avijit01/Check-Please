@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Calculadora extends Activity{
 	private Button regresa, igual, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, cero;
@@ -26,7 +27,8 @@ public class Calculadora extends Activity{
 	private double calculo = 0.0;
 	private double aux = 0.0;
 	private char op = 's';
-	private String split[];
+
+	private String split[], igualText = "0.0";
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
 
@@ -69,11 +71,13 @@ public class Calculadora extends Activity{
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
 				startActivity(intent);
+
 			}
 		});
 
 		uno.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "1";
 				result.setText(texto);
 			}
@@ -81,6 +85,7 @@ public class Calculadora extends Activity{
 
 		dos.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "2";
 				result.setText(texto);
 			}
@@ -88,6 +93,7 @@ public class Calculadora extends Activity{
 
 		tres.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "3";
 				result.setText(texto);
 			}
@@ -95,6 +101,7 @@ public class Calculadora extends Activity{
 
 		cuatro.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "4";
 				result.setText(texto);
 			}
@@ -102,6 +109,7 @@ public class Calculadora extends Activity{
 
 		cinco.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "5";
 				result.setText(texto);
 			}
@@ -109,6 +117,7 @@ public class Calculadora extends Activity{
 
 		seis.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "6";
 				result.setText(texto);
 			}
@@ -116,6 +125,7 @@ public class Calculadora extends Activity{
 
 		siete.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "7";
 				result.setText(texto);
 			}
@@ -123,6 +133,7 @@ public class Calculadora extends Activity{
 
 		ocho.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "8";
 				result.setText(texto);
 			}
@@ -130,6 +141,7 @@ public class Calculadora extends Activity{
 
 		nueve.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "9";
 				result.setText(texto);
 			}
@@ -137,6 +149,7 @@ public class Calculadora extends Activity{
 
 		cero.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if( texto.equals(igualText) ) texto = "";
 				texto = texto + "0";
 				result.setText(texto);
 			}
@@ -206,6 +219,8 @@ public class Calculadora extends Activity{
 			public void onClick(View view){
 				texto = "";
 				result.setText("");
+				calculo = aux = 0.0;
+				op = 's';
 			}
 		});
 
@@ -225,10 +240,10 @@ public class Calculadora extends Activity{
 				split = texto.split(" ");
 				for( int i = 0; i < split.length; i++ ){
 					try{
-							 if( split[i] == "+" ) op = 's';
-						else if( split[i] == "-" ) op = 'r';
-						else if( split[i] == "*" ) op = 'm';
-						else if( split[i] == "/" ) op = 'd';
+							 if( split[i].equals("+") ) op = 's';
+						else if( split[i].equals("-") ) op = 'r';
+						else if( split[i].equals("*") ) op = 'm';
+						else if( split[i].equals("/") ) op = 'd';
 						else {
 							aux = Double.parseDouble(split[i]); 
 							realizaOp(op); 
@@ -237,7 +252,36 @@ public class Calculadora extends Activity{
 						result.setText("ERROR");
 					}
 				}
-				result.setText(calculo+"");
+				result.setText(texto + "\n = " + calculo);
+				igualText = "" + calculo;
+				texto = "" + calculo;
+				calculo = 0.0;
+			}
+		});
+		
+		asignar.setOnClickListener(new  View.OnClickListener(){
+			public void onClick(View view){
+				split = texto.split(" ");
+				for( int i = 0; i < split.length; i++ ){
+					try{
+							 if( split[i].equals("+") ) op = 's';
+						else if( split[i].equals("-") ) op = 'r';
+						else if( split[i].equals("*") ) op = 'm';
+						else if( split[i].equals("/") ) op = 'd';
+						else {
+							aux = Double.parseDouble(split[i]); 
+							realizaOp(op); 
+						}
+					} catch(IllegalArgumentException ex) { 
+						result.setText("ERROR");
+					}
+				}
+				result.setText(texto + "\n = " + calculo);
+				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("totalIndi", calculo);
+				intent.putExtra("calculos", split);
+				intent.putExtra("position", getIntent().getExtras().getInt("position"));
+				startActivity(intent);
 			}
 		});
 
@@ -248,7 +292,7 @@ public class Calculadora extends Activity{
 		case 's': calculo += aux; break;
 		case 'r': calculo -= aux; break;
 		case 'm': calculo *= aux; break;
-		case 'd': if( calculo != 0) calculo /= aux;
+		case 'd': if( aux != 0) calculo /= aux;
 		else calculo = 0;	  break;
 		default: break;
 		}
