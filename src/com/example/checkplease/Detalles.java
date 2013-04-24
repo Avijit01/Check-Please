@@ -3,11 +3,16 @@ package com.example.checkplease;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -16,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -24,10 +31,13 @@ import android.widget.TextView;
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 	
 	private List<String> precios = new ArrayList<String>();
-	private Button regresa;
-	private TextView total, name, nameChange;
+	private Button regresa, okBtn;
+	private TextView total, name;
+	private EditText nameChange;
 	private double sumaTotal;
-	private String nombre;
+	private String nombre, nombrenuevo;
+	private ImageView foto;
+	private static final int SELECT_PICTURE = 1;
 	
 	
 	@Override
@@ -39,11 +49,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			String precios[] = extras.getStringArray("calculos");
 		}
-		
+
 		String precios[] = {"10","20","30"};
 		
 		total = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
+		foto = (ImageView)findViewById(R.id.foto);
 		
 		for( int i = 0; i < precios.length; i++ ){
 			sumaTotal+= Double.parseDouble(precios[i]);
@@ -81,37 +92,52 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         		showInfo();
         	}
         });
+		foto .setOnClickListener( new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(Intent.createChooser(intent,  "Selecciona Imagen"), SELECT_PICTURE);
+			}
+		});
 		
 	}
 	
 	public void showInfo() {
 
-		//se crea una nueva alerta de dialogo
-		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
-		//se le asigna el titulo a la ventana de dialogo
-		helpBuilder.setTitle("Cambiar nombre");
+		final Dialog dialog = new Dialog(this);
+		 dialog.setContentView(R.layout.cambiar_nombre);
+		 dialog.setTitle("Cambiar nombre");
 
-		//se toma el Layout Inflater
-		LayoutInflater inflater = getLayoutInflater();
-		//se toma el layout correspondiente a la ventana del pop up
-		View TextField = inflater.inflate(R.layout.cambiar_nombre, null);
-		//se asigna esa vista a la ventana de dialogo
-		helpBuilder.setView(TextField);
-		
-		nombre = "Nombre";
-		nameChange = (TextView)findViewById(R.id.nameChange);
+		 okBtn = (Button) findViewById(R.id.ok_btn);
+		 okBtn.setOnClickListener(new View.OnClickListener() {
+		     public void onClick(View view) {
 
-		//para manejar la acción del boton OK, de la ventana de dialogo
-		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				name.setText( nameChange.getText() );
-			}
-		});
+		    	 
+		    	 
+		    	 dialog.dismiss();
 
-		// Se crea la ventana de dialogo
-		AlertDialog helpDialog = helpBuilder.create();
-		//se muestra la ventana de dialogo
-		helpDialog.show();
+		     }
+		 });
+
+
+		dialog.show();
+	}
+	
+	protected void onActivityResult( int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if( resultCode == RESULT_OK && null != data){
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex( filePathColumn[0] );
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+			foto.setImageBitmap( BitmapFactory.decodeFile(picturePath));
+		}
 	}
 
 	
