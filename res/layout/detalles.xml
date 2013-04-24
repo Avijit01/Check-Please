@@ -10,39 +10,9 @@
         android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/bar_color" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_alignTop="@+id/regresabtn"
-            android:layout_marginTop="2dp"
-            android:layout_toLeftOf="@+id/user"
-            android:contentDescription="@string/mayor"
-            android:src="@drawable/flecha" />
-
-        <Button
-            android:id="@+id/regresabtn"
-            android:layout_width="44dp"
-            android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/logo" />
-
-        <ImageView
             android:id="@+id/foto"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignLeft="@+id/regresabtn"
-            android:layout_below="@+id/imageView1"
             android:layout_marginTop="17dp"
             android:src="@drawable/user_icon" />
 
@@ -82,15 +52,6 @@
             android:src="@drawable/fb_logo" />
 
         <TextView
-            android:id="@+id/titulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView2"
-            android:layout_toRightOf="@+id/regresabtn"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
             android:id="@+id/total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,40 +61,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
-
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:gravity="center_vertical"
-        android:padding="4dp" >
-
-        <TextView
-            android:id="@+id/TextView01"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/precio"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textSize="10pt" />
-
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/orden"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black"
-            android:textSize="10pt" />
-    </LinearLayout>
 
     <View
         android:id="@+id/view1"
@@ -163,5 +91,37 @@
         android:background="@drawable/green_btn"
         android:text="@string/platillo"
         android:textColor="#ffffffff" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical"
+        android:padding="4dp" >
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/precio"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/orden"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:textSize="10pt" />
+    </LinearLayout>
 
 </RelativeLayout>
