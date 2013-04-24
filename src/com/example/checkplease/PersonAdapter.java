@@ -52,15 +52,15 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 					context.startActivity(intent);
 				}
 			});
-			tvTotal.setOnClickListener(new  View.OnClickListener(){
+			tvTotal.setOnClickListener(new  CustomOnClickListener(position){
 				public void onClick(View view){
 					Intent intent = new Intent(view.getContext(), Calculadora.class);
+					intent.putExtra("position", this.getPosition());
 					context.startActivity(intent);
 				}
 			});
 			cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
 				public void onCheckedChanged(CompoundButton cb, boolean paid){
-					Log.d("checked", String.valueOf(paid));
 					getPerson().setPaid(paid);
 					((Lista)context).updateRemaining();
 				}
