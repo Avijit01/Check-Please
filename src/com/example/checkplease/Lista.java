@@ -314,18 +314,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//se le asigna el titulo a la ventana de dialogo
 		helpBuilder.setTitle("Invitar");
 
-		//helpBuilder.setMessage("This is a Simple Pop Up");
-
-		/*String precios[] = {"Cesar","Mario","Raul"};
-
-		//se declara la lista asociada con la lista del layout
-		ListView list = (ListView) findViewById(R.id.preciosList);
-		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		LazyAdapter adapter = new LazyAdapter(this, precios);
-		//se agrega los elementos a la lista
-		list.setAdapter( adapter );
-		//se habilita el evente OnCLick en cada elemto de la lista*/
-
 		//se toma el Layout Inflater
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up

@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -35,9 +36,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private TextView total, name;
 	private EditText nameChange;
 	private double sumaTotal;
-	private String nombre, nombrenuevo;
 	private ImageView foto;
 	private static final int SELECT_PICTURE = 1;
+	private String path = "";
 	
 	
 	@Override
@@ -49,12 +50,20 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			String precios[] = extras.getStringArray("calculos");
 		}
+		
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+        path = prefs.getString("path","");
+        name.setText(prefs.getString("name", "Nombre"));
 
 		String precios[] = {"10","20","30"};
 		
 		total = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
 		foto = (ImageView)findViewById(R.id.foto);
+		
+		if( path.equals("") ){
+			foto.setImageBitmap( BitmapFactory.decodeFile(path));
+		}
 		
 		for( int i = 0; i < precios.length; i++ ){
 			sumaTotal+= Double.parseDouble(precios[i]);
@@ -106,23 +115,30 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	}
 	
 	public void showInfo() {
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		dialog.setTitle("Cambiar nombre");
 
-		final Dialog dialog = new Dialog(this);
-		 dialog.setContentView(R.layout.cambiar_nombre);
-		 dialog.setTitle("Cambiar nombre");
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		//se toma el layout correspondiente a la ventana del pop up
+		View view = inflater.inflate(R.layout.cambiar_nombre, null);
+		//se asigna esa vista a la ventana de dialogo
+		dialog.setView(view);
+		
+		nameChange = (EditText)view.findViewById(R.id.nameChange);
 
-		 okBtn = (Button) findViewById(R.id.ok_btn);
-		 okBtn.setOnClickListener(new View.OnClickListener() {
-		     public void onClick(View view) {
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				name.setText(nameChange.getText().toString());
+			}
+		});
 
-		    	 
-		    	 
-		    	 dialog.dismiss();
-
-		     }
-		 });
-
-
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = dialog.create();
+		//se muestra la ventana de dialogo
 		dialog.show();
 	}
 	
@@ -139,19 +155,26 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			foto.setImageBitmap( BitmapFactory.decodeFile(picturePath));
 		}
 	}
-
 	
 	@Override
-	public void onClick(View v) {
+    /**
+     * Metodo que guarda los valores de las variables al voltear el android
+     * @return void
+     */
+	protected void onPause() {
 		// TODO Auto-generated method stub
-		
+		super.onPause();
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("path",  path);
+		editor.putString("name",  name.getText().toString());
+		editor.commit();
 	}
-
+	
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onClick(View v) {}
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
