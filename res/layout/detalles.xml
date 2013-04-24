@@ -148,18 +148,30 @@
         android:id="@+id/preciosList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/agregaOrden"
+        android:layout_above="@+id/agregaPlatillo"
         android:layout_below="@+id/view1"
         android:layout_marginBottom="10dp" >
     </ListView>
 
     <Button
         android:id="@+id/agregaOrden"
-        android:layout_width="150dp"
+        android:layout_width="110dp"
         android:layout_height="35dp"
+        android:layout_alignRight="@+id/linearLayout2"
+        android:layout_below="@+id/preciosList"
+        android:layout_marginRight="35dp"
+        android:background="@drawable/facebook_button"
+        android:text="@string/aorden"
+        android:textColor="#ffffffff" />
+
+    <Button
+        android:id="@+id/agregaPlatillo"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/linearLayout2"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="35dp"
         android:background="@drawable/green_btn"
         android:text="@string/platillo"
         android:textColor="#ffffffff" />

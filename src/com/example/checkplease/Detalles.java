@@ -31,14 +31,14 @@ import android.widget.TextView;
 
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 	
-	private List<String> precios = new ArrayList<String>();
-	private Button regresa, okBtn;
+	private Button regresa;
 	private TextView total, name;
 	private EditText nameChange;
 	private double sumaTotal;
 	private ImageView foto;
 	private static final int SELECT_PICTURE = 1;
 	private String path = "";
+	private String nombrePref = "";
 	
 	
 	@Override
@@ -53,7 +53,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
         path = prefs.getString("path","");
-        name.setText(prefs.getString("name", "Nombre"));
+        nombrePref = prefs.getString("name", "");
 
 		String precios[] = {"10","20","30"};
 		
@@ -61,9 +61,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		name = (TextView)findViewById(R.id.name);
 		foto = (ImageView)findViewById(R.id.foto);
 		
-		if( path.equals("") ){
-			foto.setImageBitmap( BitmapFactory.decodeFile(path));
-		}
+		if( !path.equals("") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
+		if( !nombrePref.equals("") ) name.setText(nombrePref);
 		
 		for( int i = 0; i < precios.length; i++ ){
 			sumaTotal+= Double.parseDouble(precios[i]);

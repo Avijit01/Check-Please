@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +17,7 @@ import android.widget.Toast;
 public class Calculadora extends Activity{
 	private Button regresa, igual, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, cero;
 	private Button suma, resta, multi, div, erase, delete, asignar, point;
-	private TextView result;
+	private EditText result;
 	private String texto = "";
 	private double calculo = 0.0;
 	private double aux = 0.0;
@@ -54,7 +56,10 @@ public class Calculadora extends Activity{
 		igual = (Button)findViewById(R.id.igual);
 		asignar = (Button)findViewById(R.id.asignar);
 
-		result = (TextView)findViewById(R.id.cuadroCalc);
+		result = (EditText)findViewById(R.id.cuadroCalc);
+		
+		// Desactiva el teclado del EditText
+		result.setInputType(InputType.TYPE_NULL);
 
 		regresa.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
@@ -65,6 +70,7 @@ public class Calculadora extends Activity{
 		uno.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "1";
 				result.setText(texto);
 			}
@@ -73,6 +79,7 @@ public class Calculadora extends Activity{
 		dos.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "2";
 				result.setText(texto);
 			}
@@ -81,6 +88,7 @@ public class Calculadora extends Activity{
 		tres.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "3";
 				result.setText(texto);
 			}
@@ -89,6 +97,7 @@ public class Calculadora extends Activity{
 		cuatro.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "4";
 				result.setText(texto);
 			}
@@ -97,6 +106,7 @@ public class Calculadora extends Activity{
 		cinco.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "5";
 				result.setText(texto);
 			}
@@ -105,6 +115,7 @@ public class Calculadora extends Activity{
 		seis.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "6";
 				result.setText(texto);
 			}
@@ -113,6 +124,7 @@ public class Calculadora extends Activity{
 		siete.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "7";
 				result.setText(texto);
 			}
@@ -121,6 +133,7 @@ public class Calculadora extends Activity{
 		ocho.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "8";
 				result.setText(texto);
 			}
@@ -129,6 +142,7 @@ public class Calculadora extends Activity{
 		nueve.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "9";
 				result.setText(texto);
 			}
@@ -137,6 +151,7 @@ public class Calculadora extends Activity{
 		cero.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
+				op = 's';
 				texto = texto + "0";
 				result.setText(texto);
 			}
