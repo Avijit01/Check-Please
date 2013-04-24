@@ -251,5 +251,8 @@
             android:textColor="@android:color/black" />
 
     </LinearLayout>
-
+	 <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
 </RelativeLayout>
