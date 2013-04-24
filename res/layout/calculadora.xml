@@ -215,11 +215,11 @@
         android:layout_below="@+id/header"
         android:layout_marginTop="14dp"
         android:background="@drawable/blanco_btn"
-        android:ems="10"
-        android:gravity="right"
         android:editable="false"
-        android:inputType="number" >
-
+        android:textSize="12pt"
+        android:gravity="right"
+        android:inputType="number"
+        android:paddingTop="14dp" >
         <requestFocus />
     </EditText>
 
@@ -261,30 +261,6 @@
         android:textSize="9pt" />
 
     <Button
-        android:id="@+id/igual"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/asignar"
-        android:layout_alignBottom="@+id/asignar"
-        android:layout_alignLeft="@+id/mas"
-        android:background="@drawable/green_btn"
-        android:text="="
-        android:textColor="#ffffffff"
-        android:textSize="12pt" />
-
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/igual"
-        android:layout_alignBottom="@+id/igual"
-        android:layout_alignLeft="@+id/button3"
-        android:background="@drawable/erase_btn"
-        android:text="CE"
-        android:textColor="#ffffffff"
-        android:textSize="12pt" />
-
-    <Button
         android:id="@+id/point"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -293,6 +269,29 @@
         android:layout_alignLeft="@+id/delete"
         android:background="@drawable/number_btn"
         android:text="."
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/button3"
+        android:layout_alignTop="@+id/asignar"
+        android:background="@drawable/erase_btn"
+        android:text="CE"
+        android:textColor="#ffffffff"
+        android:textSize="12pt" />
+
+    <Button
+        android:id="@+id/igual"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/delete"
+        android:layout_alignBottom="@+id/delete"
+        android:layout_alignLeft="@+id/mas"
+        android:background="@drawable/green_btn"
+        android:text="="
         android:textColor="#ffffffff"
         android:textSize="12pt" />
 

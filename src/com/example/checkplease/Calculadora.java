@@ -203,6 +203,7 @@ public class Calculadora extends Activity{
 			public void onClick(View view){
 				texto = "";
 				result.setText("");
+				calculo = aux = 0.0;
 			}
 		});
 
@@ -222,10 +223,10 @@ public class Calculadora extends Activity{
 				split = texto.split(" ");
 				for( int i = 0; i < split.length; i++ ){
 					try{
-							 if( split[i] == "+" ) op = 's';
-						else if( split[i] == "-" ) op = 'r';
-						else if( split[i] == "*" ) op = 'm';
-						else if( split[i] == "/" ) op = 'd';
+							 if( split[i].equals("+") ) op = 's';
+						else if( split[i].equals("-") ) op = 'r';
+						else if( split[i].equals("*") ) op = 'm';
+						else if( split[i].equals("/") ) op = 'd';
 						else {
 							aux = Double.parseDouble(split[i]); 
 							realizaOp(op); 
@@ -234,7 +235,8 @@ public class Calculadora extends Activity{
 						result.setText("ERROR");
 					}
 				}
-				result.setText(calculo+"");
+				result.setText(texto + "\n = " + calculo);
+				texto = "";
 			}
 		});
 
@@ -245,7 +247,7 @@ public class Calculadora extends Activity{
 		case 's': calculo += aux; break;
 		case 'r': calculo -= aux; break;
 		case 'm': calculo *= aux; break;
-		case 'd': if( calculo != 0) calculo /= aux;
+		case 'd': if( aux != 0) calculo /= aux;
 		else calculo = 0;	  break;
 		default: break;
 		}

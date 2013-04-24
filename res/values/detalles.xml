@@ -6,7 +6,12 @@
     <string name="precio">Precio</string>
     <string name="orden">Orden</string>
     <string name="platillo">Agregar Orden</string>
-    <string name="pizza">Pizza</string>
+    <string-array name="productos">
+        <item>Pizza</item>
+        <item>Bebida</item>
+        <item>Hamburguesa</item>
+        <item>Postre</item>
+    </string-array>
     <color name="spinner_color">#ffd4e1f5</color>
     <color name="negro">#ff000000</color>
 </resources>

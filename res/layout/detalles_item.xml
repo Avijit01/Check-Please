@@ -23,16 +23,14 @@
             android:ems="10"
             android:inputType="number" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="201dp"
+            android:layout_height="50dp" 
+            android:layout_margin="8dp"
+            android:entries="@array/productos"
             android:gravity="center"
-            android:textSize="10pt"
-            android:background="@drawable/spinner_style"
-            android:text="@string/pizza"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:background="@drawable/spinner_style"/>
 
     </LinearLayout>
 
