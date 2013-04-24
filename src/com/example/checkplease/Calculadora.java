@@ -225,7 +225,6 @@ public class Calculadora extends Activity{
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				split = texto.split(" ");
-				Toast.makeText(getBaseContext(), aux+"", Toast.LENGTH_SHORT);
 				for( int i = 0; i < split.length; i++ ){
 					try{
 							 if( split[i].equals("+") ) op = 's';
@@ -249,6 +248,22 @@ public class Calculadora extends Activity{
 		
 		asignar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				split = texto.split(" ");
+				for( int i = 0; i < split.length; i++ ){
+					try{
+							 if( split[i].equals("+") ) op = 's';
+						else if( split[i].equals("-") ) op = 'r';
+						else if( split[i].equals("*") ) op = 'm';
+						else if( split[i].equals("/") ) op = 'd';
+						else {
+							aux = Double.parseDouble(split[i]); 
+							realizaOp(op); 
+						}
+					} catch(IllegalArgumentException ex) { 
+						result.setText("ERROR");
+					}
+				}
+				result.setText(texto + "\n = " + calculo);
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
