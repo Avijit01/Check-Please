@@ -66,6 +66,11 @@ public class MainActivity extends FragmentActivity   {
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
 
+	/**
+	 * Metodo onCreate()
+	 * Manejara la funcionalidad de entar al sistema
+	 * Se manda llamar al entrar a la actividad
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -163,20 +168,32 @@ public class MainActivity extends FragmentActivity   {
 	        });
         }
 	}
+	/**
+     * Metodo: onCreateOptionsMenu(),
+     * Metodo que agrega las opciones que se hicieron en menu->main.xml
+     * @param menu
+     * @return bolean, true se hizo corectamente
+     */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//Agrega el menu que se creo para el acerca
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	/**
+     * Metodo: onOptionsItemSelected(),
+     * Metodo que le asigna una accion a realizar a cada opcion de android que se seleccione en android
+     * @param item
+     * @return bolean, true se hizo corectamente
+     */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		//responde a la seleccion del menu
-		switch (item.getItemId()) {
+		switch (item.getItemId()) {//valor a switchear
 		case R.id.acerca://se abre la clase Acerca al seleccionarla
 			startActivity(new Intent(this, Acerca.class));
 			return true;	 	
 		default:
-			return super.onOptionsItemSelected(item);
+			return super.onOptionsItemSelected(item);//si no accion, no hace nada
 		}
 	}
 

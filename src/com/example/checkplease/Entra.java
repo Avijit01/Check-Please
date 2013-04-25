@@ -63,6 +63,8 @@ public class Entra extends Activity {
 			public void onClick(View view){
 				ActionBar actionBar = getActionBar();
 			    actionBar.setTitle("Pago igual ");
+			    etTotal.requestFocus ();
+
 
 				divIgual.setVisibility(view.VISIBLE);
 			}
@@ -175,28 +177,49 @@ public class Entra extends Activity {
 		if(!Float.isNaN(ppp) && !Float.isInfinite(ppp))
 			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
 	}
-	private void facebook() {
+	  /**
+     * Metodo: facebook,
+     * Metodo que realiza la accion de abrir la actividad de Facebook
+     */
+    private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
+    /**
+     * Metodo: Inicio,
+     * Metodo que realiza la accion de abrir la actividad de Inicio
+     */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
+	/**
+     * Metodo: Acerca,
+     * Metodo que realiza la accion de abrir la actividad de Acerca
+     */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
 		
 	}
+	/**
+     * Metodo: onResume,
+     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+     * carga nuevamente el Menu para reinicar los valores en cero
+     */
 	@Override
 	protected void onResume() {
 	    super.onResume();
 	    cargaMenu();
 	    // Normal case behavior follows
 	}
+	/**
+     * Metodo: cargaMenu(),
+     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+     */
 	void cargaMenu(){
-		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();//obtiene el ActionBar
+	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));
-	    actionBar.setTitle("Forma Pago ");
+	            R.drawable.bar_color));//pone color gris
+	    actionBar.setTitle("Forma pago    ");//pone el titulo
 	    
 	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 	    //agrega las opciones al menu
@@ -233,5 +256,6 @@ public class Entra extends Activity {
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 		
 	}
+	
 	
 }

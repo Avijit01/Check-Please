@@ -26,28 +26,49 @@ public class Acerca extends Activity{
 		setContentView(R.layout.acerca_check);
 		
 	}
-	private void facebook() {
+	  /**
+     * Metodo: facebook,
+     * Metodo que realiza la accion de abrir la actividad de Facebook
+     */
+    private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
+    /**
+     * Metodo: Inicio,
+     * Metodo que realiza la accion de abrir la actividad de Inicio
+     */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
+	/**
+     * Metodo: Acerca,
+     * Metodo que realiza la accion de abrir la actividad de Acerca
+     */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
 		
 	}
+	/**
+     * Metodo: onResume,
+     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+     * carga nuevamente el Menu para reinicar los valores en cero
+     */
 	@Override
 	protected void onResume() {
 	    super.onResume();
 	    cargaMenu();
 	    // Normal case behavior follows
 	}
+	/**
+     * Metodo: cargaMenu(),
+     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+     */
 	void cargaMenu(){
-		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();//obtiene el ActionBar
+	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));
-	    actionBar.setTitle("Acerca     ");
+	            R.drawable.bar_color));//pone color gris
+	    actionBar.setTitle("Acerca         ");//pone el titulo
 	    
 	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 	    //agrega las opciones al menu
@@ -84,16 +105,25 @@ public class Acerca extends Activity{
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 		
 	}
-	 @Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// TODO Auto-generated method stub
-			switch (item.getItemId()) {
-			case android.R.id.home://se cierra el menu
-				Acerca.this.finish();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-			}
+	
+	/**
+     * Metodo: onOptionsItemSelected(),
+     * Metodo que le asigna una accion a realizar a cada opcion de android que se seleccione en android
+     * @param item
+     * @return bolean, true se hizo corectamente
+     */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//responde a la seleccion del menu
+		switch (item.getItemId()) {//valor a switchear
+		case R.id.acerca://se abre la clase Acerca al seleccionarla
+			startActivity(new Intent(this, Acerca.class));
+			return true;	
+		case android.R.id.home://se cierra la actividad acutal
+			Acerca.this.finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);//si no accion, no hace nada
 		}
+	}
 
 }
