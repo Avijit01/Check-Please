@@ -75,8 +75,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	TextView tvFalta;
 	float gTotal;
 	float falta;
+	ArrayList<Integer> positions;
 
-    private static final int PICK_FRIENDS_ACTIVITY = 1;
+	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
 
@@ -88,6 +89,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
 
+		positions = new ArrayList<Integer>();
+		
 		Bundle extras = getIntent().getExtras();
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
@@ -151,11 +154,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-	
+
 	}
 
 	public void updatePersonAdapter(float tip) {
-		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
@@ -192,9 +195,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		case R.id.acerca://se cierra el menu
 			startActivity(new Intent(this, Acerca.class));
 			return true;
-	case android.R.id.home://se cierra el menu
-		Lista.this.finish();
-		return true;
+		case android.R.id.home://se cierra el menu
+			Lista.this.finish();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -236,6 +239,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		case R.id.bEliminar:
 			Toast toast = Toast.makeText(this, "Selecciona la(s) persona(s) que deseas eliminar", Toast.LENGTH_SHORT);
 			toast.show();
+			positions.clear();
 			deleteItem();
 			break;
 		}
@@ -354,17 +358,20 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.lista_usuarios_delete, null);
-		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1);
+		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions);
 		lvDelete.setAdapter(deleteAdapter);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(lvView);
 
 
 		//para manejar la acción del boton OK, de la ventana de dialogo
-		helpBuilder.setPositiveButton("Ok",
-				new DialogInterface.OnClickListener() {
+		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				// No hace nada mas que cerrar la ventana de dialogo
+				positions = adapter.getPositions();
+				for(Integer i : positions) {
+					usuarios.remove(i.intValue());
+				}
+				updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 			}
 		});
 
@@ -393,8 +400,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
         showPickerFragment(fragment);*/
 
-    }
-    private void facebook() {
+	}
+	private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
 	private void Inicio() {
@@ -402,55 +409,55 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	}
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
-		
+
 	}
 	@Override
 	protected void onResume() {
-	    super.onResume();
-	    cargaMenu();
-	    // Normal case behavior follows
+		super.onResume();
+		cargaMenu();
+		// Normal case behavior follows
 	}
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
-	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));
-	    actionBar.setTitle("Pago Individual");
-	    
-	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
-	    //agrega las opciones al menu
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bar_color));
+		actionBar.setTitle("Pago Individual");
+
+		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		//agrega las opciones al menu
 		actions.add("Opciones");
 		actions.add("Cerrar Sesion");
 		actions.add("Facebook");
 		actions.add("Acerca");
 		//Crea el adaptar del dropDown del header
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
-        //Habilita la navegacion del DropDown del action bar
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        //Degine la navegacion del dropdown
-        
-        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
-			
-        	@Override
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+		//Habilita la navegacion del DropDown del action bar
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		//Degine la navegacion del dropdown
+
+		ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+
+			@Override
 			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
-        			if(itemPosition==1){//opcion de cerrar cesion
-						userFunctions.logoutUser(getApplicationContext());
-						Inicio();
-						return true;
-					}
-					if(itemPosition==2){//opcion de facebook
-						facebook();
-						return true;	
-					}
-					if(itemPosition==3){//opcion de acerca
-						Acerca();
-					}
+				if(itemPosition==1){//opcion de cerrar cesion
+					userFunctions.logoutUser(getApplicationContext());
+					Inicio();
+					return true;
+				}
+				if(itemPosition==2){//opcion de facebook
+					facebook();
+					return true;	
+				}
+				if(itemPosition==3){//opcion de acerca
+					Acerca();
+				}
 				return false;
-        	}
+			}
 		};
 		//set los elementos del dropdown del actionbar
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
-		
+
 
 	}
 
