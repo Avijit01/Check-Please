@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,16 +26,18 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	private ArrayList<Person> usuarios;
 	private float propina;
 	private int action;
+	private ArrayList<Integer> positions;
 
-	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action) {
+	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action, ArrayList<Integer> positions) {
 		super(context, layoutResourceId, usuarios);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.usuarios = usuarios;
 		this.propina = propina;
 		this.action = action;
+		this.positions = positions;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
@@ -82,13 +85,19 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
 				CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
-				iv.setOnClickListener(new  View.OnClickListener(){
-					public void onClick(View view){
-						Intent intent = new Intent(view.getContext(), Detalles.class);
-						context.startActivity(intent);
+				tvTotal.setText(String.valueOf(p.getTotal()));
+				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(position) {
+					public void onCheckedChanged(CompoundButton cb, boolean isChecked){
+						int index;
+						if(isChecked) {
+							positions.add(this.getPosition());
+						} else {
+							index = positions.indexOf(this.getPosition());
+							if(index > -1)
+								positions.remove(index);
+						}
 					}
 				});
-				tvTotal.setText(String.valueOf(p.getTotal()));
 			}
 		}
 		((Lista)context).updateTotal();
@@ -102,5 +111,9 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 
 	public void setUsuarios(ArrayList<Person> usuarios) {
 		this.usuarios = usuarios;
+	}
+	
+	public ArrayList<Integer> getPositions() {
+		return positions;
 	}
 }
