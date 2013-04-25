@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity   {
 	private MainFragment mainFragment;
 	private static final String TAG = "MainFragment";
 	private UiLifecycleHelper uiHelper;
-*/
+	 */
 	private Button entrar;
 	private Button registrar, facebook;
 	EditText usuario, pass, passcon;
@@ -62,112 +62,112 @@ public class MainActivity extends FragmentActivity   {
 	TextView mensajeError;
 
 	// JSON Respuestas que se tienen
-		private static String KEY_SUCCESS = "success";
-		private static String KEY_ERROR = "error";
-		private static String KEY_ERROR_MSG = "error_msg";
-		private static String KEY_UID = "uid";
-		private static String KEY_NAME = "name";
-		private static String KEY_EMAIL = "email";
-		private static String KEY_CREATED_AT = "created_at";
-	
+	private static String KEY_SUCCESS = "success";
+	private static String KEY_ERROR = "error";
+	private static String KEY_ERROR_MSG = "error_msg";
+	private static String KEY_UID = "uid";
+	private static String KEY_NAME = "name";
+	private static String KEY_EMAIL = "email";
+	private static String KEY_CREATED_AT = "created_at";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		 userFunctions = new UserFunctions();
-		 //Permite usar algunas acciones que son restinguidas
-		 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		 StrictMode.setThreadPolicy(policy); 
-		 //checa en la base de datos local si esta logeado, y se habre la clase Entra
-		 if(userFunctions.isUserLoggedIn(getApplicationContext())){
-			 Intent intent = new Intent(this, Entra.class);
-     		startActivity(intent);
-		 }else{//sino se habre la calse principal
-			 setContentView(R.layout.activity_main);
-			 //se importan todos los elementos como butones, textos o edits
-			 usuario = (EditText) findViewById(R.id.usuario);
- 			usuario.requestFocus ();
 
-			 pass = (EditText) findViewById(R.id.pass);
-			 entrar = (Button)findViewById(R.id.entrarbtn);
+		userFunctions = new UserFunctions();
+		//Permite usar algunas acciones que son restinguidas
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy); 
+		//checa en la base de datos local si esta logeado, y se habre la clase Entra
+		if(userFunctions.isUserLoggedIn(getApplicationContext())){
+			Intent intent = new Intent(this, Entra.class);
+			startActivity(intent);
+		}else{//sino se habre la calse principal
+			setContentView(R.layout.activity_main);
+			//se importan todos los elementos como butones, textos o edits
+			usuario = (EditText) findViewById(R.id.usuario);
+			usuario.requestFocus ();
+
+			pass = (EditText) findViewById(R.id.pass);
+			entrar = (Button)findViewById(R.id.entrarbtn);
 			registrar = (Button)findViewById(R.id.registrobtn);
 			facebook = (Button)findViewById(R.id.facebookbtn);
 			mensajeError = (TextView)findViewById(R.id.error);
 			mensajeError.setText("");
 
-				//boton de entrar Click Event
+			//boton de entrar Click Event
 			entrar.setOnClickListener(new  View.OnClickListener(){
-		        	public void onClick(View view){
-		        		String user = usuario.getText().toString();
-		        		String password =  pass.getText().toString();
-		        		if(user.equals("")||password.equals(""))
-		        		{	mensajeError.setText("Completar: ");
-			        		if(user.equals(""))
-			        		{		        			
-			        			usuario.setBackgroundResource(R.drawable.rojo_btn);
-			        			mensajeError.setText(mensajeError.getText() + "Usuario ");
-		        				usuario.requestFocus ();
+				public void onClick(View view){
+					String user = usuario.getText().toString();
+					String password =  pass.getText().toString();
+					if(user.equals("")||password.equals(""))
+					{	mensajeError.setText("Completar: ");
+					if(user.equals(""))
+					{		        			
+						usuario.setBackgroundResource(R.drawable.rojo_btn);
+						mensajeError.setText(mensajeError.getText() + "Usuario ");
+						usuario.requestFocus ();
 
-			        		}else{usuario.setBackgroundResource(R.drawable.blanco_btn);}
-			        		if(password.equals(""))
-			        		{
-			        			pass.setBackgroundResource(R.drawable.rojo_btn);
-			        			mensajeError.setText(mensajeError.getText() + " Contraseña");
-			        			if(!user.equals("")){
-			        				pass.requestFocus ();
-			        			}
-			        			
-			        		}else{pass.setBackgroundResource(R.drawable.blanco_btn);}
-		        		}
-		        		else{
-		        			usuario.setBackgroundResource(R.drawable.blanco_btn);
-		        			pass.setBackgroundResource(R.drawable.blanco_btn);
-		        			mensajeError.setText("");
+					}else{usuario.setBackgroundResource(R.drawable.blanco_btn);}
+					if(password.equals(""))
+					{
+						pass.setBackgroundResource(R.drawable.rojo_btn);
+						mensajeError.setText(mensajeError.getText() + " Contraseña");
+						if(!user.equals("")){
+							pass.requestFocus ();
+						}
 
-							JSONObject json = userFunctions.loginUser(user, password);
-							// check la respuesta del login
-							try {//si la respuesta de KEY_Succes contiene algo
-								if (json.getString(KEY_SUCCESS) != null) {
-									String res = json.getString(KEY_SUCCESS); 
-									if(Integer.parseInt(res) == 1){//si se accedio
-										//se crea de manera local(celular) el usuario 
-										DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-										JSONObject json_user = json.getJSONObject("user");
-										userFunctions.logoutUser(getApplicationContext());
-										//se agrega el usuario a la base de datos con el nombre, email, id
-										db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
-										//se manda a la clase Entra
-										Intent intent = new Intent(view.getContext(), Entra.class);
-										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						        		startActivity(intent);
-										
-									}else{
-										// Error in login
-										mensajeError.setText("Usuario y/o contraseña incorrectos");
-									}
+					}else{pass.setBackgroundResource(R.drawable.blanco_btn);}
+					}
+					else{
+						usuario.setBackgroundResource(R.drawable.blanco_btn);
+						pass.setBackgroundResource(R.drawable.blanco_btn);
+						mensajeError.setText("");
+
+						JSONObject json = userFunctions.loginUser(user, password);
+						// check la respuesta del login
+						try {//si la respuesta de KEY_Succes contiene algo
+							if (json.getString(KEY_SUCCESS) != null) {
+								String res = json.getString(KEY_SUCCESS); 
+								if(Integer.parseInt(res) == 1){//si se accedio
+									//se crea de manera local(celular) el usuario 
+									DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+									JSONObject json_user = json.getJSONObject("user");
+									userFunctions.logoutUser(getApplicationContext());
+									//se agrega el usuario a la base de datos con el nombre, email, id
+									db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
+									//se manda a la clase Entra
+									Intent intent = new Intent(view.getContext(), Entra.class);
+									intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(intent);
+
+								}else{
+									// Error in login
+									mensajeError.setText("Usuario y/o contraseña incorrectos");
 								}
-							} catch (JSONException e) {
-								e.printStackTrace();
 							}
-		        		}
-		        	}
-		        });
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			});
 			registrar.setOnClickListener(new  View.OnClickListener(){
-	        	public void onClick(View view){
-	        		Intent intent = new Intent(view.getContext(), Registro.class);
-	                startActivity(intent);
-	        	}
-	        });
+				public void onClick(View view){
+					Intent intent = new Intent(view.getContext(), Registro.class);
+					startActivity(intent);
+				}
+			});
 			facebook.setOnClickListener(new  View.OnClickListener(){
-	        	public void onClick(View view){
-	        		Intent intent = new Intent(view.getContext(), Facebook.class);
-	                startActivity(intent);	        		
-	        	}
-	        });
-        }
-		
-		
-		
+				public void onClick(View view){
+					Intent intent = new Intent(view.getContext(), Facebook.class);
+					startActivity(intent);	        		
+				}
+			});
+		}
+
+
+
 		/*super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buttonLoginLogout = (Button)findViewById(R.id.facebookbtn);
@@ -190,9 +190,9 @@ public class MainActivity extends FragmentActivity   {
         }
 
         updateView();
-		    
-*/
-	
+
+		 */
+
 		/*uiHelper = new UiLifecycleHelper(this, callback);
 	    uiHelper.onCreate(savedInstanceState);
 		if (savedInstanceState == null) {
@@ -208,10 +208,10 @@ public class MainActivity extends FragmentActivity   {
 	        // Or set the fragment from restored state info
 	        mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(android.R.id.content);
 	    }*/
-	
+
 		/*
-				*/
-		
+		 */
+
 	}/*
 	  @Override
 	    public void onStart() {
@@ -250,7 +250,7 @@ public class MainActivity extends FragmentActivity   {
 	            buttonLoginLogout.setOnClickListener(new OnClickListener() {
 	                public void onClick(View view) { onClickLogout(); }
 	            });
-	            
+
 	        } else {
 	            textInstructionsOrLink.setText("instr");
 	            buttonLoginLogout.setText("login");
@@ -265,7 +265,7 @@ public class MainActivity extends FragmentActivity   {
 	        if (!session.isOpened() && !session.isClosed()) {
 	            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
 	        } else {
-	        	
+
 	            Session.openActiveSession(this, true, statusCallback);
 	        }
 	    }
@@ -284,7 +284,7 @@ public class MainActivity extends FragmentActivity   {
 	            updateView();
 	        }
 	    }
-	*/
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

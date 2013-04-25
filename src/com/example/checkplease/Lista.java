@@ -76,13 +76,12 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	private GraphUser user;
 
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
 		TextView titulo = (TextView)findViewById(R.id.titulo);
 		titulo.setText("Pago Individual");
 		Bundle extras = getIntent().getExtras();
-		
+
 		etTip = (EditText)findViewById(R.id.etTip);
 		regresa = (Button)findViewById(R.id.regresabtn);
 		invitar = (Button)findViewById(R.id.bInvitar);
@@ -113,11 +112,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		usuarios.add(new Person("Hurr", 137.50f, false));
 		usuarios.add(new Person("Herpa", 85.0f, true));
 		usuarios.add(new Person("Derpa", 32.75f, true));
-		
+
 		if(extras !=null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
 		}
-		
+
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 		etTip.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -141,7 +140,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 			}
 		});
-		
+
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
@@ -151,9 +150,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 	}
-	
+
 	public void updatePersonAdapter(float tip) {
-		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
@@ -211,7 +210,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 			break;
 		case R.id.bInvitar:
-
 			showInfo();
 			break;
 		case R.id.bFacebook:
@@ -230,7 +228,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
 			break;
 		case R.id.bEliminar:
-			Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(this, "Selecciona la(s) persona(s) que deseas eliminar", Toast.LENGTH_SHORT);
+			toast.show();
+			deleteItem();
 			break;
 		}
 	}
@@ -332,6 +332,38 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(checkboxLayout);
+
+
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		helpBuilder.setPositiveButton("Ok",
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// No hace nada mas que cerrar la ventana de dialogo
+			}
+		});
+
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = helpBuilder.create();
+		//se muestra la ventana de dialogo
+		helpDialog.show();
+	}
+
+	public void deleteItem() {
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		View lvView = inflater.inflate(R.layout.lista_usuarios_delete, null);
+		ListView lvDelete = (ListView)lvView.findViewById(R.id.lvDelete);
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		helpBuilder.setTitle("Eliminar");
+
+		//se toma el layout correspondiente a la ventana del pop up
+		View checkboxLayout = inflater.inflate(R.layout.lista_usuarios_delete, null);
+		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1);
+		lvDelete.setAdapter(deleteAdapter);
+		//se asigna esa vista a la ventana de dialogo
+		helpBuilder.setView(lvView);
 
 
 		//para manejar la acción del boton OK, de la ventana de dialogo

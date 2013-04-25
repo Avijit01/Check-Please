@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PersonAdapter extends ArrayAdapter<Person> {
@@ -23,13 +24,15 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	private int layoutResourceId;
 	private ArrayList<Person> usuarios;
 	private float propina;
+	private int action;
 
-	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina) {
+	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action) {
 		super(context, layoutResourceId, usuarios);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
 		this.usuarios = usuarios;
 		this.propina = propina;
+		this.action = action;
 	}
 
 	@Override
@@ -40,36 +43,53 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 			view = inflater.inflate(layoutResourceId, parent, false);
 		}
 		Person p = usuarios.get(position);
-		float tTip;
-		if (p != null) {
-			ImageButton ib = (ImageButton)view.findViewById(R.id.ibPicture);
-			TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
-			TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
-			CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
-			ib.setOnClickListener(new  View.OnClickListener(){
-				public void onClick(View view){
-					Intent intent = new Intent(view.getContext(), Detalles.class);
-					context.startActivity(intent);
-				}
-			});
-			tvTotal.setOnClickListener(new  CustomOnClickListener(position){
-				public void onClick(View view){
-					Intent intent = new Intent(view.getContext(), Calculadora.class);
-					intent.putExtra("position", this.getPosition());
-					context.startActivity(intent);
-				}
-			});
-			cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
-				public void onCheckedChanged(CompoundButton cb, boolean paid){
-					getPerson().setPaid(paid);
-					((Lista)context).updateRemaining();
-				}
-			});
-			cb.setChecked(p.isPaid());
-			tvTotal.setText(String.valueOf(p.getTotal()));
-			tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
-			tvTotalTip.setText(String.valueOf(tTip));
-			p.setTotalTip(tTip);
+
+		if(action == 0) {
+			float tTip;
+			if (p != null) {
+				ImageButton ib = (ImageButton)view.findViewById(R.id.ibPicture);
+				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
+				TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
+				CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
+				ib.setOnClickListener(new  View.OnClickListener(){
+					public void onClick(View view){
+						Intent intent = new Intent(view.getContext(), Detalles.class);
+						context.startActivity(intent);
+					}
+				});
+				tvTotal.setOnClickListener(new  CustomOnClickListener(position){
+					public void onClick(View view){
+						Intent intent = new Intent(view.getContext(), Calculadora.class);
+						intent.putExtra("position", this.getPosition());
+						context.startActivity(intent);
+					}
+				});
+				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
+					public void onCheckedChanged(CompoundButton cb, boolean paid){
+						getPerson().setPaid(paid);
+						((Lista)context).updateRemaining();
+					}
+				});
+				cb.setChecked(p.isPaid());
+				tvTotal.setText(String.valueOf(p.getTotal()));
+				tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
+				tvTotalTip.setText(String.valueOf(tTip));
+				p.setTotalTip(tTip);
+			}
+		}
+		else if(action == 1) {
+			if (p != null) {
+				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
+				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
+				CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
+				iv.setOnClickListener(new  View.OnClickListener(){
+					public void onClick(View view){
+						Intent intent = new Intent(view.getContext(), Detalles.class);
+						context.startActivity(intent);
+					}
+				});
+				tvTotal.setText(String.valueOf(p.getTotal()));
+			}
 		}
 		((Lista)context).updateTotal();
 		((Lista)context).updateRemaining();
