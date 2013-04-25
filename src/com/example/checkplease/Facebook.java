@@ -36,87 +36,68 @@ import android.widget.Toast;
 
 public class Facebook extends FragmentActivity{
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
-
-    @Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch (item.getItemId()) {
-		case android.R.id.home://se cierra el menu
-			Facebook.this.finish();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-
+    //Agrega los elementos de la vista
 	private UserSettingsFragment userSettingsFragment;
-    private Button regresa, acepta, rechaza;
+    private Button acepta, rechaza;
     ImageView fondo;
     private ViewGroup controlsContainer;
     private static final int PICK_FRIENDS_ACTIVITY = 1;
-    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 
+/**
+ * Clase que maneja las actividad de Facebook, inicio y cierre de seccion
+ *
+ */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_fragment_activity);
-		
+		//inicializa los valores a utilizar
 		fondo = (ImageView)findViewById(R.id.imageView3);
 		final TextView mensajeFace = (TextView)findViewById(R.id.mensaje);
-		
 		acepta = (Button)findViewById(R.id.sigue);
 		rechaza = (Button)findViewById(R.id.regresa);
+		//obtiene si la session de Facebook esta activa o desactiva
 		Session session = Session.getActiveSession();
-		if (session == null) {
-			Toast.makeText(getApplicationContext(),"session",Toast.LENGTH_SHORT).show();
+		if (session == null) {//si es nulla, pone los elementos inivibles
 			 acepta.setVisibility(RelativeLayout.INVISIBLE);
-	    		rechaza.setVisibility(RelativeLayout.INVISIBLE);
-	    		mensajeFace.setVisibility(RelativeLayout.INVISIBLE);
+	    	rechaza.setVisibility(RelativeLayout.INVISIBLE);
+	    	mensajeFace.setVisibility(RelativeLayout.INVISIBLE);
 		}else{
-        if (session.isOpened()) {
-			Toast.makeText(getApplicationContext(),"open",Toast.LENGTH_SHORT).show();
-
-        	  acepta.setVisibility(RelativeLayout.VISIBLE);
-	    		rechaza.setVisibility(RelativeLayout.VISIBLE);
-	    		mensajeFace.setVisibility(RelativeLayout.VISIBLE);
-        }else{
-			Toast.makeText(getApplicationContext(),"session",Toast.LENGTH_SHORT).show();
-
+        if (session.isOpened()) {//si esta abierta, despliega los botones
+        	acepta.setVisibility(RelativeLayout.VISIBLE);
+	    	rechaza.setVisibility(RelativeLayout.VISIBLE);
+	    	mensajeFace.setVisibility(RelativeLayout.VISIBLE);
+        }else{//de lo contrario los hace invisibles
         	 acepta.setVisibility(RelativeLayout.INVISIBLE);
-	    		rechaza.setVisibility(RelativeLayout.INVISIBLE);
-	    		mensajeFace.setVisibility(RelativeLayout.INVISIBLE);
+	    	 rechaza.setVisibility(RelativeLayout.INVISIBLE);
+	    	 mensajeFace.setVisibility(RelativeLayout.INVISIBLE);
         	
         }
 		}
-		
-		
-		
-      //  fondo.setBackgroundColor(getResources().getColor(R.color.com_facebook_blue));
+		//FragmentManager es una funcionalidad del SDK de facebook que permite visualizar
+		//el inicio de sesión como si fuera un ambiente de Facebook
 	    FragmentManager fragmentManager = getSupportFragmentManager();
-
 	    userSettingsFragment = (UserSettingsFragment) fragmentManager.findFragmentById(R.id.login_fragment);
-	    
 	    userSettingsFragment.setSessionStatusCallback(new Session.StatusCallback() {
 	        @Override
 	        public void call(Session session, SessionState state, Exception exception) {
 	            Log.d("LoginUsingLoginFragmentActivity", String.format("New session state: %s", state.toString()));
 	            Log.d("LoginUsingLoginFragmentActivity", String.format("New session state: %s", session.toString()));
-	            
+	            //al entrar pone los botontes en visible
 	            acepta.setVisibility(RelativeLayout.VISIBLE);
 	    		rechaza.setVisibility(RelativeLayout.VISIBLE);
 	    		mensajeFace.setVisibility(RelativeLayout.VISIBLE);
 	        }
 	    });
-	        
+	     //al presionar el botor de aceptar, se abre la actividad de entra
 	    acepta.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-
         		Intent intent = new Intent(view.getContext(), Entra.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         		startActivity(intent);
-        		finish();
+        		finish();//termina la activad de Facebook para que al regresar no pase por esta
         	}
         });	   
+	    //al presionar el boton de rechar, se deslogea y termina la actividad
 	    rechaza.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Session session = Session.getActiveSession();
@@ -127,131 +108,28 @@ public class Facebook extends FragmentActivity{
         	}
         });
 	}
-	
-	
-    private void showPickerFragment(PickerFragment<?> fragment) {
-        fragment.setOnErrorListener(new PickerFragment.OnErrorListener() {
-            @Override
-            public void onError(PickerFragment<?> pickerFragment, FacebookException error) {
-                showAlert(getString(R.string.aceptar), error.getMessage());
-            }
-        });
-        Log.d("5", "ONCLICK");
+	/**
+	 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
+	 *@param item
+	 *elemento que se selecciono
+	 */
+	  @Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			switch (item.getItemId()) {
+			case android.R.id.home://al seleccionar el icono de la barra de header
+				Facebook.this.finish();//se cierra la actividad
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
 
-        FragmentManager fm = getSupportFragmentManager();
-        Log.d("6", "ONCLICK");
-		//setContentView(R.layout.pick_friends_activity);
-
-        fm.beginTransaction()
-                .replace(R.id.fragment_container2, fragment)
-                .addToBackStack(null)
-                .commit();
-
-        //controlsContainer.setVisibility(View.GONE);
-        Log.d("7", "ONCLICK");
-
-        // We want the fragment fully created so we can use it immediately.
-        fm.executePendingTransactions();
-        Log.d("8", "ONCLICK");
-
-        fragment.loadData(false);
-    }
-
-    private void onClickPickFriends() {
-    	 FriendPickerApplication application = (FriendPickerApplication) getApplication();
-         application.setSelectedUsers(null);
-
-         Intent intent = new Intent(this, FriendPicker.class);
-         // Note: The following line is optional, as multi-select behavior is the default for
-         // FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
-         // friend picker if single-select functionality was desired, or if a different user ID was
-         // desired (for instance, to see friends of a friend).
-         FriendPicker.populateParameters(intent, null, true, true);
-         startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
-       /* final FriendPickerFragment fragment = new FriendPickerFragment();
-        Log.d("1", "ONCLICK");
-
-        setFriendPickerListeners(fragment);
-        Log.d("2", "ONCLICK");
-
-        showPickerFragment(fragment);*/
-    }
+    
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         userSettingsFragment.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-   /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case PICK_FRIENDS_ACTIVITY:
-                displaySelectedFriends(resultCode);
-                break;
-            default:
-                Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-                break;
-        }
-    }*/
-
-    private void displaySelectedFriends(int resultCode) {
-        String results = "";
-        FriendPickerApplication application = (FriendPickerApplication) getApplication();
-
-        Collection<GraphUser> selection = application.getSelectedUsers();
-        if (selection != null && selection.size() > 0) {
-            ArrayList<String> names = new ArrayList<String>();
-            for (GraphUser user : selection) {
-                names.add(user.getName());
-            }
-            results = TextUtils.join(", ", names);
-        } else {
-            results = "<No friends selected>";
-        }
-		Toast.makeText(getApplicationContext(),results,Toast.LENGTH_SHORT).show();
-
-       // mensajeFace.setText(results);
-    }
-
-    private void setFriendPickerListeners(final FriendPickerFragment fragment) {
-        fragment.setOnDoneButtonClickedListener(new FriendPickerFragment.OnDoneButtonClickedListener() {
-        	
-            @Override
-            public void onDoneButtonClicked(PickerFragment<?> pickerFragment) {
-                Log.d("3", "SETFREIDNONCLICK");
-
-                onFriendPickerDone(fragment);
-            }
-            
-        });
-    }
-
-    private void onFriendPickerDone(FriendPickerFragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        fm.popBackStack();
-
-        String results = "";
-        Log.d("4", "ONCLICK");
-
-        Collection<GraphUser> selection = fragment.getSelection();
-        if (selection != null && selection.size() > 0) {
-            ArrayList<String> names = new ArrayList<String>();
-            for (GraphUser user : selection) {
-                names.add(user.getName());
-            }
-            results = TextUtils.join(", ", names);
-        } else {
-            results = getString(R.string.rechazar);
-        }
-
-        showAlert(getString(R.string.seleccion), results);
-    }
-
-	
-    private void showAlert(String title, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.aceptar, null)
-                .show();
-    }
+ 
     private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
