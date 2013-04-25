@@ -43,6 +43,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -334,6 +335,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
+		AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
+		buscar.setTextColor(Color.parseColor("#787878"));
+		 ArrayList<String> sugerencia = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		    //agrega las opciones al menu
+			sugerencia.add("raul");
+			sugerencia.add("mario");
+			sugerencia.add("cesar");
+			sugerencia.add("ramon");
+	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, sugerencia);
+	    
+	       buscar.setAdapter(adapter);
+	    
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(checkboxLayout);
 
@@ -398,13 +411,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// desired (for instance, to see friends of a friend).
 		FriendPicker.populateParameters(intent, null, true, true);
 		startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
-		/* final FriendPickerFragment fragment = new FriendPickerFragment();
-        Log.d("1", "ONCLICK");
-
-        setFriendPickerListeners(fragment);
-        Log.d("2", "ONCLICK");
-
-        showPickerFragment(fragment);*/
+		
 
 	}
 	  /**
