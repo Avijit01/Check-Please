@@ -71,7 +71,6 @@ public class Entra extends Activity {
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				divIgual.setVisibility(RelativeLayout.INVISIBLE);
-
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				startActivity(intent);
 			}

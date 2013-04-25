@@ -50,23 +50,21 @@ import com.facebook.model.GraphUser;
  *
  */
 public class MainActivity extends FragmentActivity   {
-
+	//Inicializa botones, funciones y textos
 	private Button entrar, registrar, facebook;
 	EditText usuario, pass, passcon;
 	UserFunctions userFunctions;
 	TextView mensajeError;
-	
-	
 
 	// JSON Respuestas que se tienen
-		private static String KEY_SUCCESS = "success";
-		private static String KEY_ERROR = "error";
-		private static String KEY_ERROR_MSG = "error_msg";
-		private static String KEY_UID = "uid";
-		private static String KEY_NAME = "name";
-		private static String KEY_EMAIL = "email";
-		private static String KEY_CREATED_AT = "created_at";
-	
+	private static String KEY_SUCCESS = "success";
+	private static String KEY_ERROR = "error";
+	private static String KEY_ERROR_MSG = "error_msg";
+	private static String KEY_UID = "uid";
+	private static String KEY_NAME = "name";
+	private static String KEY_EMAIL = "email";
+	private static String KEY_CREATED_AT = "created_at";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,19 +82,19 @@ public class MainActivity extends FragmentActivity   {
 			 //se importan todos los elementos como butones, textos o edits
 			 usuario = (EditText) findViewById(R.id.usuario);
  			usuario.requestFocus ();
-
 			 pass = (EditText) findViewById(R.id.pass);
 			 entrar = (Button)findViewById(R.id.entrarbtn);
 			registrar = (Button)findViewById(R.id.registrobtn);
 			facebook = (Button)findViewById(R.id.facebookbtn);
 			mensajeError = (TextView)findViewById(R.id.error);
 			mensajeError.setText("");
-
-				//boton de entrar Click Event
+			
+			//boton de entrar Click Event
 			entrar.setOnClickListener(new  View.OnClickListener(){
 		        	public void onClick(View view){
 		        		String user = usuario.getText().toString();
 		        		String password =  pass.getText().toString();
+		        		//checa que los cmapos no sean vacios
 		        		if(user.equals("")||password.equals(""))
 		        		{	mensajeError.setText("Completar: ");
 			        		if(user.equals(""))
