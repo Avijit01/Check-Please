@@ -20,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.support.v4.app.FragmentTransaction;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -44,23 +43,19 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
+/**
+ * Clase Inicial que permite registrar y entrar con el sistema y facebook
+ * Extiende a la clase FragmentActivity
+ * Si ya esta logeado entra al sistema a la clase Entra.java
+ *
+ */
 public class MainActivity extends FragmentActivity   {
 
-	/*private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
-
-    private TextView textInstructionsOrLink;
-    private Button buttonLoginLogout;
-    private Session.StatusCallback statusCallback = new SessionStatusCallback();*/
-	/*public static final String APP_ID = "533323013384570";
-	private MainFragment mainFragment;
-	private static final String TAG = "MainFragment";
-	private UiLifecycleHelper uiHelper;
-*/
-	private Button entrar;
-	private Button registrar, facebook;
+	private Button entrar, registrar, facebook;
 	EditText usuario, pass, passcon;
 	UserFunctions userFunctions;
 	TextView mensajeError;
+	
 	
 
 	// JSON Respuestas que se tienen
@@ -304,5 +299,22 @@ public class MainActivity extends FragmentActivity   {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	 protected void onResume() {
+	        super.onResume();
+
+	        updateUI();
+	    }
+	  private void updateUI() {
+	        Session session = Session.getActiveSession();
+	        boolean enableButtons = (session != null && session.isOpened());
+
+
+	        if (session != null && session.isOpened()) {
+				Toast.makeText(getApplicationContext(),"abierto Facebook",Toast.LENGTH_SHORT).show();
+	              } else {
+	      			Toast.makeText(getApplicationContext(),"cerrado Facebook",Toast.LENGTH_SHORT).show();
+
+	        }
+	    }
 
 }

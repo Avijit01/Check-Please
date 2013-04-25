@@ -92,7 +92,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		Bundle extras = getIntent().getExtras();
 	
 		etTip = (EditText)findViewById(R.id.etTip);
-
+		etTip.setTextColor(Color.parseColor("#787878"));
 		invitar = (Button)findViewById(R.id.bInvitar);
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
