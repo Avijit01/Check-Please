@@ -1,6 +1,12 @@
 package com.example.checkplease;
 
+import java.util.ArrayList;
+
+import com.example.checkplease.libreria.UserFunctions;
+
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +14,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -22,7 +29,10 @@ public class Calculadora extends Activity{
 	private double calculo = 0.0;
 	private double aux = 0.0;
 	private char op = 's';
+
 	private String split[], igualText = "0.0";
+	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
+
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -31,8 +41,7 @@ public class Calculadora extends Activity{
 
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 
-		TextView titulo = (TextView)findViewById(R.id.titulo);
-		titulo.setText("Calculadora");
+		
 		uno = (Button)findViewById(R.id.button1);
 		dos = (Button)findViewById(R.id.button2);
 		tres = (Button)findViewById(R.id.button3);
@@ -52,7 +61,6 @@ public class Calculadora extends Activity{
 		delete = (Button)findViewById(R.id.erase);
 		point = (Button)findViewById(R.id.point);
 
-		regresa = (Button)findViewById(R.id.regresabtn);
 		igual = (Button)findViewById(R.id.igual);
 		asignar = (Button)findViewById(R.id.asignar);
 
@@ -61,9 +69,14 @@ public class Calculadora extends Activity{
 		// Desactiva el teclado del EditText
 		result.setInputType(InputType.TYPE_NULL);
 
-		regresa.setOnClickListener(new  View.OnClickListener(){
+		
+		asignar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				Calculadora.this.finish();
+				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("totalIndi", calculo);
+				intent.putExtra("calculos", split);
+				startActivity(intent);
+
 			}
 		});
 
@@ -313,6 +326,9 @@ public class Calculadora extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		//respond to menu item selection
 		switch (item.getItemId()) {
+		case android.R.id.home://se cierra el menu
+			Calculadora.this.finish();
+			return true;
 		case R.id.acerca://se cierra el menu
 			startActivity(new Intent(this, Acerca.class));
 			return true;
@@ -321,6 +337,63 @@ public class Calculadora extends Activity{
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	private void facebook() {
+		startActivity(new Intent(this, Facebook.class));
+	}
+	private void Inicio() {
+		startActivity(new Intent(this, MainActivity.class));
+	}
+	private void Acerca(){
+		startActivity(new Intent(this, Acerca.class));
+		
+	}
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    cargaMenu();
+	    // Normal case behavior follows
+	}
+	void cargaMenu(){
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    actionBar.setBackgroundDrawable(getResources().getDrawable(
+	            R.drawable.bar_color));
+	    actionBar.setTitle("Calculadora");
+	    
+	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+	    //agrega las opciones al menu
+		actions.add("Opciones");
+		actions.add("Cerrar Sesion");
+		actions.add("Facebook");
+		actions.add("Acerca");
+		//Crea el adaptar del dropDown del header
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+        //Habilita la navegacion del DropDown del action bar
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        //Degine la navegacion del dropdown
+        
+        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+			
+        	@Override
+			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
+        			if(itemPosition==1){//opcion de cerrar cesion
+						userFunctions.logoutUser(getApplicationContext());
+						Inicio();
+						return true;
+					}
+					if(itemPosition==2){//opcion de facebook
+						facebook();
+						return true;	
+					}
+					if(itemPosition==3){//opcion de acerca
+						Acerca();
+					}
+				return false;
+        	}
+		};
+		//set los elementos del dropdown del actionbar
+		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
+		
+	}
 }
 

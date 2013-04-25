@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -15,8 +16,11 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.PickerFragment;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,6 +42,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -70,7 +75,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	TextView tvFalta;
 	float gTotal;
 	float falta;
-	private static final int PICK_FRIENDS_ACTIVITY = 1;
+
+    private static final int PICK_FRIENDS_ACTIVITY = 1;
+	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
+
+
 
 	private ViewGroup controlsContainer;
 	private GraphUser user;
@@ -79,12 +88,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
-		TextView titulo = (TextView)findViewById(R.id.titulo);
-		titulo.setText("Pago Individual");
+
 		Bundle extras = getIntent().getExtras();
-		
+	
 		etTip = (EditText)findViewById(R.id.etTip);
-		regresa = (Button)findViewById(R.id.regresabtn);
+
 		invitar = (Button)findViewById(R.id.bInvitar);
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
@@ -145,11 +153,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-		regresa.setOnClickListener(new View.OnClickListener(){
-			public void onClick(View view){
-				Lista.this.finish();
-			}
-		});
+	
 	}
 	
 	public void updatePersonAdapter(float tip) {
@@ -190,6 +194,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		case R.id.acerca://se cierra el menu
 			startActivity(new Intent(this, Acerca.class));
 			return true;
+	case android.R.id.home://se cierra el menu
+		Lista.this.finish();
+		return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -354,6 +361,66 @@ public class Lista extends FragmentActivity  implements OnClickListener {
         Log.d("2", "ONCLICK");
 
         showPickerFragment(fragment);*/
+
+    }
+    private void facebook() {
+		startActivity(new Intent(this, Facebook.class));
+	}
+	private void Inicio() {
+		startActivity(new Intent(this, MainActivity.class));
+	}
+	private void Acerca(){
+		startActivity(new Intent(this, Acerca.class));
+		
+	}
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    cargaMenu();
+	    // Normal case behavior follows
+	}
+	void cargaMenu(){
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    actionBar.setBackgroundDrawable(getResources().getDrawable(
+	            R.drawable.bar_color));
+	    actionBar.setTitle("Pago Individual");
+	    
+	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+	    //agrega las opciones al menu
+		actions.add("Opciones");
+		actions.add("Cerrar Sesion");
+		actions.add("Facebook");
+		actions.add("Acerca");
+		//Crea el adaptar del dropDown del header
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+        //Habilita la navegacion del DropDown del action bar
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        //Degine la navegacion del dropdown
+        
+        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+			
+        	@Override
+			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
+        			if(itemPosition==1){//opcion de cerrar cesion
+						userFunctions.logoutUser(getApplicationContext());
+						Inicio();
+						return true;
+					}
+					if(itemPosition==2){//opcion de facebook
+						facebook();
+						return true;	
+					}
+					if(itemPosition==3){//opcion de acerca
+						Acerca();
+					}
+				return false;
+        	}
+		};
+		//set los elementos del dropdown del actionbar
+		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
+		
+
 	}
 
 }
