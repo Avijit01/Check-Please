@@ -27,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -60,6 +61,7 @@ public class MainActivity extends FragmentActivity   {
 	EditText usuario, pass, passcon;
 	UserFunctions userFunctions;
 	TextView mensajeError;
+	
 
 	// JSON Respuestas que se tienen
 	private static String KEY_SUCCESS = "success";
@@ -290,6 +292,17 @@ public class MainActivity extends FragmentActivity   {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//respond to menu item selection
+		switch (item.getItemId()) {
+		case R.id.acerca://se cierra el menu
+			startActivity(new Intent(this, Acerca.class));
+			return true;	 
+					
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

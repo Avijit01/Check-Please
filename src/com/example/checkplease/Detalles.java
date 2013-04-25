@@ -3,33 +3,56 @@ package com.example.checkplease;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.example.checkplease.libreria.UserFunctions;
+
+import android.net.Uri;
 import android.os.Bundle;
+import android.app.ActionBar;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ActionBar.OnNavigationListener;
+
 import android.content.DialogInterface;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 	
+
+	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
+
+
 	private List<String> precios = new ArrayList<String>();
-	private Button regresa;
-	private TextView total, name, nameChange;
+	private Button regresa, okBtn;
+	private TextView total, name;
+	private EditText nameChange;
 	private double sumaTotal;
-	private String nombre;
-	
-	
+	private ImageView foto;
+	private static final int SELECT_PICTURE = 1;
+	private String path = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,10 +63,19 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			String precios[] = extras.getStringArray("calculos");
 		}
 		
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+        path = prefs.getString("path","");
+        name.setText(prefs.getString("name", "Nombre"));
+
 		String precios[] = {"10","20","30"};
 		
 		total = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
+		foto = (ImageView)findViewById(R.id.foto);
+		
+		if( path.equals("") ){
+			foto.setImageBitmap( BitmapFactory.decodeFile(path));
+		}
 		
 		for( int i = 0; i < precios.length; i++ ){
 			sumaTotal+= Double.parseDouble(precios[i]);
@@ -59,8 +91,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		list.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
 		list.setOnItemClickListener(this);
-		TextView titulo = (TextView)findViewById(R.id.titulo);
-		titulo.setText("Detalles");
+		
 		Button btn = (Button) findViewById(R.id.agregaOrden);
 		btn.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
@@ -68,64 +99,87 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
                 startActivity(intent);
         	}
         });
-		regresa = (Button)findViewById(R.id.regresabtn);
-
-		regresa.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		Detalles.this.finish();
-        	}
-        });
+		
 		
 		name.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		showInfo();
         	}
         });
+		foto .setOnClickListener( new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setType("image/*");
+				intent.setAction(Intent.ACTION_GET_CONTENT);
+				startActivityForResult(Intent.createChooser(intent,  "Selecciona Imagen"), SELECT_PICTURE);
+			}
+		});
 		
 	}
 	
 	public void showInfo() {
-
 		//se crea una nueva alerta de dialogo
-		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
-		helpBuilder.setTitle("Cambiar nombre");
+		dialog.setTitle("Cambiar nombre");
 
 		//se toma el Layout Inflater
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
-		View TextField = inflater.inflate(R.layout.cambiar_nombre, null);
+		View view = inflater.inflate(R.layout.cambiar_nombre, null);
 		//se asigna esa vista a la ventana de dialogo
-		helpBuilder.setView(TextField);
+		dialog.setView(view);
 		
-		nombre = "Nombre";
-		nameChange = (TextView)findViewById(R.id.nameChange);
+		nameChange = (EditText)view.findViewById(R.id.nameChange);
 
 		//para manejar la acción del boton OK, de la ventana de dialogo
-		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				name.setText( nameChange.getText() );
+				name.setText(nameChange.getText().toString());
 			}
 		});
 
 		// Se crea la ventana de dialogo
-		AlertDialog helpDialog = helpBuilder.create();
+		AlertDialog helpDialog = dialog.create();
 		//se muestra la ventana de dialogo
-		helpDialog.show();
+		dialog.show();
 	}
-
+	
+	protected void onActivityResult( int requestCode, int resultCode, Intent data){
+		super.onActivityResult(requestCode, resultCode, data);
+		if( resultCode == RESULT_OK && null != data){
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex( filePathColumn[0] );
+			String picturePath = cursor.getString(columnIndex);
+			cursor.close();
+			foto.setImageBitmap( BitmapFactory.decodeFile(picturePath));
+		}
+	}
 	
 	@Override
-	public void onClick(View v) {
+    /**
+     * Metodo que guarda los valores de las variables al voltear el android
+     * @return void
+     */
+	protected void onPause() {
 		// TODO Auto-generated method stub
-		
+		super.onPause();
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString("path",  path);
+		editor.putString("name",  name.getText().toString());
+		editor.commit();
 	}
-
+	
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onClick(View v) {}
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,5 +187,74 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	private void facebook() {
+		startActivity(new Intent(this, Facebook.class));
+	}
+	private void Inicio() {
+		startActivity(new Intent(this, MainActivity.class));
+	}
+	private void Acerca(){
+		startActivity(new Intent(this, Acerca.class));
+		
+	}
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    cargaMenu();
+	    // Normal case behavior follows
+	}
+	void cargaMenu(){
+		ActionBar actionBar = getActionBar();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    actionBar.setBackgroundDrawable(getResources().getDrawable(
+	            R.drawable.bar_color));
+	    actionBar.setTitle("Detalles   ");
+	    
+	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+	    //agrega las opciones al menu
+		actions.add("Opciones");
+		actions.add("Cerrar Sesion");
+		actions.add("Facebook");
+		actions.add("Acerca");
+		//Crea el adaptar del dropDown del header
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+        //Habilita la navegacion del DropDown del action bar
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        //Degine la navegacion del dropdown
+        
+        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+			
+        	@Override
+			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
+        			if(itemPosition==1){//opcion de cerrar cesion
+						userFunctions.logoutUser(getApplicationContext());
+						Inicio();
+						return true;
+					}
+					if(itemPosition==2){//opcion de facebook
+						facebook();
+						return true;	
+					}
+					if(itemPosition==3){//opcion de acerca
+						Acerca();
+					}
+				return false;
+        	}
+		};
+		//set los elementos del dropdown del actionbar
+		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
+		
+	}
+	 @Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// TODO Auto-generated method stub
+			switch (item.getItemId()) {
+			case android.R.id.home://se cierra el menu
+				Detalles.this.finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+			}
+		}
 
 }
