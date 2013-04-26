@@ -66,7 +66,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	// Definicion de los botones presentes en la vista
 	Button regresa;
 	Button invitar;
-	ImageButton  pickFriendsButton;
+	ImageButton pickFriendsButton;
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
@@ -95,7 +95,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		setContentView(R.layout.lista_usuarios);
 
 		positions = new ArrayList<Integer>();
-		
+
 		Bundle extras = getIntent().getExtras();
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
@@ -123,10 +123,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		});
 
 		usuarios = new ArrayList<Person>();
-		usuarios.add(new Person("Derp", 120.0f, false));
-		usuarios.add(new Person("Hurr", 137.50f, false));
-		usuarios.add(new Person("Herpa", 85.0f, true));
-		usuarios.add(new Person("Derpa", 32.75f, true));
+		usuarios.add(new Person("You", 0.0f, false));
 
 		if(extras !=null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
@@ -227,16 +224,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					onClickPickFriends();
 				}else{
 					Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
-
 				}
 			}
+			addPerson();
 			break;
 		case R.id.bInvitar:
 			showInfo();
 			break;
 		case R.id.bFacebook:
 			Session session2 = Session.getActiveSession();
-
 			if (session2 == null) {
 				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
 			}else{
@@ -244,7 +240,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					postStatusUpdate();
 				}else{
 					Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
-
 				}
 			}
 			Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
@@ -328,8 +323,40 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		.show();
 	}
 
+
+	public void addPerson() {
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		helpBuilder.setTitle("Agregar");
+
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		//se toma el layout correspondiente a la ventana del pop up
+		View view = inflater.inflate(R.layout.agregar_persona, null);
+		final EditText etNombre = (EditText)view.findViewById(R.id.etNombre);
+		//se asigna esa vista a la ventana de dialogo
+		helpBuilder.setView(view);
+
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				usuarios.add(new Person(etNombre.getText().toString()));
+			}
+		});
+		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				onClickPickFriends();
+			}
+		});
+
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = helpBuilder.create();
+		//se muestra la ventana de dialogo
+		helpDialog.show();
+	}
+
 	public void showInfo() {
-		
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
@@ -403,13 +430,13 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 
 		//para manejar la acción del boton OK, de la ventana de dialogo
-		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		helpBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				positions = adapter.getPositions();
 				for(Integer i : positions) {
 					usuarios.remove(i.intValue());
 				}
-				updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
+				adapter.notifyDataSetChanged();
 			}
 		});
 

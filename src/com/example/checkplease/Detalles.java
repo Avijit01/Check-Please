@@ -39,19 +39,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
-	
 
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-
-	private List<String> precios = new ArrayList<String>();
-	private Button regresa, okBtn;
-	private TextView total, name;
+	private ArrayList<String> precios = new ArrayList<String>();
+	private Button agregar, terminar, okBtn;
+	private TextView totalView, name;
 	private EditText nameChange;
-	private double sumaTotal;
 	private ImageView foto;
 	private static final int SELECT_PICTURE = 1;
 	private String path = "";
+	private String nombrePref = "";
+	private String total = "0.0";
+	private LazyAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,46 +60,50 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
-			String precios[] = extras.getStringArray("calculos");
+			 total = extras.getString("total");
 		}
 		
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
         path = prefs.getString("path","");
-        name.setText(prefs.getString("name", "Nombre"));
+        nombrePref = prefs.getString("name", "");
 
-		String precios[] = {"10","20","30"};
+		//String precios2[] = {"10","20","30"};
 		
-		total = (TextView)findViewById(R.id.total);
+        totalView = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
 		foto = (ImageView)findViewById(R.id.foto);
+		agregar = (Button)findViewById(R.id.agregar);
+		terminar = (Button)findViewById(R.id.terminar);
 		
-		if( path.equals("") ){
-			foto.setImageBitmap( BitmapFactory.decodeFile(path));
-		}
+		if( !path.equals("") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
+		if( !nombrePref.equals("") ) name.setText(nombrePref);
 		
-		for( int i = 0; i < precios.length; i++ ){
-			sumaTotal+= Double.parseDouble(precios[i]);
-		}
-		
-		total.setText(sumaTotal+"");
+		totalView.setText(total);
+		precios.add(total);
 		
 		//se declara la lista asociada con la lista del layout
-		ListView list = (ListView) findViewById(R.id.preciosList);
+		ListView l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		LazyAdapter adapter = new LazyAdapter(this, precios);
+		adapter = new LazyAdapter(this, precios);
 		//se agrega los elementos a la lista
-		list.setAdapter( adapter );
+		l.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
-		list.setOnItemClickListener(this);
+		l.setOnItemClickListener(this);
 		
-		Button btn = (Button) findViewById(R.id.agregaOrden);
-		btn.setOnClickListener(new  View.OnClickListener(){
+		terminar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Lista.class);
                 startActivity(intent);
         	}
         });
 		
+		agregar.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		float f = Float.parseFloat(total);
+        		precios.add(f+"");
+        		adapter.notifyDataSetChanged();
+        	}
+        });
 		
 		name.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){

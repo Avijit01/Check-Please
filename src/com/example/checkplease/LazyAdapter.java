@@ -1,4 +1,6 @@
 package com.example.checkplease;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,17 +14,19 @@ import android.widget.TextView;
 public class LazyAdapter extends BaseAdapter {
     
     private Activity activity;
-    private String[] data;
+    private ArrayList<String> data = new ArrayList<String>();
     private static LayoutInflater inflater=null;
     
-    public LazyAdapter(Activity a, String[] d) {
+    public LazyAdapter(Activity a, ArrayList<String> d) {
         activity = a;
-        data = d;
+        for( int i = 0; i < d.size(); i++ ){
+        	data.add( d.get(i) );
+        }
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
-        return data.length;
+        return data.size();
     }
 
     public Object getItem(int position) {
@@ -39,7 +43,7 @@ public class LazyAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.detalles_item, null);
 
         EditText text=(EditText)vi.findViewById(R.id.precio);
-        text.setText(data[position]+"");
+        text.setText(data.get(position));
         return vi;
     }
 }
