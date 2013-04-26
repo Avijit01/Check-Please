@@ -4,5 +4,6 @@
     <string name="propina">Propina:</string>
     <string name="persona">Persona</string>
     <string name="buscar">Buscar</string>
+    <string name="mensajeInvitar">Teclea el usuario de la persona a invitar</string>
     
 </resources>

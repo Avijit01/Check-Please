@@ -2,6 +2,10 @@ package com.example.checkplease;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.checkplease.libreria.DatabaseHandler;
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.Session;
 
@@ -9,6 +13,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,11 +32,11 @@ public class Entra extends Activity {
 
 	EditText etTotal;
 	EditText etPropina;
-	EditText etPersonas;
+	EditText etPersonas, restaurante;
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
-
+	int numeroMesa = 0;
 
 	private Button regresa, igual, individual;
 	private float total, propina;
@@ -48,7 +53,8 @@ public class Entra extends Activity {
 		
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
-
+		restaurante = (EditText)findViewById(R.id.restaurante);
+		restaurante.setTextColor(Color.parseColor("#787878"));
 		etTotal = (EditText)findViewById(R.id.total);
 		etPropina = (EditText)findViewById(R.id.propina);
 		etPersonas = (EditText)findViewById(R.id.personas);
@@ -57,21 +63,22 @@ public class Entra extends Activity {
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-
+	
 		
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				ActionBar actionBar = getActionBar();
 			    actionBar.setTitle("Pago igual ");
 			    etTotal.requestFocus ();
-
-
 				divIgual.setVisibility(view.VISIBLE);
+				
+				numeroMesa = agregaRestaurante(restaurante);
 			}
 
 		});
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				numeroMesa = agregaRestaurante(restaurante);
 				divIgual.setVisibility(RelativeLayout.INVISIBLE);
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				startActivity(intent);
@@ -176,6 +183,51 @@ public class Entra extends Activity {
 		float ppp = (total + (total * (propina / 100.0f))) / personas;
 		if(!Float.isNaN(ppp) && !Float.isInfinite(ppp))
 			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
+		updateMesa(total, propina, personas);
+	}
+	 /**
+     * Metodo: agregaRestaurante,
+     * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
+     * @param restaurante - EditText del nombre del restaurante
+     * @return boolean 0 si esta en blanco el campo de nombre, 1 tiene algo
+     * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
+     */
+	private void updateMesa(float total, float propina, int personas){
+		
+			userFunctions.updateMesa(numeroMesa, total, propina, personas);
+		
+	}
+	 /**
+     * Metodo: agregaRestaurante,
+     * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
+     * @param restaurante - EditText del nombre del restaurante
+     * @return  idMesa, el id que se creo de la mesa
+     * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
+     */
+	private int agregaRestaurante(EditText restaurante){
+		String restaurante2 = restaurante.getText().toString();
+		int idMesa=0;
+		if(restaurante.equals("")){
+			JSONObject json = userFunctions.agregaRestaurante("-");
+			try {//si la respuesta de KEY_Succes contiene algo
+				if (json.getString("success") != null) {
+					idMesa = json.getInt("mesa"); 
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return idMesa;
+		}else{
+			JSONObject json = userFunctions.agregaRestaurante(restaurante2);
+			try {//si la respuesta de KEY_Succes contiene algo
+				if (json.getString("success") != null) {
+					idMesa = json.getInt("mesa");  
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return idMesa;
+		}
 	}
 	  /**
      * Metodo: facebook,

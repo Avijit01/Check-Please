@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
@@ -325,7 +329,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	}
 
 	public void showInfo() {
-
+		
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
@@ -338,11 +342,26 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
 		buscar.setTextColor(Color.parseColor("#787878"));
 		 ArrayList<String> sugerencia = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+
+		 JSONObject json = userFunctions.usuarios();
+		 JSONArray jArray;
+		try {
+			jArray = json.getJSONArray("usuarios");
+			 for(int i=0;i<jArray.length();i++){
+				  JSONObject json_data = jArray.getJSONObject(i);
+				    //agrega las opciones al menu
+				  sugerencia.add(json_data.getString("nombre"));
+				  /*Log.i("log_tag",
+				   ", mall_name"+json_data.getString("nombre")+
+				   ", location"+json_data.getString("mail")
+				  );*/
+
+				 }
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		    //agrega las opciones al menu
-			sugerencia.add("raul");
-			sugerencia.add("mario");
-			sugerencia.add("cesar");
-			sugerencia.add("ramon");
 	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, sugerencia);
 	    
 	       buscar.setAdapter(adapter);

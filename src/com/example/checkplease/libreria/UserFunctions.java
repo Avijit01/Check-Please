@@ -19,6 +19,9 @@ public class UserFunctions {
 	//tad para la accion a realizar
 	private static String login_tag = "login";
 	private static String register_tag = "register";
+	private static String usuarios_tag = "usuarios";
+	private static String restaurante_tag = "restaurante";
+	private static String updateMesa_tag = "mesa";
 	
 	// constructor
 	public UserFunctions(){
@@ -60,7 +63,32 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
-	
+	public JSONObject usuarios(){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", usuarios_tag));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
+	public JSONObject agregaRestaurante(String restaurante){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", restaurante_tag));
+		params.add(new BasicNameValuePair("restaurante", restaurante));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
+	public JSONObject updateMesa(int mesa, float total, float propina, int personas){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", updateMesa_tag));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("total", Float.toString(total)));
+		params.add(new BasicNameValuePair("propina", Float.toString(propina)));
+		params.add(new BasicNameValuePair("personas",Integer.toString(personas)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	/**
 	 * funcion isUserLoggedIn
 	 * Checa en la base de datos local si tiene iniciada la sesion el usuario

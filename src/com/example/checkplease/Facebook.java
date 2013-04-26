@@ -3,6 +3,9 @@ package com.example.checkplease;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.Session;
@@ -43,6 +46,8 @@ public class Facebook extends FragmentActivity{
     ImageView fondo;
     private ViewGroup controlsContainer;
     private static final int PICK_FRIENDS_ACTIVITY = 1;
+    private GraphUser user;
+
 
 /**
  * Metodo que maneja las actividad de Facebook, inicio y cierre de seccion
@@ -87,8 +92,13 @@ public class Facebook extends FragmentActivity{
 	            acepta.setVisibility(RelativeLayout.VISIBLE);
 	    		rechaza.setVisibility(RelativeLayout.VISIBLE);
 	    		mensajeFace.setVisibility(RelativeLayout.VISIBLE);
+	           
 	        }
+	        
+	        
 	    });
+	    
+	    
 	     //al presionar el botor de aceptar, se abre la actividad de entra
 	    acepta.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
@@ -97,7 +107,17 @@ public class Facebook extends FragmentActivity{
         		startActivity(intent);
         		finish();//termina la activad de Facebook para que al regresar no pase por esta
         	}
-        });	   
+        });	 
+	    /*((LoginButton) acepta).setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+            @Override
+            public void onUserInfoFetched(GraphUser user) {
+                Facebook.this.user = user;
+	            Log.d("LoginUsingLoginFragmentActivity", user.getName());
+
+            }
+            
+        });*/
+	    
 	    //al presionar el boton de rechar, se deslogea y termina la actividad
 	    rechaza.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
@@ -231,4 +251,45 @@ public class Facebook extends FragmentActivity{
 		
 	}
 
+	private String buildUserInfoDisplay(GraphUser user) {
+	    StringBuilder userInfo = new StringBuilder("");
+
+	    // Example: typed access (name)
+	    // - no special permissions required
+	    userInfo.append(String.format("Name: %s\n\n", 
+	        user.getName()));
+
+	    // Example: typed access (birthday)
+	    // - requires user_birthday permission
+	    userInfo.append(String.format("Birthday: %s\n\n", 
+	        user.getBirthday()));
+
+	    // Example: partially typed access, to location field,
+	    // name key (location)
+	    // - requires user_location permission
+	    userInfo.append(String.format("Location: %s\n\n", 
+	        user.getLocation().getProperty("name")));
+
+	    // Example: access via property name (locale)
+	    // - no special permissions required
+	    userInfo.append(String.format("Locale: %s\n\n", 
+	        user.getProperty("locale")));
+
+	    // Example: access via key for array (languages) 
+	    // - requires user_likes permission
+	    JSONArray languages = (JSONArray)user.getProperty("languages");
+	    if (languages.length() > 0) {
+	        ArrayList<String> languageNames = new ArrayList<String> ();
+	        for (int i=0; i < languages.length(); i++) {
+	            JSONObject language = languages.optJSONObject(i);
+	            // Add the language name to a list. Use JSON
+	            // methods to get access to the name field. 
+	            languageNames.add(language.optString("name"));
+	        }           
+	        userInfo.append(String.format("Languages: %s\n\n", 
+	        languageNames.toString()));
+	    }
+
+	    return userInfo.toString();
+	}
 }

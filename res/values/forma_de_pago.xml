@@ -10,4 +10,5 @@
     <color name="textColorDefault">#ff999999</color>
     <string name="formaPago">Forma de Pago</string>
     <string name="textoPago">Introduce:</string>
+    <string name="restaurante">Restaurante</string>
 </resources>

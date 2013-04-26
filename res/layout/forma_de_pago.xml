@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:layout_marginLeft="46dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/green_btn"
         android:text="@string/cuentaIgual"
         android:textColor="#ffffffff" />
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/igual"
-        android:layout_marginTop="16dp" >
+        android:layout_marginTop="10dp" >
 
         <EditText
             android:id="@+id/propina"
@@ -42,7 +42,7 @@
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/total"
             android:layout_below="@+id/total"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blanco_btn"
             android:ems="10"
             android:gravity="center_vertical"
@@ -57,7 +57,7 @@
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/propina"
             android:layout_below="@+id/propina"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blanco_btn"
             android:ems="10"
             android:gravity="center_vertical"
@@ -72,7 +72,7 @@
             android:layout_height="45dp"
             android:layout_below="@+id/personas"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/pagoDefault"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -122,9 +122,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="50dp"
         android:text="@string/divCuenta"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/restaurante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/blanco_btn"
+        android:ems="10"
+        android:hint="@string/restaurante" />
 
 </RelativeLayout>
