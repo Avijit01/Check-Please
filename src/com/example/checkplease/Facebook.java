@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -44,9 +45,12 @@ public class Facebook extends FragmentActivity{
 	private UserSettingsFragment userSettingsFragment;
     private Button acepta, rechaza;
     ImageView fondo;
+	private SharedPreferences mPrefs;
+
     private ViewGroup controlsContainer;
     private static final int PICK_FRIENDS_ACTIVITY = 1;
     private GraphUser user;
+    String vieneDe = null;
 
 
 /**
@@ -56,6 +60,10 @@ public class Facebook extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_fragment_activity);
+		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
+		if(extras !=null){//si no es nulo
+			 vieneDe = extras.getString("viene");//toma el valor de 1
+		}
 		//inicializa los valores a utilizar
 		fondo = (ImageView)findViewById(R.id.imageView3);
 		final TextView mensajeFace = (TextView)findViewById(R.id.mensaje);
@@ -93,19 +101,26 @@ public class Facebook extends FragmentActivity{
 	    		rechaza.setVisibility(RelativeLayout.VISIBLE);
 	    		mensajeFace.setVisibility(RelativeLayout.VISIBLE);
 	           
-	        }
-	        
-	        
+	        }	        
 	    });
-	    
 	    
 	     //al presionar el botor de aceptar, se abre la actividad de entra
 	    acepta.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
+        		if(vieneDe!=null){
+	        		if(vieneDe.equals("Invita")){
+	        			//onClickPickFriends();
+	            		finish();//termina la activad de Facebook para que al regresar no pase por esta
+	            		Intent intent = new Intent(view.getContext(), Lista.class);
+						intent.putExtra("friends", 1);//si va abrir el popup de seleccionar amigo
+	    				startActivity(intent);
+	        		}
+	        	}else{
         		Intent intent = new Intent(view.getContext(), Entra.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         		startActivity(intent);
         		finish();//termina la activad de Facebook para que al regresar no pase por esta
+        		}
         	}
         });	 
 	    /*((LoginButton) acepta).setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
@@ -292,4 +307,19 @@ public class Facebook extends FragmentActivity{
 
 	    return userInfo.toString();
 	}
+	private void onClickPickFriends() {
+		FriendPickerApplication application = (FriendPickerApplication) getApplication();
+		application.setSelectedUsers(null);
+
+		Intent intent = new Intent(this, FriendPicker.class);
+		// Note: The following line is optional, as multi-select behavior is the default for
+		// FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
+		// friend picker if single-select functionality was desired, or if a different user ID was
+		// desired (for instance, to see friends of a friend).
+		FriendPicker.populateParameters(intent, null, true, true);
+		startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
+		
+
+	}
+	
 }

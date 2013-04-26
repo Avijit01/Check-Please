@@ -16,6 +16,10 @@ import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Facebook.DialogListener;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
@@ -24,6 +28,7 @@ import com.facebook.widget.PickerFragment;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,7 +66,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.lista:PendingAction";
-
+	private static String APP_ID = "533323013384570";
+	private Facebook mFacebook = new Facebook(APP_ID);
+    ProgressDialog dialog;
 
 	// Definicion de los botones presentes en la vista
 	Button regresa;
@@ -81,6 +88,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	float gTotal;
 	float falta;
 	ArrayList<Integer> positions;
+	int seleccionaAmigos = 0;//si abrira el popup para selccionar amigos
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -109,7 +117,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		invitar.setOnClickListener(this);
 		eliminar.setOnClickListener(this);
 		facebook.setOnClickListener(this);
-		facebook.setOnTouchListener(new OnTouchListener() {
+		/*facebook.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent me) {
 				if (me.getAction() == MotionEvent.ACTION_DOWN) {
@@ -120,15 +128,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				return false;
 			}
-		});
+		});*/
 
 		usuarios = new ArrayList<Person>();
 		usuarios.add(new Person("You", 0.0f, false));
 
 		if(extras !=null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
+			seleccionaAmigos = extras.getInt("friends");
 		}
-
+		if(seleccionaAmigos == 1){
+			onClickPickFriends();
+		}
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 		etTip.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -216,16 +227,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.bAgregar:
-			Session session = Session.getActiveSession();
-			if (session == null) {
-				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
-			}else{
-				if (session.isOpened()) {
-					onClickPickFriends();
-				}else{
-					Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
-				}
-			}
 			addPerson();
 			break;
 		case R.id.bInvitar:
@@ -268,20 +269,41 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if (selection != null && selection.size() > 0) {
 			ArrayList<String> names = new ArrayList<String>();
 			for (GraphUser user : selection) {
-				Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
 
 				names.add(user.getName());
+				usuarios.add(new Person(user.getName()));
+
 			}
 			results = TextUtils.join(", ", names);
 		} else {
 			results = "<No friends selected>";
 		}
 		Toast.makeText(getApplicationContext(),results,Toast.LENGTH_SHORT).show();
-
+		adapter.notifyDataSetChanged();		
 		// mensajeFace.setText(results);
 	}
 	private void postStatusUpdate() {
-		if (user != null ) {
+		Facebook facebookapp = new Facebook(APP_ID);
+		facebookapp.dialog(this, "feed", new DialogListener() {
+
+			@Override
+			public void onFacebookError(FacebookError e) {
+			}
+
+			@Override
+			public void onError(DialogError e) {
+			}
+
+			@Override
+			public void onComplete(Bundle values) {
+			}
+
+			@Override
+			public void onCancel() {
+			}
+		});
+		/*if (user != null ) {
 			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
 			Request request = Request
 
@@ -299,7 +321,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Log.d("sale", "ONCLICK");
 
 			//pendingAction = PendingAction.POST_STATUS_UPDATE;
-		}
+		}*/
 	}
 	private interface GraphObjectWithId extends GraphObject {
 		String getId();
@@ -333,7 +355,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//se toma el Layout Inflater
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
-		View view = inflater.inflate(R.layout.agregar_persona, null);
+		final View view = inflater.inflate(R.layout.agregar_persona, null);
 		final EditText etNombre = (EditText)view.findViewById(R.id.etNombre);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(view);
@@ -346,7 +368,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				onClickPickFriends();
+				Session session = Session.getActiveSession();
+				if (session == null) {
+					Intent intent = new Intent(view.getContext(), Facebook.class);
+					intent.putExtra("viene", "Invita");
+	                startActivity(intent);
+	              }else{
+					if (session.isOpened()) {
+						onClickPickFriends();
+					}else{
+						Intent intent = new Intent(view.getContext(), Facebook.class);
+		                startActivity(intent);					}
+				}
 			}
 		});
 

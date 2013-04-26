@@ -37,6 +37,7 @@ public class Entra extends Activity {
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 	int numeroMesa = 0;
+	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
 
 	private Button regresa, igual, individual;
 	private float total, propina;
@@ -50,7 +51,10 @@ public class Entra extends Activity {
 		
 		cargaMenu();
 		
-		
+		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
+		if(extras !=null){//si no es nulo
+			 estaLogeado = extras.getInt("logeado");//toma el valor de 1
+		}
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
 		restaurante = (EditText)findViewById(R.id.restaurante);
@@ -268,7 +272,11 @@ public class Entra extends Activity {
      */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		if(estaLogeado==0){
+			actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		}else{
+			actionBar.setDisplayHomeAsUpEnabled(false);//habilita la opcion de regresar a la actividad anterios
+		}
 	    actionBar.setBackgroundDrawable(getResources().getDrawable(
 	            R.drawable.bar_color));//pone color gris
 	    actionBar.setTitle("Forma pago    ");//pone el titulo
