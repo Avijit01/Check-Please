@@ -4,6 +4,7 @@ package com.example.checkplease;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,6 +83,7 @@ public class MainActivity extends FragmentActivity   {
 		 //checa en la base de datos local si esta logeado, y se habre la clase Entra
 		 if(userFunctions.isUserLoggedIn(getApplicationContext())){
 			 Intent intent = new Intent(this, Entra.class);
+			 intent.putExtra("logeado",1);//envia el parametro de que esta logeado
      		startActivity(intent);
 		 }else{//sino se habre la calse principal
 			 setContentView(R.layout.activity_main);
