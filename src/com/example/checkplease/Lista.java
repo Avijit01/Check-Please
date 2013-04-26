@@ -16,10 +16,6 @@ import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Facebook.DialogListener;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
@@ -28,7 +24,6 @@ import com.facebook.widget.PickerFragment;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,9 +61,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.lista:PendingAction";
-	private static String APP_ID = "533323013384570";
-	private Facebook mFacebook = new Facebook(APP_ID);
-    ProgressDialog dialog;
+
 
 	// Definicion de los botones presentes en la vista
 	Button regresa;
@@ -117,7 +110,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		invitar.setOnClickListener(this);
 		eliminar.setOnClickListener(this);
 		facebook.setOnClickListener(this);
-		/*facebook.setOnTouchListener(new OnTouchListener() {
+		facebook.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent me) {
 				if (me.getAction() == MotionEvent.ACTION_DOWN) {
@@ -128,7 +121,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				return false;
 			}
-		});*/
+		});
 
 		usuarios = new ArrayList<Person>();
 		usuarios.add(new Person("You", 0.0f, false));
@@ -230,7 +223,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			addPerson();
 			break;
 		case R.id.bInvitar:
-			invitar();
+			showInfo();
 			break;
 		case R.id.bFacebook:
 			Session session2 = Session.getActiveSession();
@@ -284,26 +277,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// mensajeFace.setText(results);
 	}
 	private void postStatusUpdate() {
-		Facebook facebookapp = new Facebook(APP_ID);
-		facebookapp.dialog(this, "feed", new DialogListener() {
-
-			@Override
-			public void onFacebookError(FacebookError e) {
-			}
-
-			@Override
-			public void onError(DialogError e) {
-			}
-
-			@Override
-			public void onComplete(Bundle values) {
-			}
-
-			@Override
-			public void onCancel() {
-			}
-		});
-		/*if (user != null ) {
+		if (user != null ) {
 			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
 			Request request = Request
 
@@ -321,7 +295,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Log.d("sale", "ONCLICK");
 
 			//pendingAction = PendingAction.POST_STATUS_UPDATE;
-		}*/
+		}
 	}
 	private interface GraphObjectWithId extends GraphObject {
 		String getId();
@@ -389,7 +363,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
-	public void invitar() {
+	public void showInfo() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
