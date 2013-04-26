@@ -61,12 +61,14 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
-			 total = extras.getString("total");
+			total = "" + extras.getFloat("Total");
+			nombrePref = extras.getString("Nombre");
+			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
         path = prefs.getString("path","");
-        nombrePref = prefs.getString("name", "");
+        //nombrePref = prefs.getString("name", "");
 
 		//String precios2[] = {"10","20","30"};
 		
@@ -103,7 +105,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         		float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
         		precios.add("" + f);
         		adapter = new LazyAdapter(Detalles.this, precios);
-    			Toast.makeText(getApplicationContext(),""+precios.size(),Toast.LENGTH_SHORT).show();
         		l.setAdapter( adapter );
         	}
         });
@@ -144,7 +145,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				name.setText(nameChange.getText().toString());
+				if( !nameChange.getText().toString().equals("") )
+					name.setText(nameChange.getText().toString());
 			}
 		});
 
