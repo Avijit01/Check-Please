@@ -1,18 +1,21 @@
 package com.example.checkplease;
 
 public class Person {
+	private int id;
 	private String picture;
     private float total;
     private float totalTip;
     private boolean paid;
     
-    public Person(String picture, float total, boolean paid) {
+    public Person(int id, String picture, float total, boolean paid) {
+    	this.id = id;
     	this.picture = picture;
     	this.total = total;
     	this.paid = paid;
     }
     
-    public Person(String picture) {
+    public Person(int id, String picture) {
+    	this.id = id;
     	this.picture = picture;
     	total = 0.0f;
     	paid = false;
@@ -45,5 +48,13 @@ public class Person {
 
 	public void setTotalTip(float totalTip) {
 		this.totalTip = totalTip;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
