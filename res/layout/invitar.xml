@@ -5,17 +5,20 @@
     android:background="@drawable/background"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText1"
+    <AutoCompleteTextView
+        android:id="@+id/sugerencias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
         android:background="@drawable/blanco_btn"
-        android:inputType="textPersonName" 
-        android:hint="@string/buscar"/>
+        android:hint="@string/buscar"
+        android:inputType="textPersonName">
+
+        <requestFocus />
+    </AutoCompleteTextView>
 
     <LinearLayout
         android:layout_width="match_parent"

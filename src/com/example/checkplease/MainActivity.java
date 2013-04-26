@@ -20,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.support.v4.app.FragmentTransaction;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -44,34 +43,34 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphPlace;
 import com.facebook.model.GraphUser;
 
+/**
+ * Clase Inicial que permite registrar y entrar con el sistema y facebook
+ * Extiende a la clase FragmentActivity
+ * Si ya esta logeado entra al sistema a la clase Entra.java
+ * @see Checkplease.libreria 
+ *
+ */
 public class MainActivity extends FragmentActivity   {
-
-	/*private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
-
-    private TextView textInstructionsOrLink;
-    private Button buttonLoginLogout;
-    private Session.StatusCallback statusCallback = new SessionStatusCallback();*/
-	/*public static final String APP_ID = "533323013384570";
-	private MainFragment mainFragment;
-	private static final String TAG = "MainFragment";
-	private UiLifecycleHelper uiHelper;
-*/
-	private Button entrar;
-	private Button registrar, facebook;
+	//Inicializa botones, funciones y textos
+	private Button entrar, registrar, facebook;
 	EditText usuario, pass, passcon;
 	UserFunctions userFunctions;
 	TextView mensajeError;
-	
 
 	// JSON Respuestas que se tienen
-		private static String KEY_SUCCESS = "success";
-		private static String KEY_ERROR = "error";
-		private static String KEY_ERROR_MSG = "error_msg";
-		private static String KEY_UID = "uid";
-		private static String KEY_NAME = "name";
-		private static String KEY_EMAIL = "email";
-		private static String KEY_CREATED_AT = "created_at";
-	
+	private static String KEY_SUCCESS = "success";
+	private static String KEY_ERROR = "error";
+	private static String KEY_ERROR_MSG = "error_msg";
+	private static String KEY_UID = "uid";
+	private static String KEY_NAME = "name";
+	private static String KEY_EMAIL = "email";
+	private static String KEY_CREATED_AT = "created_at";
+
+	/**
+	 * Metodo onCreate()
+	 * Manejara la funcionalidad de entar al sistema
+	 * Se manda llamar al entrar a la actividad
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,43 +88,42 @@ public class MainActivity extends FragmentActivity   {
 			 //se importan todos los elementos como butones, textos o edits
 			 usuario = (EditText) findViewById(R.id.usuario);
  			usuario.requestFocus ();
-
 			 pass = (EditText) findViewById(R.id.pass);
 			 entrar = (Button)findViewById(R.id.entrarbtn);
 			registrar = (Button)findViewById(R.id.registrobtn);
 			facebook = (Button)findViewById(R.id.facebookbtn);
 			mensajeError = (TextView)findViewById(R.id.error);
 			mensajeError.setText("");
-
-				//boton de entrar Click Event
+			
+			//boton de entrar Click Event
 			entrar.setOnClickListener(new  View.OnClickListener(){
 		        	public void onClick(View view){
 		        		String user = usuario.getText().toString();
 		        		String password =  pass.getText().toString();
-		        		if(user.equals("")||password.equals(""))
+		        		//checa que los campos no sean vacios
+		        		if(user.equals("")||password.equals(""))//si hay vacios
 		        		{	mensajeError.setText("Completar: ");
-			        		if(user.equals(""))
-			        		{		        			
+			        		if(user.equals(""))//si el campo usuarios es vacio
+			        		{//se marca en rojo y se despliega mensaje       			
 			        			usuario.setBackgroundResource(R.drawable.rojo_btn);
 			        			mensajeError.setText(mensajeError.getText() + "Usuario ");
 		        				usuario.requestFocus ();
 
 			        		}else{usuario.setBackgroundResource(R.drawable.blanco_btn);}
-			        		if(password.equals(""))
-			        		{
+			        		if(password.equals(""))//si el campo password es  vacio
+			        		{//se marca en rojo y se despliega mensaje
 			        			pass.setBackgroundResource(R.drawable.rojo_btn);
 			        			mensajeError.setText(mensajeError.getText() + " Contraseña");
-			        			if(!user.equals("")){
+			        			if(!user.equals("")){//si el usuario no es null se marca el de pass en focus
 			        				pass.requestFocus ();
 			        			}
-			        			
 			        		}else{pass.setBackgroundResource(R.drawable.blanco_btn);}
 		        		}
-		        		else{
+		        		else{//si no son null, se pone todo en blanco y el mensaje se borra
 		        			usuario.setBackgroundResource(R.drawable.blanco_btn);
 		        			pass.setBackgroundResource(R.drawable.blanco_btn);
 		        			mensajeError.setText("");
-
+		        			//se manda llamar el metodo loginUser de la clase userFunctions
 							JSONObject json = userFunctions.loginUser(user, password);
 							// check la respuesta del login
 							try {//si la respuesta de KEY_Succes contiene algo
@@ -154,12 +152,14 @@ public class MainActivity extends FragmentActivity   {
 		        		}
 		        	}
 		        });
+			//al darle click al boton de registrar, se inicia la activad registrar
 			registrar.setOnClickListener(new  View.OnClickListener(){
 	        	public void onClick(View view){
 	        		Intent intent = new Intent(view.getContext(), Registro.class);
 	                startActivity(intent);
 	        	}
 	        });
+			//al darle click al boton de facebook, se inicia la activad de facebook
 			facebook.setOnClickListener(new  View.OnClickListener(){
 	        	public void onClick(View view){
 	        		Intent intent = new Intent(view.getContext(), Facebook.class);
@@ -167,142 +167,35 @@ public class MainActivity extends FragmentActivity   {
 	        	}
 	        });
         }
-		
-		
-		
-		/*super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        buttonLoginLogout = (Button)findViewById(R.id.facebookbtn);
-        textInstructionsOrLink = (TextView)findViewById(R.id.error);
-
-        Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
-
-        Session session = Session.getActiveSession();
-        if (session == null) {
-            if (savedInstanceState != null) {
-                session = Session.restoreSession(this, null, statusCallback, savedInstanceState);
-            }
-            if (session == null) {
-                session = new Session(this);
-            }
-            Session.setActiveSession(session);
-            if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-                session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-            }
-        }
-
-        updateView();
-		    
-*/
-	
-		/*uiHelper = new UiLifecycleHelper(this, callback);
-	    uiHelper.onCreate(savedInstanceState);
-		if (savedInstanceState == null) {
-			Toast.makeText(getApplicationContext(),"entana de Facebook",Toast.LENGTH_SHORT).show();
-
-	        // Add the fragment on initial activity setup
-	        mainFragment = new MainFragment();
-	        getSupportFragmentManager().beginTransaction().add(android.R.id.content, mainFragment)
-	        .commit();
-	    } else {
-			Toast.makeText(getApplicationContext(),"acebook",Toast.LENGTH_SHORT).show();
-
-	        // Or set the fragment from restored state info
-	        mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(android.R.id.content);
-	    }*/
-	
-		/*
-				*/
-		
-	}/*
-	  @Override
-	    public void onStart() {
-	        super.onStart();
-	        Session.getActiveSession().addCallback(statusCallback);
-	    }
-
-	    @Override
-	    public void onStop() {
-	        super.onStop();
-	        Session.getActiveSession().removeCallback(statusCallback);
-	    }
-
-	    @Override
-	    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	        super.onActivityResult(requestCode, resultCode, data);
-	        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-	    }
-
-	    @Override
-	    protected void onSaveInstanceState(Bundle outState) {
-	        super.onSaveInstanceState(outState);
-	        Session session = Session.getActiveSession();
-	        Session.saveSession(session, outState);
-	    }
-
-	    private void updateView() {
-	        Session session = Session.getActiveSession();
-	        if (session.isOpened()) {
-	        	Intent intent = new Intent(this, Entra.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        		startActivity(intent);
-    			Toast.makeText(getApplicationContext(),session.getAccessToken(),Toast.LENGTH_SHORT).show();
-
-	            buttonLoginLogout.setText("logout");
-	            buttonLoginLogout.setOnClickListener(new OnClickListener() {
-	                public void onClick(View view) { onClickLogout(); }
-	            });
-	            
-	        } else {
-	            textInstructionsOrLink.setText("instr");
-	            buttonLoginLogout.setText("login");
-	            buttonLoginLogout.setOnClickListener(new OnClickListener() {
-	                public void onClick(View view) { onClickLogin(); }
-	            });
-	        }
-	    }
-
-	    private void onClickLogin() {
-	        Session session = Session.getActiveSession();
-	        if (!session.isOpened() && !session.isClosed()) {
-	            session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
-	        } else {
-	        	
-	            Session.openActiveSession(this, true, statusCallback);
-	        }
-	    }
-
-	    private void onClickLogout() {
-	        Session session = Session.getActiveSession();
-	        if (!session.isClosed()) {
-	            session.closeAndClearTokenInformation();
-	        }
-	    }
-
-
-	    private class SessionStatusCallback implements Session.StatusCallback {
-	        @Override
-	        public void call(Session session, SessionState state, Exception exception) {
-	            updateView();
-	        }
-	    }
-	*/
+	}
+	/**
+     * Metodo: onCreateOptionsMenu(),
+     * Metodo que agrega las opciones que se hicieron en menu->main.xml
+     * @param menu
+     * @return bolean, true se hizo corectamente
+     */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
+		//Agrega el menu que se creo para el acerca
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	/**
+     * Metodo: onOptionsItemSelected(),
+     * Metodo que le asigna una accion a realizar a cada opcion de android que se seleccione en android
+     * @param item
+     * @return bolean, true se hizo corectamente
+     */
 	public boolean onOptionsItemSelected(MenuItem item) {
-		//respond to menu item selection
-		switch (item.getItemId()) {
-		case R.id.acerca://se cierra el menu
+		//responde a la seleccion del menu
+		switch (item.getItemId()) {//valor a switchear
+		case R.id.acerca://se abre la clase Acerca al seleccionarla
 			startActivity(new Intent(this, Acerca.class));
-			return true;	 
-					
+			return true;	 	
 		default:
-			return super.onOptionsItemSelected(item);
+			return super.onOptionsItemSelected(item);//si no accion, no hace nada
 		}
 	}
+
 
 }

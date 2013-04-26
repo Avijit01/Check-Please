@@ -6,7 +6,7 @@
     tools:context=".MainActivity" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/ivPictureDelete"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -24,8 +24,9 @@
         android:contentDescription="@string/Logo"
         android:src="@drawable/logo" />
 
+
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tvTotalDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -39,7 +40,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/tvTotalDelete"
         android:layout_centerHorizontal="true"
         android:text="Version 1.0.0"
         android:textAppearance="?android:attr/textAppearanceMedium"

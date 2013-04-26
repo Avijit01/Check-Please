@@ -43,6 +43,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -75,8 +76,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	TextView tvFalta;
 	float gTotal;
 	float falta;
+	ArrayList<Integer> positions;
 
-    private static final int PICK_FRIENDS_ACTIVITY = 1;
+	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
 
@@ -85,14 +87,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	private GraphUser user;
 
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
 
+		positions = new ArrayList<Integer>();
+		
 		Bundle extras = getIntent().getExtras();
-	
 		etTip = (EditText)findViewById(R.id.etTip);
-
+		etTip.setTextColor(Color.parseColor("#787878"));
 		invitar = (Button)findViewById(R.id.bInvitar);
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
@@ -121,11 +123,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		usuarios.add(new Person("Hurr", 137.50f, false));
 		usuarios.add(new Person("Herpa", 85.0f, true));
 		usuarios.add(new Person("Derpa", 32.75f, true));
-		
+
 		if(extras !=null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
 		}
-		
+
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 		etTip.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -149,15 +151,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 			}
 		});
-		
+
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-	
+
 	}
-	
+
 	public void updatePersonAdapter(float tip) {
-		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
@@ -178,29 +180,37 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvFalta.setText(String.valueOf(falta));
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 	/**
-	 * Metodo onOptionsItemSelected
-	 * Defiene las acciones que se tomaran al seleccionar cada menu
-	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
-		//respond to menu item selection
-		switch (item.getItemId()) {
-		case R.id.acerca://se cierra el menu
-			startActivity(new Intent(this, Acerca.class));
+     * Metodo: onCreateOptionsMenu(),
+     * Metodo que agrega las opciones que se hicieron en menu->main.xml
+     * @param menu
+     * @return bolean, true se hizo corectamente
+     */
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.main, menu);
 			return true;
-	case android.R.id.home://se cierra el menu
-		Lista.this.finish();
-		return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
-	}
+		/**
+		 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
+		 *@param item
+		 *elemento que se selecciono
+		 */
+		public boolean onOptionsItemSelected(MenuItem item) {
+		    //respond to menu item selection
+			switch (item.getItemId()) {
+		    case R.id.acerca://si se presiona la opcion de acerca
+		    	startActivity(new Intent(this, Acerca.class));
+		    return true;
+		    case android.R.id.home://si se presiona el regresar a la activad actual
+				Lista.this.finish();
+				return true;
+		    
+		    default:
+		    return super.onOptionsItemSelected(item);
+		}
+		}
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
@@ -218,7 +228,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 			break;
 		case R.id.bInvitar:
-
 			showInfo();
 			break;
 		case R.id.bFacebook:
@@ -237,7 +246,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
 			break;
 		case R.id.bEliminar:
-			Toast.makeText(this, "Eliminar persona(s)", Toast.LENGTH_SHORT);
+			positions.clear();
+			deleteItem();
 			break;
 		}
 	}
@@ -325,6 +335,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
+		AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
+		buscar.setTextColor(Color.parseColor("#787878"));
+		 ArrayList<String> sugerencia = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		    //agrega las opciones al menu
+			sugerencia.add("raul");
+			sugerencia.add("mario");
+			sugerencia.add("cesar");
+			sugerencia.add("ramon");
+	        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, sugerencia);
+	    
+	       buscar.setAdapter(adapter);
+	    
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(checkboxLayout);
 
@@ -334,6 +356,41 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// No hace nada mas que cerrar la ventana de dialogo
+			}
+		});
+
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = helpBuilder.create();
+		//se muestra la ventana de dialogo
+		helpDialog.show();
+	}
+
+	public void deleteItem() {
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		View lvView = inflater.inflate(R.layout.lista_usuarios_delete, null);
+		ListView lvDelete = (ListView)lvView.findViewById(R.id.lvDelete);
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		helpBuilder.setTitle("Eliminar");
+
+		//se toma el layout correspondiente a la ventana del pop up
+		View checkboxLayout = inflater.inflate(R.layout.lista_usuarios_delete, null);
+		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions);
+		lvDelete.setAdapter(deleteAdapter);
+		//se asigna esa vista a la ventana de dialogo
+		helpBuilder.setView(lvView);
+
+
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				positions = adapter.getPositions();
+				for(Integer i : positions) {
+					usuarios.remove(i.intValue());
+				}
+				updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 			}
 		});
 
@@ -354,37 +411,52 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// desired (for instance, to see friends of a friend).
 		FriendPicker.populateParameters(intent, null, true, true);
 		startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
-		/* final FriendPickerFragment fragment = new FriendPickerFragment();
-        Log.d("1", "ONCLICK");
+		
 
-        setFriendPickerListeners(fragment);
-        Log.d("2", "ONCLICK");
-
-        showPickerFragment(fragment);*/
-
-    }
+	}
+	  /**
+     * Metodo: facebook,
+     * Metodo que realiza la accion de abrir la actividad de Facebook
+     */
     private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
+    /**
+     * Metodo: Inicio,
+     * Metodo que realiza la accion de abrir la actividad de Inicio
+     */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
+	/**
+     * Metodo: Acerca,
+     * Metodo que realiza la accion de abrir la actividad de Acerca
+     */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
 		
 	}
+	/**
+     * Metodo: onResume,
+     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+     * carga nuevamente el Menu para reinicar los valores en cero
+     */
 	@Override
 	protected void onResume() {
 	    super.onResume();
 	    cargaMenu();
 	    // Normal case behavior follows
 	}
+	/**
+     * Metodo: cargaMenu(),
+     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+     */
 	void cargaMenu(){
-		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();//obtiene el ActionBar
+	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));
-	    actionBar.setTitle("Pago Individual");
+	            R.drawable.bar_color));//pone color gris
+	    actionBar.setTitle("Pago Individ");//pone el titulo
 	    
 	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 	    //agrega las opciones al menu
@@ -420,7 +492,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//set los elementos del dropdown del actionbar
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 		
-
 	}
-
+	
 }
