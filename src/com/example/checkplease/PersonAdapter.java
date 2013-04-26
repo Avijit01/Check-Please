@@ -45,7 +45,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater();
 			view = inflater.inflate(layoutResourceId, parent, false);
 		}
-		Person p = usuarios.get(position);
+		final Person p = usuarios.get(position);
 
 		if(action == 0) {
 			float tTip;
@@ -57,6 +57,8 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ib.setOnClickListener(new  View.OnClickListener(){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
+						intent.putExtra("Nombre", p.getPicture());
+						intent.putExtra("Total", p.getTotal());
 						context.startActivity(intent);
 					}
 				});
