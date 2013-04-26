@@ -181,34 +181,80 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	private void facebook() {
+	/**
+     * Metodo: onCreateOptionsMenu(),
+     * Metodo que agrega las opciones que se hicieron en menu->main.xml
+     * @param menu
+     * @return bolean, true se hizo corectamente
+     */
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.main, menu);
+			return true;
+		}
+		/**
+		 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
+		 *@param item
+		 *elemento que se selecciono
+		 */
+		public boolean onOptionsItemSelected(MenuItem item) {
+		    //respond to menu item selection
+			switch (item.getItemId()) {
+		    case R.id.acerca://si se presiona la opcion de acerca
+		    	startActivity(new Intent(this, Acerca.class));
+		    return true;
+		    case android.R.id.home://si se presiona el regresar a la activad actual
+				Detalles.this.finish();
+				return true;
+		    
+		    default:
+		    return super.onOptionsItemSelected(item);
+		}
+		}
+	  /**
+     * Metodo: facebook,
+     * Metodo que realiza la accion de abrir la actividad de Facebook
+     */
+    private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
+    /**
+     * Metodo: Inicio,
+     * Metodo que realiza la accion de abrir la actividad de Inicio
+     */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
+	/**
+     * Metodo: Acerca,
+     * Metodo que realiza la accion de abrir la actividad de Acerca
+     */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
 		
 	}
+	/**
+     * Metodo: onResume,
+     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+     * carga nuevamente el Menu para reinicar los valores en cero
+     */
 	@Override
 	protected void onResume() {
 	    super.onResume();
 	    cargaMenu();
 	    // Normal case behavior follows
 	}
+	/**
+     * Metodo: cargaMenu(),
+     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+     */
 	void cargaMenu(){
-		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();//obtiene el ActionBar
+	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));
-	    actionBar.setTitle("Detalles   ");
+	            R.drawable.bar_color));//pone color gris
+	    actionBar.setTitle("Detalles    ");//pone el titulo
 	    
 	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 	    //agrega las opciones al menu
@@ -245,16 +291,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 		
 	}
-	 @Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			// TODO Auto-generated method stub
-			switch (item.getItemId()) {
-			case android.R.id.home://se cierra el menu
-				Detalles.this.finish();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-			}
-		}
+	
+	
 
 }

@@ -39,16 +39,6 @@
 	         android:textSize="7pt" />
 
 	     <Button
-	         android:id="@+id/sigue"
-	         android:layout_width="90dp"
-	         android:layout_height="40dp"
-	         android:layout_alignRight="@+id/mensaje"
-	         android:layout_alignTop="@+id/imageView3"
-	         android:layout_marginTop="31dp"
-	         android:background="@drawable/green_btn"
-	         android:text="@string/aceptar" />
-
-	     <Button
 	         android:id="@+id/regresa"
 	         android:layout_width="90dp"
 	         android:layout_height="40dp"
@@ -58,6 +48,17 @@
 	         android:layout_toLeftOf="@+id/sigue"
 	         android:background="@drawable/op_btn"
 	         android:text="@string/rechazar" />
+
+	     <Button
+	         android:id="@+id/sigue"
+	         android:layout_width="90dp"
+	         android:layout_height="40dp"
+	         android:layout_alignRight="@+id/mensaje"
+	         android:layout_alignTop="@+id/imageView3"
+	         android:layout_marginRight="5dp"
+	         android:layout_marginTop="21dp"
+	         android:background="@drawable/green_btn"
+	         android:text="@string/aceptar" />
 
 	 </RelativeLayout>
 
