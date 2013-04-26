@@ -346,6 +346,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				//agrega al usuario teclado
 				usuarios.add(new Person(usuarios.size(), etNombre.getText().toString()));
 			}
 		});
@@ -382,7 +383,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
-		AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
+		final AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
 		buscar.setTextColor(Color.parseColor("#787878"));
 		ArrayList<String> sugerencia = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 
@@ -394,11 +395,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				JSONObject json_data = jArray.getJSONObject(i);
 				//agrega las opciones al menu
 				sugerencia.add(json_data.getString("nombre"));
-				/*Log.i("log_tag",
-				   ", mall_name"+json_data.getString("nombre")+
-				   ", location"+json_data.getString("mail")
-				  );*/
-
+				
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -417,7 +414,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpBuilder.setPositiveButton("Ok",
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				// No hace nada mas que cerrar la ventana de dialogo
+				//agrega a un usuario existente a la mesa 
+				usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
 			}
 		});
 
@@ -425,6 +423,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		AlertDialog helpDialog = helpBuilder.create();
 		//se muestra la ventana de dialogo
 		helpDialog.show();
+		adapter.notifyDataSetChanged();		
+
 	}
 
 	public void deleteItem() {
