@@ -166,9 +166,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
 			cursor.moveToFirst();
 			int columnIndex = cursor.getColumnIndex( filePathColumn[0] );
-			String picturePath = cursor.getString(columnIndex);
+			path = cursor.getString(columnIndex);
 			cursor.close();
-			foto.setImageBitmap( BitmapFactory.decodeFile(picturePath));
+			foto.setImageBitmap( BitmapFactory.decodeFile(path));
 		}
 	}
 	

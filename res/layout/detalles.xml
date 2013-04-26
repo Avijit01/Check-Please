@@ -114,18 +114,6 @@
     </ListView>
 
     <Button
-        android:id="@+id/agregar"
-        android:layout_width="110dp"
-        android:layout_height="35dp"
-        android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginLeft="35dp"
-        android:background="@drawable/green_btn"
-        android:text="@string/platillo"
-        android:textColor="#ffffffff" />
-
-    <Button
         android:id="@+id/terminar"
         android:layout_width="110dp"
         android:layout_height="35dp"
@@ -134,6 +122,18 @@
         android:layout_marginRight="35dp"
         android:background="@drawable/facebook_button"
         android:text="@string/aorden"
+        android:textColor="#ffffffff" />
+
+    <Button
+        android:id="@+id/agregar"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/terminar"
+        android:background="@drawable/green_btn"
+        android:text="@string/platillo"
         android:textColor="#ffffffff" />
 
 </RelativeLayout>
