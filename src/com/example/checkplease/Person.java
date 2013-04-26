@@ -12,6 +12,12 @@ public class Person {
     	this.paid = paid;
     }
     
+    public Person(String picture) {
+    	this.picture = picture;
+    	total = 0.0f;
+    	paid = false;
+    }
+    
 	public String getPicture() {
 		return picture;
 	}
