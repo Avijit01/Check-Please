@@ -42,7 +42,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-	private ArrayList<String> precios = new ArrayList<String>();
+	private List<String> precios = new ArrayList<String>();
 	private Button agregar, terminar, okBtn;
 	private TextView totalView, name;
 	private EditText nameChange;
@@ -52,6 +52,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private String nombrePref = "";
 	private String total = "0.0";
 	private LazyAdapter adapter;
+	private ListView l;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +81,10 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		totalView.setText(total);
 		precios.add(total);
+		precios.add("10.0");
 		
 		//se declara la lista asociada con la lista del layout
-		ListView l = (ListView) findViewById(R.id.preciosList);
+		l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
 		adapter = new LazyAdapter(this, precios);
 		//se agrega los elementos a la lista
@@ -100,14 +102,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		agregar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		float f = Float.parseFloat(total);
-        		precios.add(f+"");
+        		if (precios.add("10.0"))
+    				Toast.makeText(getApplicationContext(),""+precios.size(),Toast.LENGTH_SHORT).show();
         		adapter.notifyDataSetChanged();
         	}
         });
 		
 		name.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		showInfo();
+        		cambiarNombre();
         	}
         });
 		foto .setOnClickListener( new OnClickListener(){
@@ -123,7 +126,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 	}
 	
-	public void showInfo() {
+	public void cambiarNombre() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo

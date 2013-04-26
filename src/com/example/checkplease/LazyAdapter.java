@@ -1,8 +1,10 @@
 package com.example.checkplease;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,10 @@ import android.widget.TextView;
 public class LazyAdapter extends BaseAdapter {
     
     private Activity activity;
-    private ArrayList<String> data = new ArrayList<String>();
+    private List<String> data = new ArrayList<String>();
     private static LayoutInflater inflater=null;
     
-    public LazyAdapter(Activity a, ArrayList<String> d) {
+    public LazyAdapter(Activity a, List<String> d) {
         activity = a;
         for( int i = 0; i < d.size(); i++ ){
         	data.add( d.get(i) );
@@ -43,6 +45,7 @@ public class LazyAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.detalles_item, null);
 
         EditText text=(EditText)vi.findViewById(R.id.precio);
+        text.setTextColor(Color.parseColor("#787878"));
         text.setText(data.get(position));
         return vi;
     }

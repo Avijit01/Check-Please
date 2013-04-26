@@ -225,7 +225,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			addPerson();
 			break;
 		case R.id.bInvitar:
-			showInfo();
+			invitar();
 			break;
 		case R.id.bFacebook:
 			Session session2 = Session.getActiveSession();
@@ -351,7 +351,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
-	public void showInfo() {
+	public void invitar() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
