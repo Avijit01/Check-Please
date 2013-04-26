@@ -414,8 +414,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpBuilder.setPositiveButton("Ok",
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
+				if(!buscar.getText().toString().equals("")){
 				//agrega a un usuario existente a la mesa 
 				usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
+		}
 			}
 		});
 
