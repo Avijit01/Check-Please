@@ -43,7 +43,6 @@ public class LazyAdapter extends BaseAdapter {
         View vi=convertView;
         if(convertView==null)
             vi = inflater.inflate(R.layout.detalles_item, null);
-
         EditText text=(EditText)vi.findViewById(R.id.precio);
         text.setTextColor(Color.parseColor("#787878"));
         text.setText(data.get(position));

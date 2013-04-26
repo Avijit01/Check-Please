@@ -20,6 +20,7 @@
             android:layout_margin="8dp"
             android:layout_weight="0.23"
             android:background="@drawable/field_bg"
+            android:gravity="center"
             android:ems="10"
             android:inputType="number" />
 

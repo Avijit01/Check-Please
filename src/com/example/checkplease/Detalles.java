@@ -81,7 +81,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		totalView.setText(total);
 		precios.add(total);
-		precios.add("10.0");
 		
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.preciosList);
@@ -101,10 +100,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		agregar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
-        		float f = Float.parseFloat(total);
-        		if (precios.add("10.0"))
-    				Toast.makeText(getApplicationContext(),""+precios.size(),Toast.LENGTH_SHORT).show();
-        		adapter.notifyDataSetChanged();
+        		float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
+        		precios.add("" + f);
+        		adapter = new LazyAdapter(Detalles.this, precios);
+    			Toast.makeText(getApplicationContext(),""+precios.size(),Toast.LENGTH_SHORT).show();
+        		l.setAdapter( adapter );
         	}
         });
 		

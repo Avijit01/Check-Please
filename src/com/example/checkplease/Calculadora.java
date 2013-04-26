@@ -30,6 +30,7 @@ public class Calculadora extends Activity{
 	private double calculo = 0.0;
 	private double aux = 0.0;
 	private char op = 's';
+	private boolean punto = false;
 
 	private String split[], igualText = "0.0";
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -182,6 +183,7 @@ public class Calculadora extends Activity{
 					texto = texto + " + ";
 					result.setText(texto);
 				}
+				punto = false;
 			}
 		});
 
@@ -195,6 +197,7 @@ public class Calculadora extends Activity{
 					texto = texto + " - ";
 					result.setText(texto);
 				}
+				punto = false;
 			}
 		});
 
@@ -208,6 +211,7 @@ public class Calculadora extends Activity{
 					texto = texto + " * ";
 					result.setText(texto);
 				}
+				punto = false;
 			}
 		});
 
@@ -221,13 +225,17 @@ public class Calculadora extends Activity{
 					texto = texto + " / ";
 					result.setText(texto);
 				}
+				punto = false;
 			}
 		});
 		point.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				if(  texto.length() > 0 && !texto.equals("") && texto.charAt(texto.length()-1) != '.' ){
-					texto = texto + ".";
-					result.setText(texto);
+				if( !punto ){
+					if(  texto.length() > 0 && !texto.equals("") && texto.charAt(texto.length()-1) != '.' ){
+						texto = texto + ".";
+						result.setText(texto);
+					}
+				 punto = true; 
 				}
 			}
 		});
@@ -249,6 +257,7 @@ public class Calculadora extends Activity{
 				}
 				texto =  auxTexto;
 				result.setText(texto);
+				punto = false;
 			}
 		});
 
@@ -273,14 +282,15 @@ public class Calculadora extends Activity{
 				igualText = "" + calculo;
 				texto = "" + calculo;
 				calculo = 0.0;
+				punto = false;
 			}
 		});
 		
 		asignar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				split = texto.split(" ");
-				for( int i = 0; i < split.length; i++ ){
-					try{
+				try{
+					for( int i = 0; i < split.length; i++ ){
 							 if( split[i].equals("+") ) op = 's';
 						else if( split[i].equals("-") ) op = 'r';
 						else if( split[i].equals("*") ) op = 'm';
@@ -289,16 +299,17 @@ public class Calculadora extends Activity{
 							aux = Double.parseDouble(split[i]); 
 							realizaOp(op); 
 						}
-					} catch(IllegalArgumentException ex) { 
-						result.setText("ERROR");
 					}
+				} catch(NumberFormatException ex) { 
+					result.setText("ERROR");
 				}
-				result.setText(texto + "\n = " + calculo);
+				result.setText(texto + "\n = " + igualText);
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
 				intent.putExtra("position", getIntent().getExtras().getInt("position"));
 				startActivity(intent);
+				punto = false;
 			}
 		});
 
