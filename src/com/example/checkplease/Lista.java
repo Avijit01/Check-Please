@@ -275,7 +275,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				//Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
 
 				names.add(user.getName());
-				usuarios.add(new Person(usuarios.size(), user.getName()));
+				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
 
 			}
 			results = TextUtils.join(", ", names);
