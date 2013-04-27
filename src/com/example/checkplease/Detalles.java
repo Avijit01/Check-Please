@@ -37,28 +37,37 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * Clase con la que se podran visualizar datos del usuario tanto 
+ * como para visualizarlos como para editarlos
+ * 
+ */
 public class Detalles extends Activity implements OnItemClickListener, OnClickListener{
 
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-	private List<String> precios = new ArrayList<String>();
-	private Button agregar, terminar, okBtn;
-	private TextView totalView, name;
-	private EditText nameChange;
-	private ImageView foto;
+	private List<String> precios = new ArrayList<String>(); //lista de precios en la lista
+	private Button agregar, terminar, okBtn; // boton  agregar y terminar de la vista  detalles
+	private TextView totalView, name; //cuadro de texto del total y del nombre del usuario
+	private EditText nameChange; //cuadro de texto para editar el nombre
+	private ImageView foto; //imageview de la foto del usuario
 	private static final int SELECT_PICTURE = 1;
-	private String path = "";
-	private String nombrePref = "";
-	private String total = "0.0";
-	private LazyAdapter adapter;
-	private ListView l;
+	private String path = "";//path de la imagen del usuario
+	private String nombrePref = "";//nombre al que se cambia el usuario
+	private String total = "0.0";//totalpor default en detalles
+	private DetallesAdapter adapter;//adapter de la lista de productos
+	private ListView l; //vista de la lista
 
 	@Override
+	/**
+     * Metodo que maneja los  datos y eventos  de la actividad Detalles
+     * @return void
+     */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detalles);
 		
+		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			total = "" + extras.getFloat("Total");
@@ -66,33 +75,39 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
+		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-        path = prefs.getString("path","");
+        path = prefs.getString("path",""); //axesa al path pasado
         //nombrePref = prefs.getString("name", "");
-
-		//String precios2[] = {"10","20","30"};
 		
+        //inicializacion de Variables globales
         totalView = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
 		foto = (ImageView)findViewById(R.id.foto);
 		agregar = (Button)findViewById(R.id.agregar);
 		terminar = (Button)findViewById(R.id.terminar);
 		
+		//se cambian los contenidos de las vistas si hay cambio en estas
 		if( !path.equals("") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
 		if( !nombrePref.equals("") ) name.setText(nombrePref);
 		
+		//se asigna el valor por default del total
 		totalView.setText(total);
 		precios.add(total);
 		
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		adapter = new LazyAdapter(this, precios);
+		adapter = new DetallesAdapter(this, precios);
 		//se agrega los elementos a la lista
 		l.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
 		l.setOnItemClickListener(this);
 		
+		/**
+	     * Metodo del evento OnClick que se asgina al boton terminar que regresa a Lista
+	     * @return void
+	     */
 		terminar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Lista.class);
@@ -100,20 +115,37 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         	}
         });
 		
+		/**
+	     * Metodo del evento OnClick que se asgina al boton 
+	     * agregar que agrega un dato a lista de detalles
+	     * @return void
+	     */
 		agregar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
+        		//guardar el valor generado por cada agrega
         		float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
         		precios.add("" + f);
-        		adapter = new LazyAdapter(Detalles.this, precios);
+        		adapter = new DetallesAdapter(Detalles.this, precios);
         		l.setAdapter( adapter );
         	}
         });
 		
+		/**
+	     * Metodo del evento OnClick que se asgina a la vista 
+	     * name que cambia el nombre del usuario
+	     * @return void
+	     */
 		name.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		cambiarNombre();
         	}
         });
+		
+		/**
+	     * Metodo del evento OnClick que se asgina al boton 
+	     * foto que cambia la imgen a desplegar del usuario
+	     * @return void
+	     */
 		foto .setOnClickListener( new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -127,6 +159,10 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 	}
 	
+	/**
+     * Metodo que permite editar el nombre por default del usuario
+     * @return void
+     */
 	public void cambiarNombre() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -156,6 +192,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		dialog.show();
 	}
 	
+	/**
+     * Metodo que nos permite accesar a la galeria de imagenes y traer el path
+     * de la imagen seleccionada
+     * @return void
+     */
 	protected void onActivityResult( int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
 		if( resultCode == RESULT_OK && null != data){
