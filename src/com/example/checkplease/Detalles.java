@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -177,6 +178,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		dialog.setView(view);
 		
 		nameChange = (EditText)view.findViewById(R.id.nameChange);
+		nameChange.setTextColor(Color.parseColor("#787878"));
 
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
