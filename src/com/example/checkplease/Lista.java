@@ -366,7 +366,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if(etNombre.getText().toString() != null)
-					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString()));
+					Log.d("Size", usuarios.size()+"");
+					usuarios.add(usuarios.size(), new Person(usuarios.size(), etNombre.getText().toString()));
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -472,12 +473,22 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				positions = adapter.getPositions();
 				for(Integer i : positions) {
-					usuarios.remove(i.intValue());
-					editor.remove(i.toString());
+					//usuarios.remove(i.intValue());
+					usuarios.get(i.intValue()).setId(-1);
 				}
 				int index = 0;
+				for(int i = 0; i < positions.size(); i++) {
+					for(Person p : usuarios) {
+						if(p.getId() == -1) {
+							usuarios.remove(p);
+							break;
+						}
+					}
+				}
+				editor.clear();
 				for(Person p : usuarios) {
 					p.setId(index++);
+					editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
 				}
 				editor.commit();
 				adapter.notifyDataSetChanged();

@@ -69,7 +69,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						Intent intent = new Intent(view.getContext(), Calculadora.class);
 						intent.putExtra("position", this.getPosition());
 						context.startActivity(intent);
-						Log.d("Clicked", p.getPicture() + " " + p.getTotal());
+						Log.d("Clicked",this.getPosition() + " " + p.getPicture() + " " + p.getTotal());
 					}
 				});
 				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
