@@ -102,11 +102,18 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lista_usuarios);
 
+		String[] users;
+		// Arreglo para saber que posiciones se desean eliminar
 		positions = new ArrayList<Integer>();
-		sharedPrefs = getSharedPreferences("List", MODE_PRIVATE);
+		// Preferencias para guardar la informacion de la aplicacion
+		sharedPrefs = getSharedPreferences("Prefs", MODE_PRIVATE);
 		editor = sharedPrefs.edit();
 
+		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
+
+		// Informacion enviada por otras actividades
 		Bundle extras = getIntent().getExtras();
+		// Vistas presentes
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
 		invitar = (Button)findViewById(R.id.bInvitar);
@@ -133,9 +140,17 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		});*/
 
 		usuarios = new ArrayList<Person>();
-		usuarios.add(new Person(usuarios.size(), "You", 0.0f, false));
+		if(!users[0].equalsIgnoreCase("")) {
+			for(String s : users) {
+				String[] usr = s.split("=|;");
+				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]));
+				usuarios.add(p);
+			}
+		} else {
+			usuarios.add(new Person(usuarios.size(), "Yo", 0.0f, false));
+		}
 
-		if(extras !=null) {
+		if(extras != null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
 			seleccionaAmigos = extras.getInt("friends");
 		}
@@ -176,17 +191,19 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	protected void onPause() {
 		super.onPause();
 		for(Person p : usuarios) {
-			editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal());
+			editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
 		}
 		editor.commit();
 	}
 
+	// Metodo para actualizar la lista de usuarios y sus totales
 	public void updatePersonAdapter(float tip) {
 		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
 
+	// Actualiza el total de todas las personas
 	public void updateTotal() {
 		gTotal = 0;
 		for(Person p : usuarios)
@@ -194,6 +211,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal.setText(String.valueOf(gTotal));
 	}
 
+	// Actualiza la cantidad que falta por pagar
 	public void updateRemaining() {
 		falta = 0;
 		for(Person p : usuarios) {
@@ -356,6 +374,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		.show();
 	}
 
+	// Agregar una persona a la lista de usuarios
 	public void addPerson() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
@@ -373,7 +392,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				usuarios.add(new Person(usuarios.size(), etNombre.getText().toString()));
+				if(etNombre.getText().toString() != null)
+					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString()));
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -399,6 +419,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
+	// Agrega a una persona a la lista de usuarios si tienen cuenta
 	public void invitar() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
@@ -454,6 +475,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
+	// Elimina elementos de la lista de usuarios
 	public void deleteItem() {
 		//se toma el Layout Inflater
 		LayoutInflater inflater = getLayoutInflater();
@@ -478,7 +500,13 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				positions = adapter.getPositions();
 				for(Integer i : positions) {
 					usuarios.remove(i.intValue());
+					editor.remove(i.toString());
 				}
+				int index = 0;
+				for(Person p : usuarios) {
+					p.setId(index++);
+				}
+				editor.commit();
 				adapter.notifyDataSetChanged();
 			}
 		});

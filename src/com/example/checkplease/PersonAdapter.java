@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PersonAdapter extends ArrayAdapter<Person> {
 
@@ -47,6 +48,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		}
 		final Person p = usuarios.get(position);
 
+		// Vista normal, despliega a los usuarios
 		if(action == 0) {
 			float tTip;
 			if (p != null) {
@@ -67,6 +69,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						Intent intent = new Intent(view.getContext(), Calculadora.class);
 						intent.putExtra("position", this.getPosition());
 						context.startActivity(intent);
+						Log.d("Clicked", p.getPicture() + " " + p.getTotal());
 					}
 				});
 				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
@@ -82,6 +85,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				p.setTotalTip(tTip);
 			}
 		}
+		// Vista para eliminar usuarios
 		else if(action == 1) {
 			if (p != null) {
 				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
