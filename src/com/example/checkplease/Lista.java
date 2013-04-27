@@ -365,8 +365,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				if(etNombre.getText().toString() != null)
-					Log.d("Size", usuarios.size()+"");
+				if(!etNombre.getText().toString().equals(""))
 					usuarios.add(usuarios.size(), new Person(usuarios.size(), etNombre.getText().toString()));
 			}
 		});
