@@ -16,10 +16,6 @@ import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Facebook.DialogListener;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
@@ -28,7 +24,6 @@ import com.facebook.widget.PickerFragment;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -66,9 +61,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	private final String PENDING_ACTION_BUNDLE_KEY = "com.facebook.samples.lista:PendingAction";
-	private static String APP_ID = "533323013384570";
-	private Facebook mFacebook = new Facebook(APP_ID);
-	ProgressDialog dialog;
 
 	// Definicion de los botones presentes en la vista
 	Button regresa;
@@ -126,7 +118,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		invitar.setOnClickListener(this);
 		eliminar.setOnClickListener(this);
 		facebook.setOnClickListener(this);
-		/*facebook.setOnTouchListener(new OnTouchListener() {
+		facebook.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent me) {
 				if (me.getAction() == MotionEvent.ACTION_DOWN) {
@@ -137,7 +129,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				return false;
 			}
-		});*/
+		});
 
 		usuarios = new ArrayList<Person>();
 		if(!users[0].equalsIgnoreCase("")) {
@@ -259,7 +251,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			addPerson();
 			break;
 		case R.id.bInvitar:
-			invitar();
+			showInfo();
 			break;
 		case R.id.bFacebook:
 			Session session2 = Session.getActiveSession();
@@ -313,26 +305,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// mensajeFace.setText(results);
 	}
 	private void postStatusUpdate() {
-		Facebook facebookapp = new Facebook(APP_ID);
-		facebookapp.dialog(this, "feed", new DialogListener() {
-
-			@Override
-			public void onFacebookError(FacebookError e) {
-			}
-
-			@Override
-			public void onError(DialogError e) {
-			}
-
-			@Override
-			public void onComplete(Bundle values) {
-			}
-
-			@Override
-			public void onCancel() {
-			}
-		});
-		/*if (user != null ) {
+		if (user != null ) {
 			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
 			Request request = Request
 
@@ -350,7 +323,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Log.d("sale", "ONCLICK");
 
 			//pendingAction = PendingAction.POST_STATUS_UPDATE;
-		}*/
+		}
 	}
 	private interface GraphObjectWithId extends GraphObject {
 		String getId();
@@ -419,8 +392,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
-	// Agrega a una persona a la lista de usuarios si tienen cuenta
-	public void invitar() {
+	public void showInfo() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
 		//se le asigna el titulo a la ventana de dialogo
@@ -430,7 +402,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		LayoutInflater inflater = getLayoutInflater();
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.invitar, null);
-		AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
+		final AutoCompleteTextView buscar = (AutoCompleteTextView) checkboxLayout.findViewById(R.id.sugerencias);
 		buscar.setTextColor(Color.parseColor("#787878"));
 		ArrayList<String> sugerencia = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 
@@ -442,11 +414,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				JSONObject json_data = jArray.getJSONObject(i);
 				//agrega las opciones al menu
 				sugerencia.add(json_data.getString("nombre"));
-				/*Log.i("log_tag",
-				   ", mall_name"+json_data.getString("nombre")+
-				   ", location"+json_data.getString("mail")
-				  );*/
-
+				
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -465,7 +433,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpBuilder.setPositiveButton("Ok",
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				// No hace nada mas que cerrar la ventana de dialogo
+				if(!buscar.getText().toString().equals("")){
+				//agrega a un usuario existente a la mesa 
+				usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
+		}
 			}
 		});
 
@@ -473,6 +444,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		AlertDialog helpDialog = helpBuilder.create();
 		//se muestra la ventana de dialogo
 		helpDialog.show();
+		adapter.notifyDataSetChanged();		
+
 	}
 
 	// Elimina elementos de la lista de usuarios

@@ -303,7 +303,7 @@ public class Calculadora extends Activity{
 				} catch(NumberFormatException ex) { 
 					result.setText("ERROR");
 				}
-				result.setText(texto + "\n = " + igualText);
+				result.setText(texto);
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
