@@ -23,19 +23,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Calculadora extends Activity{
+	//botones numerioc de la calculadora
 	private Button regresa, igual, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, cero;
+	//botones de signos de caluculadora
 	private Button suma, resta, multi, div, erase, delete, asignar, point;
-	private EditText result;
-	private String texto = "";
-	private double calculo = 0.0;
-	private double aux = 0.0;
-	private char op = 's';
-	private boolean punto = false;
+	private EditText result;//cuadro de texto donde aparece el resultado
+	private String texto = ""; //lo que pararece en result
+	private double calculo = 0.0; //variable que maneja los calculos realizados
+	private double aux = 0.0; //auxiliar del calculo
+	private char op = 's';//variable para manejar que signo esta activo
+	private boolean punto = false;//variable que sirve para validar el punto decimal
 
+	//split donde se guardan los datos dados por texto, igualText valida si se dio igual o no
 	private String split[], igualText = "0.0";
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-
+	/**
+	 * Metodo que maneja lacciones de la calculadora
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -43,7 +48,7 @@ public class Calculadora extends Activity{
 
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 
-		
+		//inicializacion de botnoes y vistas
 		uno = (Button)findViewById(R.id.button1);
 		dos = (Button)findViewById(R.id.button2);
 		tres = (Button)findViewById(R.id.button3);
@@ -72,17 +77,10 @@ public class Calculadora extends Activity{
 		result.setInputType(InputType.TYPE_NULL);
 		result.setTextColor(Color.parseColor("#787878"));
 
-		
-		asignar.setOnClickListener(new  View.OnClickListener(){
-			public void onClick(View view){
-				Intent intent = new Intent(view.getContext(), Lista.class);
-				intent.putExtra("totalIndi", calculo);
-				intent.putExtra("calculos", split);
-				startActivity(intent);
-
-			}
-		});
-
+		/**
+		 * Metodo que maneja el boton 1
+		 * @return void
+		 */
 		uno.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -91,7 +89,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 2
+		 * @return void
+		 */
 		dos.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -100,7 +101,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 3
+		 * @return void
+		 */
 		tres.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -109,7 +113,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 4
+		 * @return void
+		 */
 		cuatro.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -118,7 +125,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 5
+		 * @return void
+		 */
 		cinco.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -127,7 +137,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 6
+		 * @return void
+		 */
 		seis.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -136,7 +149,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 7
+		 * @return void
+		 */
 		siete.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -145,7 +161,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 8
+		 * @return void
+		 */
 		ocho.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -154,7 +173,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 9
+		 * @return void
+		 */
 		nueve.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -163,7 +185,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton 0
+		 * @return void
+		 */
 		cero.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( texto.equals(igualText) ) texto = "";
@@ -172,7 +197,10 @@ public class Calculadora extends Activity{
 				result.setText(texto);
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton +
+		 * @return void
+		 */
 		suma.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if(  texto.length() == 1 || !texto.equals("") 
@@ -186,7 +214,10 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton -
+		 * @return void
+		 */
 		resta.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if(  texto.length() == 1 || !texto.equals("") 
@@ -200,7 +231,10 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton *
+		 * @return void
+		 */
 		multi.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if(  texto.length() == 1 || !texto.equals("") 
@@ -214,7 +248,10 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton /
+		 * @return void
+		 */
 		div.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if(  texto.length() == 1 || !texto.equals("") 
@@ -228,6 +265,10 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
+		/**
+		 * Metodo que maneja el boton punto
+		 * @return void
+		 */
 		point.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if( !punto ){
@@ -239,7 +280,10 @@ public class Calculadora extends Activity{
 				}
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton erase
+		 * @return void
+		 */
 		erase.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				texto = "";
@@ -248,7 +292,10 @@ public class Calculadora extends Activity{
 				op = 's';
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton delete
+		 * @return void
+		 */
 		delete.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				String auxTexto = "";
@@ -260,10 +307,15 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
-
+		/**
+		 * Metodo que maneja el boton igual
+		 * @return void
+		 */
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				split = texto.split(" ");
+				//va verificando split al encontrarse con un numero hace el calculo con 
+				//simbolo activo que por default es 's'
 				for( int i = 0; i < split.length; i++ ){
 					try{
 							 if( split[i].equals("+") ) op = 's';
@@ -285,11 +337,16 @@ public class Calculadora extends Activity{
 				punto = false;
 			}
 		});
-		
+		/**
+		 * Metodo que maneja el boton asignar que regresa el total a la Lista
+		 * @return void
+		 */
 		asignar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				split = texto.split(" ");
 				try{
+					//va verificando split al encontrarse con un numero hace el calculo con 
+					//simbolo activo que por default es 's'
 					for( int i = 0; i < split.length; i++ ){
 							 if( split[i].equals("+") ) op = 's';
 						else if( split[i].equals("-") ) op = 'r';
@@ -304,6 +361,7 @@ public class Calculadora extends Activity{
 					result.setText("ERROR");
 				}
 				result.setText(texto);
+				//se regresan los valores necesarios a la lista
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
@@ -314,7 +372,10 @@ public class Calculadora extends Activity{
 		});
 
 	}
-
+/**
+ * MEtodo que realiza las operciones de la calculadora
+ * @param op
+ */
 	public void realizaOp(char op){
 		switch( op ){
 		case 's': calculo += aux; break;
