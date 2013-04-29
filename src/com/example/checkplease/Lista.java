@@ -81,6 +81,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	TextView tvFalta;
 	float gTotal;
 	float falta;
+	int idMesa = 0;
 	ArrayList<Integer> positions;
 	int seleccionaAmigos = 0;//si abrira el popup para selccionar amigos
 
@@ -145,10 +146,13 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if(extras != null) {
 			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
 			seleccionaAmigos = extras.getInt("friends");
+			idMesa = extras.getInt("idMesa");
 		}
 		if(seleccionaAmigos == 1){
 			onClickPickFriends();
 		}
+		Toast.makeText(getApplicationContext(),"Agrega"+idMesa,Toast.LENGTH_SHORT).show();
+
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 		etTip.addTextChangedListener(new TextWatcher() {
 			@Override

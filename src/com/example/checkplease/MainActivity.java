@@ -3,6 +3,7 @@ package com.example.checkplease;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,8 +83,11 @@ public class MainActivity extends FragmentActivity   {
 		 StrictMode.setThreadPolicy(policy); 
 		 //checa en la base de datos local si esta logeado, y se habre la clase Entra
 		 if(userFunctions.isUserLoggedIn(getApplicationContext())){
+			 HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
 			 Intent intent = new Intent(this, Entra.class);
 			 intent.putExtra("logeado",1);//envia el parametro de que esta logeado
+			 intent.putExtra("nombre",(String)user.get("name"));
+			 intent.putExtra("mesa",Integer.parseInt(user.get("mesa")));
      		startActivity(intent);
 		 }else{//sino se habre la calse principal
 			 setContentView(R.layout.activity_main);
@@ -140,6 +144,8 @@ public class MainActivity extends FragmentActivity   {
 										db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
 										//se manda a la clase Entra
 										Intent intent = new Intent(view.getContext(), Entra.class);
+										 HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+										 intent.putExtra("nombre",(String)user2.get("name"));
 										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						        		startActivity(intent);
 										

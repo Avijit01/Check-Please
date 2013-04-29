@@ -2,6 +2,7 @@
 package com.example.checkplease.libreria;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -89,6 +90,14 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	public JSONObject getInfoMesa(int mesa){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "getInfoMesa"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	/**
 	 * funcion isUserLoggedIn
 	 * Checa en la base de datos local si tiene iniciada la sesion el usuario
@@ -103,6 +112,10 @@ public class UserFunctions {
 			return true;
 		}
 		return false;
+	}
+	public HashMap<String, String> getUsuarioId(Context context){
+		DatabaseHandler db = new DatabaseHandler(context);
+			return db.getUserDetails();
 	}
 	
 	/**

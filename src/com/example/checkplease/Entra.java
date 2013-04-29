@@ -1,6 +1,7 @@
 package com.example.checkplease;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,9 +14,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -38,23 +41,33 @@ public class Entra extends Activity {
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 	int numeroMesa = 0;
 	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
-
+	String usuario, nombreRestaurante;
 	private Button regresa, igual, individual;
 	private float total, propina;
 	private int personas;
+	//DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+
 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forma_de_pago);
 		
-		
 		cargaMenu();
-		
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
+        numeroMesa = prefs.getInt("Mesa", 0);
+        nombreRestaurante = prefs.getString("RESTAURANTE", "");
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
+
 		if(extras !=null){//si no es nulo
 			 estaLogeado = extras.getInt("logeado");//toma el valor de 1
+			 usuario = extras.getString("nombre");
+
+			 if(extras.getInt("mesa")!=0)
+			 { numeroMesa = extras.getInt("mesa");}
 		}
+		
+		Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
 		restaurante = (EditText)findViewById(R.id.restaurante);
@@ -67,7 +80,26 @@ public class Entra extends Activity {
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-	
+		if(numeroMesa != 0){//si tiene una mesa cargada
+			JSONObject json = userFunctions.getInfoMesa(numeroMesa);
+			try {//si la respuesta de KEY_Succes contiene algo
+				if (json.getString("success") != null) {
+					String res = json.getString("success"); 					
+					if(Integer.parseInt(res) == 1){//si se accedio
+						JSONObject json_mesa = json.getJSONObject("mesa");
+						restaurante.setText(json_mesa.getString("restaurante"));
+						restaurante.setInputType(InputType.TYPE_NULL);
+						//cambiar color a null					
+					}else{
+						// Error al cargar los datos
+						//mensajeError.setText("Usuario y/o contraseña incorrectos");
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
@@ -75,16 +107,26 @@ public class Entra extends Activity {
 			    actionBar.setTitle("Pago igual ");
 			    etTotal.requestFocus ();
 				divIgual.setVisibility(view.VISIBLE);
-				
-				numeroMesa = agregaRestaurante(restaurante);
+				restaurante.setInputType(InputType.TYPE_NULL);
+				if(numeroMesa== 0){
+					numeroMesa = agregaRestaurante(restaurante);
+					nombreRestaurante = restaurante.getText().toString();
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					db.addMesa(usuario, numeroMesa);
+				}
 			}
 
 		});
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				numeroMesa = agregaRestaurante(restaurante);
+				if(numeroMesa== 0){
+					numeroMesa = agregaRestaurante(restaurante);
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					db.addMesa(usuario, numeroMesa);
+				}			
 				divIgual.setVisibility(RelativeLayout.INVISIBLE);
 				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("idMesa", numeroMesa);
 				startActivity(intent);
 			}
 		});
@@ -316,6 +358,15 @@ public class Entra extends Activity {
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 		
 	}
-	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
+		SharedPreferences.Editor editor = prefs.edit(); 
+		editor.putInt("MESA", numeroMesa); 
+		editor.putString("RESTAURANTE", nombreRestaurante); 
+		editor.commit(); 
+	}
 	
 }
