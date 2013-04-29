@@ -134,14 +134,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//	editor.putString(String.valueOf(extras.getInt("position")), "null;" + (float)extras.getDouble("totalIndi") + ";false");
 		//	editor.commit();
 		//}
-		
+
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
-		
+
 		usuarios = new ArrayList<Person>();
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 		if(!users[0].equalsIgnoreCase("")) {
-			for(int i = users.length-1; i >= 0; i--) {
+			Arrays.sort(users);
+			for(int i = 0; i < users.length; i++) {
 				String s = users[i];
 				String[] usr = s.split("=|;");
 				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]));
@@ -153,6 +154,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if(extras != null) {
 			Person person = usuarios.get(extras.getInt("position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
+			if(extras.getString("Path") != null)
+				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
 			editor.putString(String.valueOf(person.getId()), person.getPicture() + ";" + person.getTotal() + ";" + person.isPaid());
 			editor.commit();
@@ -186,6 +189,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
+
+		/*if(extras != null)
+			for(Person p : usuarios)
+				userFunctions.guardaLista(extras.getInt("mesa"), p.getPicture(), p.getTotal(), p.isPaid());*/
 	}
 
 	@Override
@@ -423,7 +430,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				JSONObject json_data = jArray.getJSONObject(i);
 				//agrega las opciones al menu
 				sugerencia.add(json_data.getString("nombre"));
-				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -443,9 +450,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if(!buscar.getText().toString().equals("")){
-				//agrega a un usuario existente a la mesa 
-				usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-		}
+					//agrega a un usuario existente a la mesa 
+					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
+				}
 			}
 		});
 

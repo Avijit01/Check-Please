@@ -58,6 +58,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private String total = "0.0";//totalpor default en detalles
 	private DetallesAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
+	private int position;
 
 	@Override
 	/**
@@ -73,6 +74,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			total = "" + extras.getFloat("Total");
 			nombrePref = extras.getString("Nombre");
+			position = extras.getInt("Position");
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
@@ -112,6 +114,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		terminar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Lista.class);
+        		intent.putExtra("Path", path);
+        		intent.putExtra("Position", position);
                 startActivity(intent);
         	}
         });
