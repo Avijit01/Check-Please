@@ -3,6 +3,7 @@ package com.example.checkplease;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -102,8 +103,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		sharedPrefs = getSharedPreferences("Prefs", MODE_PRIVATE);
 		editor = sharedPrefs.edit();
 
-		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
-
 		// Informacion enviada por otras actividades
 		Bundle extras = getIntent().getExtras();
 		// Vistas presentes
@@ -132,9 +131,20 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
+		//if(extras != null) {
+		//	editor.putString(String.valueOf(extras.getInt("position")), "null;" + (float)extras.getDouble("totalIndi") + ";false");
+		//	editor.commit();
+		//}
+
+		// Parse al string para saber los valores guardados
+		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
+
 		usuarios = new ArrayList<Person>();
+		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 		if(!users[0].equalsIgnoreCase("")) {
-			for(String s : users) {
+			Arrays.sort(users);
+			for(int i = 0; i < users.length; i++) {
+				String s = users[i];
 				String[] usr = s.split("=|;");
 				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]));
 				usuarios.add(p);
@@ -142,11 +152,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		} else {
 			usuarios.add(new Person(usuarios.size(), "Yo", 0.0f, false));
 		}
-
 		if(extras != null) {
-			usuarios.get(extras.getInt("position")).setTotal((float)extras.getDouble("totalIndi"));
+			Person person = usuarios.get(extras.getInt("position"));
+			person.setTotal((float)extras.getDouble("totalIndi"));
+			if(extras.getString("Path") != null)
+				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
 			idMesa = extras.getInt("idMesa");
+			editor.putString(String.valueOf(person.getId()), person.getPicture() + ";" + person.getTotal() + ";" + person.isPaid());
+			editor.commit();
 		}
 		if(seleccionaAmigos == 1){
 			onClickPickFriends();
@@ -180,7 +194,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
-
+		/*if(extras != null)
+			for(Person p : usuarios)
+				userFunctions.guardaLista(extras.getInt("mesa"), p.getPicture(), p.getTotal(), p.isPaid());*/
 	}
 
 	@Override
@@ -370,7 +386,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if(!etNombre.getText().toString().equals(""))
-					usuarios.add(usuarios.size(), new Person(usuarios.size(), etNombre.getText().toString()));
+					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -418,7 +434,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				JSONObject json_data = jArray.getJSONObject(i);
 				//agrega las opciones al menu
 				sugerencia.add(json_data.getString("nombre"));
-				
+
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -438,9 +454,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if(!buscar.getText().toString().equals("")){
-				//agrega a un usuario existente a la mesa 
-				usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-		}
+					//agrega a un usuario existente a la mesa 
+					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
+				}
 			}
 		});
 

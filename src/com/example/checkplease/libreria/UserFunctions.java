@@ -95,6 +95,18 @@ public class UserFunctions {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "getInfoMesa"));
 		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+	JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
+	
+	public JSONObject guardaLista(int mesa, String path, float total, boolean isPaid){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "guardaLista"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("path", path));
+		params.add(new BasicNameValuePair("total", Float.toString(total)));
+		params.add(new BasicNameValuePair("personas", Boolean.toString(isPaid)));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}

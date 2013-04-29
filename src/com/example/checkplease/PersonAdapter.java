@@ -56,11 +56,12 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
 				TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
 				CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
-				ib.setOnClickListener(new  View.OnClickListener(){
+				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
 						intent.putExtra("Nombre", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
+						intent.putExtra("Position", this.getPosition());
 						context.startActivity(intent);
 					}
 				});
@@ -69,7 +70,6 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						Intent intent = new Intent(view.getContext(), Calculadora.class);
 						intent.putExtra("position", this.getPosition());
 						context.startActivity(intent);
-						//Log.d("Clicked",this.getPosition() + " " + p.getPicture() + " " + p.getTotal());
 					}
 				});
 				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(p) {
@@ -90,8 +90,14 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 			if (p != null) {
 				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
-				CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
+				final CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
 				tvTotal.setText(String.valueOf(p.getTotal()));
+				view.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						cb.setChecked(cb.isChecked() ^ true);
+					}
+				});
 				cb.setOnCheckedChangeListener(new CustomOnCheckedChangeListener(position) {
 					public void onCheckedChanged(CompoundButton cb, boolean isChecked){
 						int index;
