@@ -151,7 +151,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			for(int i = 0; i < users.length; i++) {
 				String s = users[i];
 				String[] usr = s.split("=|;");
-				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]));
+				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
 				usuarios.add(p);
 			}
 		} else {//agrega el prime usuario que es la persona que esta logeada
@@ -166,9 +166,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
-			//if(extras.getInt("idMesa")!=0){
-			//idMesa = extras.getInt("idMesa");}
-			editor.putString(String.valueOf(person.getId()), person.getPicture() + ";" + person.getTotal() + ";" + person.isPaid());
+			idMesa = extras.getInt("idMesa");
+			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();
 		}
 		if(seleccionaAmigos == 1){
@@ -212,11 +211,12 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	protected void onPause() {
 		super.onPause();
 		for(Person p : usuarios) {
-			editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
+			editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 			Log.e("pagado",":"+p.isPaid());
 			pagado =1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
 			userFunctions.guardaLista(idMesa, p.getId(), p.getPicture(), p.getTotal(), pagado, " ");
+
 		}
 		
 		editor.commit();
@@ -528,7 +528,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				editor.clear();
 				for(Person p : usuarios) {
 					p.setId(index++);
-					editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
+					editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 				}
 				editor.commit();
 				adapter.notifyDataSetChanged();

@@ -2,21 +2,32 @@ package com.example.checkplease;
 
 public class Person {
 	private int id;
+	private String name;
 	private String picture;
     private float total;
     private float totalTip;
     private boolean paid;
     
-    public Person(int id, String picture, float total, boolean paid) {
+    public Person(int id, String name, float total, boolean paid, String picture) {
     	this.id = id;
     	this.picture = picture;
     	this.total = total;
     	this.paid = paid;
+    	this.name = name;
     }
     
-    public Person(int id, String picture) {
+    public Person(int id, String name, float total, boolean paid) {
     	this.id = id;
-    	this.picture = picture;
+    	this.total = total;
+    	this.paid = paid;
+    	this.name = name;
+    	picture = "null";
+    }
+    
+    public Person(int id, String name) {
+    	this.id = id;
+    	this.name = name;
+    	picture = "null";
     	total = 0.0f;
     	paid = false;
     }
@@ -58,6 +69,14 @@ public class Person {
 		this.id = id;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String toString() {
 		return id + " " + picture + " " + total + " " + paid;
 	}

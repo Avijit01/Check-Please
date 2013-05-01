@@ -213,7 +213,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			int columnIndex = cursor.getColumnIndex( filePathColumn[0] );
 			path = cursor.getString(columnIndex);
 			cursor.close();
-			foto.setImageBitmap( BitmapFactory.decodeFile(path));
+			foto.setImageBitmap(BitmapFactory.decodeFile(path));
 		}
 	}
 	

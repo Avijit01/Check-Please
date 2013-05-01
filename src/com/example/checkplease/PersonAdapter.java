@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -56,10 +57,13 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
 				TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
 				CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
+				if(!p.getPicture().equals("null")) {
+					ib.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
+				}
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
-						intent.putExtra("Nombre", p.getPicture());
+						intent.putExtra("Nombre", p.getName());
 						intent.putExtra("Total", p.getTotal());
 						intent.putExtra("Position", this.getPosition());
 						context.startActivity(intent);
@@ -92,6 +96,9 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
 				final CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
 				tvTotal.setText(String.valueOf(p.getTotal()));
+				if(!p.getPicture().equals("null")) {
+					iv.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
+				}
 				view.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
