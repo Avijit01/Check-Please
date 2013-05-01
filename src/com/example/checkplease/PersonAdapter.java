@@ -67,6 +67,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						intent.putExtra("Nombre", p.getName());
 						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
+						intent.putExtra("Path", p.getPicture());
 						intent.putExtra("Position", this.getPosition());
 						intent.putExtra("Position", p.isPaid());
 						context.startActivity(intent);
@@ -75,7 +76,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				tvTotal.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Calculadora.class);
-						intent.putExtra("position", this.getPosition());
+						intent.putExtra("Position", this.getPosition());
 						context.startActivity(intent);
 					}
 				});

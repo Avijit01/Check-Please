@@ -88,7 +88,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		setContentView(R.layout.detalles);
 
 		//Valores que se guardan mientras este abierta la aplicacion
-				SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 		if( path.equals("null")){
 			path = prefs.getString("path",""); //axesa al path pasado
 		}
@@ -313,7 +313,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
      */
 	protected void onActivityResult( int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
-		if( resultCode == RESULT_OK && null != data){
+		if(resultCode == RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
