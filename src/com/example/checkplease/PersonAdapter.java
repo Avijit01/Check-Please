@@ -64,6 +64,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
 						intent.putExtra("Nombre", p.getName());
+						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
 						intent.putExtra("Position", this.getPosition());
 						context.startActivity(intent);

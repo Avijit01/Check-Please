@@ -74,14 +74,17 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			total = "" + extras.getFloat("Total");
 			nombrePref = extras.getString("Nombre");
+			path = extras.getString("Picture");
 			position = extras.getInt("Position");
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-        path = prefs.getString("path",""); //axesa al path pasado
-        //nombrePref = prefs.getString("name", "");
+		if( path.equals("")){
+	        path = prefs.getString("path",""); //axesa al path pasado
+		}
+		nombrePref = prefs.getString("name", "");
 		
         //inicializacion de Variables globales
         totalView = (TextView)findViewById(R.id.total);
