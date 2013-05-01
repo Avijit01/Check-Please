@@ -150,7 +150,10 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				intent.putExtra("Nombre", nombrePref);
 				intent.putExtra("Position", position);
 				startActivity(intent);
-				editor.clear();
+				/*if( editor == null ){
+					editor.clear();
+					editor.commit();
+				}*/
 				finish();
 			}
 		});
