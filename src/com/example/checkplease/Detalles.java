@@ -148,8 +148,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("Path", path);
 				intent.putExtra("Position", position);
+				intent.putExtra("totalIndi", Double.parseDouble(total));
 				startActivity(intent);
-				editor.clear();
+				//editor.clear();
 				finish();
 			}
 		});

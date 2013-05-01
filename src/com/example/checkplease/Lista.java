@@ -192,12 +192,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if(extras != null) {
 			Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
-			Log.d("PersonId", extras.getInt("Position") + "");
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
 			idMesa = extras.getInt("idMesa");
-			Log.d("String", String.valueOf(person.getId()) + ";" + person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();
 		}
