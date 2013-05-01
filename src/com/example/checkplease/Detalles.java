@@ -103,7 +103,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			nombrePref = extras.getString("Nombre");
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
-			if( extras.getBoolean("Position") ) paid = 1; else paid = 0;
+			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
