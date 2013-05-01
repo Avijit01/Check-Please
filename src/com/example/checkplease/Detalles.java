@@ -143,6 +143,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         	public void onClick(View view){
         		Intent intent = new Intent(view.getContext(), Lista.class);
         		intent.putExtra("Path", path);
+        		intent.putExtra("Nombre", nombrePref);
         		intent.putExtra("Position", position);
                 startActivity(intent);
                 editor.clear();
@@ -169,12 +170,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         				"aplicacion las cuentas saldran en uninstante.\n\n" +
         				"Descargalo YA!!!\n\n" +
         				"play.google.com";
-        		try {
+        		/*try {
 					sendMail(to, from, subject, body);
 				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					Log.d("MAIL", e+"");				
+				}*/
         	}
         });
 		
@@ -207,7 +207,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 	}
 	
-	public void sendMail(String to, String from, String subject, String body) throws MessagingException {
+	public void sendMail(String to, String from, String subject, String body) throws MessagingException{
         // 1 - get a mail session
         Properties props = new Properties();
         props.put("mail.transport.protocol", "smtp");
