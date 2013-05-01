@@ -103,8 +103,9 @@ public class MainActivity extends FragmentActivity   {
 			entrar = (Button)findViewById(R.id.entrarbtn);
 
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netInfo = cm.getActiveNetworkInfo();
-			if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
 				isOnline = true;
 			} else {
 				isOnline = false;
