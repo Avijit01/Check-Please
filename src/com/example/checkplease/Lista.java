@@ -72,7 +72,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
-    private ProfilePictureView profilePictureView;
+	private ProfilePictureView profilePictureView;
 	// Variables que maneja la vista para calculos
 	SharedPreferences sharedPrefs;
 	SharedPreferences.Editor editor;
@@ -118,7 +118,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
-      //	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
+		//	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
 		isOnline = extras.getBoolean("online");
 
 		// Agregar click listener
@@ -139,48 +139,55 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
-		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
-		idMesa = Integer.parseInt(user.get("mesa"));
-		//if(extras != null) {
-		//	editor.putString(String.valueOf(extras.getInt("position")), "null;" + (float)extras.getDouble("totalIndi") + ";false");
-		//	editor.commit();
-		//}
-		JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
-		JSONArray jArray;
-		try {
-			jArray = json.getJSONArray("usuariosMesa");
-			for(int i=0;i<jArray.length();i++){
-				JSONObject json_data = jArray.getJSONObject(i);
-				/*json_data.getInt("idSistema");
-				json_data.getString("nombre");
-				json_data.getDouble("total");
-				json_data.getInt("pagado");
-				json_data.getString("path");*/
-				//json_data.getString("nombre")
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(isOnline) {
+			HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+			idMesa = Integer.parseInt(user.get("mesa"));
 		}
+
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
 
 		usuarios = new ArrayList<Person>();
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
-		if(!users[0].equalsIgnoreCase("")) {
-			Arrays.sort(users);
-			for(int i = 0; i < users.length; i++) {
-				String s = users[i];
-				String[] usr = s.split("=|;");
-				Log.d("Usr", s);
-				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
-				usuarios.add(p);
+		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
+			if(isOnline) {
+				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
+				JSONArray jArray;
+				try {
+					jArray = json.getJSONArray("usuariosMesa");
+					for(int i=0;i<jArray.length();i++){
+						JSONObject json_data = jArray.getJSONObject(i);
+						/*json_data.getInt("idSistema");
+						json_data.getString("nombre");
+						json_data.getDouble("total");
+						json_data.getInt("pagado");
+						json_data.getString("path");*/
+						//json_data.getString("nombre")
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				Arrays.sort(users);
+				for(int i = 0; i < users.length; i++) {
+					String s = users[i];
+					String[] usr = s.split("=|;");
+					Log.d("Usr", s);
+					Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
+					usuarios.add(p);
+				}
 			}
-		} else {//agrega el prime usuario que es la persona que esta logeada
-			 HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-			usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
-			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
-
+		} else {
+			if(isOnline) {//agrega el prime usuario que es la persona que esta logeada
+				HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+				HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+				idMesa = Integer.parseInt(user.get("mesa"));
+				usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
+				userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+			} else {
+				usuarios.add(new Person(usuarios.size(), "Yo", 0.0f, false));
+			}
 		}
 		if(extras != null) {
 			Person person = usuarios.get(extras.getInt("Position"));
@@ -242,7 +249,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
 
 		}
-		
+
 		editor.commit();
 	}
 
@@ -353,8 +360,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				names.add(user.getName());
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
-				
-	           //profilePictureView.setProfileId(user.getId());
+
+				//profilePictureView.setProfileId(user.getId());
 
 				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 				Log.e("id-usuario-antes", ":" +usuarios.size());
@@ -434,7 +441,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!etNombre.getText().toString().equals(""))
 					//agrega la persona que se agregoa la base y servidor
 					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
-					userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {

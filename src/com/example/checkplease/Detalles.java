@@ -2,6 +2,7 @@ package com.example.checkplease;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.example.checkplease.libreria.UserFunctions;
 import android.net.Uri;
@@ -31,8 +32,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Properties;
@@ -44,6 +43,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import org.json.JSONObject;
 /**
  * Clase con la que se podran visualizar datos del usuario tanto 
  * como para visualizarlos como para editarlos
@@ -67,6 +68,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private DetallesAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
 	private int position;
+	private int idMesa = 0;
+	private int paid = 0;
+	SharedPreferences.Editor editor;
 	
 	//Mail variables
 	private String to = "";
@@ -83,6 +87,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.detalles);
+
+		//Valores que se guardan mientras este abierta la aplicacion
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
+		if( path.equals("null")){
+			path = prefs.getString("path",""); //axesa al path pasado
+		}
+		if( nombrePref.equals("") ){
+			nombrePref = prefs.getString("name", "");
+		}
 		
 		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
@@ -91,15 +104,13 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			nombrePref = extras.getString("Nombre");
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
+			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 		
-		//Valores que se guardan mientras este abierta la aplicacion
-		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		if( path.equals("null")){
-	        path = prefs.getString("Path", ""); //axesa al path pasado
-		}
-		nombrePref = prefs.getString("name", "");
+		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+		idMesa = Integer.parseInt(user.get("mesa"));
+		userFunctions.guardaLista(idMesa, position, nombrePref, Float.parseFloat(total), paid, path);
 		
         //inicializacion de Variables globales
         totalView = (TextView)findViewById(R.id.total);
@@ -135,6 +146,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         		intent.putExtra("Path", path);
         		intent.putExtra("Position", position);
                 startActivity(intent);
+                editor.clear();
+                finish();
         	}
         });
 		
@@ -347,8 +360,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		// TODO Auto-generated method stub
 		super.onPause();
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString("Path",  path);
+		editor = prefs.edit();
+		editor.putString("path",  path);
 		editor.putString("name",  name.getText().toString());
 		editor.commit();
 	}
