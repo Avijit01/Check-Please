@@ -22,6 +22,7 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.PickerFragment;
+import com.facebook.widget.ProfilePictureView;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -71,7 +72,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
-
+	private ProfilePictureView profilePictureView;
 	// Variables que maneja la vista para calculos
 	SharedPreferences sharedPrefs;
 	SharedPreferences.Editor editor;
@@ -117,6 +118,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
+		//	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
 		isOnline = extras.getBoolean("online");
 
 		// Agregar click listener
@@ -137,19 +139,44 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
+		if(isOnline) {
+			HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+			idMesa = Integer.parseInt(user.get("mesa"));
+		}
+
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
 
 		usuarios = new ArrayList<Person>();
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
-			Arrays.sort(users);
-			for(int i = 0; i < users.length; i++) {
-				String s = users[i];
-				String[] usr = s.split("=|;");
-				Log.d("Usr", s);
-				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
-				usuarios.add(p);
+			if(isOnline) {
+				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
+				JSONArray jArray;
+				try {
+					jArray = json.getJSONArray("usuariosMesa");
+					for(int i=0;i<jArray.length();i++){
+						JSONObject json_data = jArray.getJSONObject(i);
+						/*json_data.getInt("idSistema");
+						json_data.getString("nombre");
+						json_data.getDouble("total");
+						json_data.getInt("pagado");
+						json_data.getString("path");*/
+						//json_data.getString("nombre")
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				Arrays.sort(users);
+				for(int i = 0; i < users.length; i++) {
+					String s = users[i];
+					String[] usr = s.split("=|;");
+					Log.d("Usr", s);
+					Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
+					usuarios.add(p);
+				}
 			}
 		} else {
 			if(isOnline) {//agrega el prime usuario que es la persona que esta logeada
@@ -158,6 +185,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				idMesa = Integer.parseInt(user.get("mesa"));
 				usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
 				userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+			} else {
+				usuarios.add(new Person(usuarios.size(), "Yo", 0.0f, false));
 			}
 		}
 		if(extras != null) {
@@ -331,6 +360,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				names.add(user.getName());
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
+
+				//profilePictureView.setProfileId(user.getId());
+
 				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 
@@ -345,6 +377,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// mensajeFace.setText(results);
 	}
 	private void postStatusUpdate() {
+		Log.d("entra", "ONCLICK");
 		if (user != null ) {
 			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
 			Request request = Request
