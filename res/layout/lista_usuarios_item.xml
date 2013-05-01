@@ -41,9 +41,9 @@
             android:id="@+id/tvTotalTip"
             android:layout_width="45dp"
             android:layout_height="32dp"
-            android:layout_weight="1"
             android:layout_marginLeft="10dp"
-            android:gravity="left|center"
+            android:layout_weight="1"
+            android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 

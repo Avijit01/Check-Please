@@ -90,6 +90,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	int guardaPrimera = 0;
 	ArrayList<Integer> positions;
 	int seleccionaAmigos = 0;//si abrira el popup para selccionar amigos
+	private boolean isOnline;
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -118,6 +119,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
       //	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
+		isOnline = extras.getBoolean("online");
 
 		// Agregar click listener
 		agregar.setOnClickListener(this);
@@ -136,6 +138,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				return false;
 			}
 		});
+
 		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
 		idMesa = Integer.parseInt(user.get("mesa"));
 		//if(extras != null) {
@@ -169,6 +172,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			for(int i = 0; i < users.length; i++) {
 				String s = users[i];
 				String[] usr = s.split("=|;");
+				Log.d("Usr", s);
 				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
 				usuarios.add(p);
 			}
@@ -179,12 +183,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		}
 		if(extras != null) {
-			Person person = usuarios.get(extras.getInt("position"));
+			Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
+			Log.d("PersonId", extras.getInt("Position") + "");
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
 			idMesa = extras.getInt("idMesa");
+			Log.d("String", String.valueOf(person.getId()) + ";" + person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();
 		}

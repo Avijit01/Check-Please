@@ -2,10 +2,7 @@ package com.example.checkplease;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
 import com.example.checkplease.libreria.UserFunctions;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.ActionBar;
@@ -14,14 +11,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ActionBar.OnNavigationListener;
-
 import android.content.DialogInterface;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +34,15 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Properties;
+
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 /**
  * Clase con la que se podran visualizar datos del usuario tanto 
  * como para visualizarlos como para editarlos
@@ -53,12 +58,21 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private EditText nameChange; //cuadro de texto para editar el nombre
 	private ImageView foto; //imageview de la foto del usuario
 	private static final int SELECT_PICTURE = 1;
+
+	private static final int TYPE_TEXT_VARIATION_EMAIL_ADDRESS = 32;
 	private String path = "";//path de la imagen del usuario
 	private String nombrePref = "";//nombre al que se cambia el usuario
 	private String total = "0.0";//totalpor default en detalles
 	private DetallesAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
 	private int position;
+	
+	//Mail variables
+	private String to = "";
+	private String from = "checkplease@systheam.com";
+	private String subject = "";
+	private String body = "";
+	
 
 	@Override
 	/**
@@ -81,8 +95,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		if( path.equals("")){
-	        path = prefs.getString("path",""); //axesa al path pasado
+		if( path.equals("null")){
+	        path = prefs.getString("Path", ""); //axesa al path pasado
 		}
 		nombrePref = prefs.getString("name", "");
 		
@@ -131,10 +145,23 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		agregar.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		//guardar el valor generado por cada agrega
-        		float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
+        		/*float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
         		precios.add("" + f);
         		adapter = new DetallesAdapter(Detalles.this, precios);
-        		l.setAdapter( adapter );
+        		l.setAdapter( adapter );*/
+        		mail();
+        		subject = name + " te invita a unirte a Check-Please";
+        		body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
+        				" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
+        				"aplicacion las cuentas saldran en uninstante.\n\n" +
+        				"Descargalo YA!!!\n\n" +
+        				"play.google.com";
+        		try {
+					sendMail(to, from, subject, body);
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         	}
         });
 		
@@ -166,6 +193,36 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		});
 		
 	}
+	
+	public void sendMail(String to, String from, String subject, String body) throws MessagingException {
+        // 1 - get a mail session
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", 587);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.quitwait", "false");
+        Session session = Session.getDefaultInstance(props);
+        session.setDebug(true);
+
+        // 2 - create a message
+        Message message = new MimeMessage(session);
+        message.setSubject(subject);
+        message.setText(body);
+
+        // 3 - address the message
+        Address fromAddress = new InternetAddress(from);
+        Address toAddress = new InternetAddress(to);
+        message.setFrom(fromAddress);
+        message.setRecipient(Message.RecipientType.TO, toAddress);
+
+        // 4 - send the message
+        Transport transport = session.getTransport();
+        transport.connect("checkplease@systheam.com", "qwertycheck");
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();
+    }
 	
 	/**
      * Metodo que permite editar el nombre por default del usuario
@@ -202,13 +259,48 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	}
 	
 	/**
+     * Metodo que permite editar el correo a la que se mandara el mail
+     * @return void
+     */
+	public void mail() {
+		//se crea una nueva alerta de dialogo
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		//se le asigna el titulo a la ventana de dialogo
+		dialog.setTitle("Escribe el correo");
+
+		//se toma el Layout Inflater
+		LayoutInflater inflater = getLayoutInflater();
+		//se toma el layout correspondiente a la ventana del pop up
+		View view = inflater.inflate(R.layout.cambiar_nombre, null);
+		//se asigna esa vista a la ventana de dialogo
+		dialog.setView(view);
+		
+		nameChange = (EditText)view.findViewById(R.id.nameChange);
+		nameChange.setTextColor(Color.parseColor("#787878"));
+		nameChange.setInputType(TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+		//para manejar la acción del boton OK, de la ventana de dialogo
+		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				if( !nameChange.getText().toString().equals("") )
+					to = nameChange.getText().toString();
+			}
+		});
+
+		// Se crea la ventana de dialogo
+		AlertDialog helpDialog = dialog.create();
+		//se muestra la ventana de dialogo
+		dialog.show();
+	}
+	
+	/**
      * Metodo que nos permite accesar a la galeria de imagenes y traer el path
      * de la imagen seleccionada
      * @return void
      */
 	protected void onActivityResult( int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
-		if( resultCode == RESULT_OK && null != data){
+		if(resultCode == RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
@@ -230,7 +322,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		super.onPause();
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString("path",  path);
+		editor.putString("Path",  path);
 		editor.putString("name",  name.getText().toString());
 		editor.commit();
 	}
