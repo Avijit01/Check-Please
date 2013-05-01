@@ -88,6 +88,7 @@ public class MainActivity extends FragmentActivity   {
 			 intent.putExtra("logeado",1);//envia el parametro de que esta logeado
 			 intent.putExtra("nombre",(String)user.get("name"));
 			 intent.putExtra("mesa",Integer.parseInt(user.get("mesa")));
+			// Log.e("id", (String)user.get("uid"));
      		startActivity(intent);
 		 }else{//sino se habre la calse principal
 			 setContentView(R.layout.activity_main);
