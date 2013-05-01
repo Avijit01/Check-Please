@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -64,6 +65,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
 						intent.putExtra("Nombre", p.getName());
+						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
 						intent.putExtra("Path", p.getPicture());
 						intent.putExtra("Position", this.getPosition());
@@ -86,6 +88,11 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				cb.setChecked(p.isPaid());
 				tvTotal.setText(String.valueOf(p.getTotal()));
 				tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
+				int decimalPlaces = 2;
+				BigDecimal bd = new BigDecimal(tTip);
+				// setScale is immutable
+				bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
+				tTip = bd.floatValue();
 				tvTotalTip.setText(String.valueOf(tTip));
 				p.setTotalTip(tTip);
 			}

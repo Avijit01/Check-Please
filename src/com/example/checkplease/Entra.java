@@ -66,8 +66,8 @@ public class Entra extends Activity {
 			if(extras.getInt("mesa")!=0)
 			{ numeroMesa = extras.getInt("mesa");}
 		}
-
-		Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
+		
+		//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
 		restaurante = (EditText)findViewById(R.id.restaurante);
@@ -265,6 +265,7 @@ public class Entra extends Activity {
 				if (json.getString("success") != null) {
 					idMesa = json.getInt("mesa"); 
 				}
+				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

@@ -79,6 +79,26 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	public JSONObject agregaUsuarioMesa(int mesa, String nombre, String id, String uid){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "agregaUsuarioMesa"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("nombre", nombre));
+		params.add(new BasicNameValuePair("id", id));
+		params.add(new BasicNameValuePair("uid", uid));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
+	public JSONObject eliminaUsuarioMesa(int mesa, int idSistema){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "eliminaUsuarioMesa"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("idSistema", Integer.toString(idSistema)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	public JSONObject updateMesa(int mesa, float total, float propina, int personas){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -99,14 +119,17 @@ public class UserFunctions {
 		return json;
 	}
 	
-	public JSONObject guardaLista(int mesa, String path, float total, boolean isPaid){
+	public JSONObject guardaLista(int mesa, int idSistema, String nombre, float total, int isPaid, String path){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "guardaLista"));
 		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
-		params.add(new BasicNameValuePair("path", path));
+		params.add(new BasicNameValuePair("idSistema", Integer.toString(idSistema)));
+		params.add(new BasicNameValuePair("nombre", nombre));
 		params.add(new BasicNameValuePair("total", Float.toString(total)));
-		params.add(new BasicNameValuePair("personas", Boolean.toString(isPaid)));
+		params.add(new BasicNameValuePair("pago", Integer.toString(isPaid)));
+		params.add(new BasicNameValuePair("path", path));
+
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}

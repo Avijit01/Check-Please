@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.example.checkplease.libreria.UserFunctions;
@@ -330,6 +331,13 @@ public class Calculadora extends Activity{
 						result.setText("ERROR");
 					}
 				}
+				
+				int decimalPlaces = 2;
+				BigDecimal bd = new BigDecimal(calculo);
+				// setScale is immutable
+				bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
+				calculo = bd.doubleValue();
+				
 				result.setText(texto + "\n = " + calculo);
 				igualText = "" + calculo;
 				texto = "" + calculo;
@@ -353,20 +361,28 @@ public class Calculadora extends Activity{
 						else if( split[i].equals("*") ) op = 'm';
 						else if( split[i].equals("/") ) op = 'd';
 						else {
-							aux = Double.parseDouble(split[i]); 
+							aux = Double.parseDouble(split[i]);
 							realizaOp(op); 
 						}
 					}
 				} catch(NumberFormatException ex) { 
 					result.setText("ERROR");
 				}
-				result.setText(texto);
+				
+				int decimalPlaces = 2;
+				BigDecimal bd = new BigDecimal(calculo);
+				// setScale is immutable
+				bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
+				calculo = bd.doubleValue();
+				result.setText(calculo+"");
+				
 				//se regresan los valores necesarios a la lista
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
 				intent.putExtra("Position", getIntent().getExtras().getInt("Position"));
 				startActivity(intent);
+				finish();
 				punto = false;
 			}
 		});
