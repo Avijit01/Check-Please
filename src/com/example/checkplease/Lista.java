@@ -117,7 +117,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
-      //  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
+      //	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
 
 		// Agregar click listener
 		agregar.setOnClickListener(this);
@@ -364,6 +364,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// mensajeFace.setText(results);
 	}
 	private void postStatusUpdate() {
+		Log.d("entra", "ONCLICK");
 		if (user != null ) {
 			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
 			Request request = Request
