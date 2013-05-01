@@ -146,7 +146,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			for(int i = 0; i < users.length; i++) {
 				String s = users[i];
 				String[] usr = s.split("=|;");
-				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]));
+				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
 				usuarios.add(p);
 			}
 		} else {
@@ -159,7 +159,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				person.setPicture(extras.getString("Path"));
 			seleccionaAmigos = extras.getInt("friends");
 			idMesa = extras.getInt("idMesa");
-			editor.putString(String.valueOf(person.getId()), person.getPicture() + ";" + person.getTotal() + ";" + person.isPaid());
+			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();
 		}
 		if(seleccionaAmigos == 1){
@@ -203,7 +203,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	protected void onPause() {
 		super.onPause();
 		for(Person p : usuarios) {
-			editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
+			editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 		}
 		editor.commit();
 	}
@@ -507,7 +507,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				editor.clear();
 				for(Person p : usuarios) {
 					p.setId(index++);
-					editor.putString(String.valueOf(p.getId()), p.getPicture() + ";" + p.getTotal() + ";" + p.isPaid());
+					editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 				}
 				editor.commit();
 				adapter.notifyDataSetChanged();
