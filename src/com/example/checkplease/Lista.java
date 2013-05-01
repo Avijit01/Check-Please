@@ -255,7 +255,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	// Metodo para actualizar la lista de usuarios y sus totales
 	public void updatePersonAdapter(float tip) {
-		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions, isOnline);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
@@ -537,7 +537,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.lista_usuarios_delete, null);
-		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions);
+		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions, isOnline);
 		lvDelete.setAdapter(deleteAdapter);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(lvView);

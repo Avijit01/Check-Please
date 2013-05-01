@@ -30,8 +30,9 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	private float propina;
 	private int action;
 	private ArrayList<Integer> positions;
+	private boolean isOnline;
 
-	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action, ArrayList<Integer> positions) {
+	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action, ArrayList<Integer> positions, boolean isOnline) {
 		super(context, layoutResourceId, usuarios);
 		this.context = context;
 		this.layoutResourceId = layoutResourceId;
@@ -39,6 +40,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		this.propina = propina;
 		this.action = action;
 		this.positions = positions;
+		this.isOnline = isOnline;
 	}
 	
 	@Override
@@ -70,6 +72,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						intent.putExtra("Path", p.getPicture());
 						intent.putExtra("Position", this.getPosition());
 						intent.putExtra("Paid", p.isPaid());
+						intent.putExtra("online", isOnline);
 						context.startActivity(intent);
 					}
 				});
