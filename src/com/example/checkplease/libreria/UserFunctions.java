@@ -133,6 +133,7 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	
 	/**
 	 * funcion isUserLoggedIn
 	 * Checa en la base de datos local si tiene iniciada la sesion el usuario

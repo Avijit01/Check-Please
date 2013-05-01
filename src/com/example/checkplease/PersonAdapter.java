@@ -68,6 +68,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
 						intent.putExtra("Position", this.getPosition());
+						intent.putExtra("Position", p.isPaid());
 						context.startActivity(intent);
 					}
 				});
