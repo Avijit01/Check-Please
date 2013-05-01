@@ -157,7 +157,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		} else {//agrega el prime usuario que es la persona que esta logeada
 			 HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 			usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
-			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()), (String)useractual.get("uid"));
+			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
 
 		}
 		if(extras != null) {
@@ -215,7 +215,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Log.e("pagado",":"+p.isPaid());
 			pagado =1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
-			userFunctions.guardaLista(idMesa, p.getId(), p.getPicture(), p.getTotal(), pagado, " ");
+			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
 
 		}
 		
@@ -329,7 +329,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				names.add(user.getName());
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
-				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()), Integer.toString(usuarios.size()));
+				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 
 
@@ -406,7 +406,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!etNombre.getText().toString().equals(""))
 					//agrega la persona que se agregoa la base y servidor
 					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
-					userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()), Integer.toString(usuarios.size()));
+					userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -475,7 +475,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
 					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()),"si");
+					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
 
 				}
 			}
@@ -514,6 +514,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				positions = adapter.getPositions();
 				for(Integer i : positions) {
 					//usuarios.remove(i.intValue());
+					Log.e("elimina", ":"+i.intValue());
+					userFunctions.eliminaUsuarioMesa(idMesa, i.intValue());
 					usuarios.get(i.intValue()).setId(-1);
 				}
 				int index = 0;

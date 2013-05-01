@@ -90,6 +90,15 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	public JSONObject eliminaUsuarioMesa(int mesa, int idSistema){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "eliminaUsuarioMesa"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("idSistema", Integer.toString(idSistema)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	public JSONObject updateMesa(int mesa, float total, float propina, int personas){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
