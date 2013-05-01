@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import com.example.checkplease.libreria.UserFunctions;
@@ -150,18 +151,31 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         		adapter = new DetallesAdapter(Detalles.this, precios);
         		l.setAdapter( adapter );*/
         		mail();
+        		/*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+        		String receiver = to;
+        		String subject  = "Invitación";
+        		String body     = "your email body";
+
+        		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, receiver);
+        		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+        		emailIntent.setType("plain/text");
+        		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
+        		        		startActivity(emailIntent);
+*/
+        		
         		subject = name + " te invita a unirte a Check-Please";
         		body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
         				" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
         				"aplicacion las cuentas saldran en uninstante.\n\n" +
         				"Descargalo YA!!!\n\n" +
         				"play.google.com";
-        		try {
+        		/*try {
 					sendMail(to, from, subject, body);
 				} catch (MessagingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
         	}
         });
 		
@@ -196,6 +210,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	
 	public void sendMail(String to, String from, String subject, String body) throws MessagingException {
         // 1 - get a mail session
+		Log.e("hola", ":"+to + from);
         Properties props = new Properties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -284,6 +299,17 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			public void onClick(DialogInterface dialog, int which) {
 				if( !nameChange.getText().toString().equals("") )
 					to = nameChange.getText().toString();
+				@SuppressWarnings("deprecation")
+				String uriText =
+        			    "mailto:"+to + 
+        			    "?subject=" + URLEncoder.encode("Bienvenido a CheckPlease") + 
+        			    "&body=" + URLEncoder.encode("some text here");
+
+        			Uri uri = Uri.parse(uriText);
+
+        			Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+        			sendIntent.setData(uri);
+        			startActivity(Intent.createChooser(sendIntent, "Send email")); 
 			}
 		});
 
