@@ -22,6 +22,7 @@ import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.PickerFragment;
+import com.facebook.widget.ProfilePictureView;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -71,7 +72,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	ImageButton agregar;
 	ImageButton facebook;
 	ImageButton eliminar;
-
+    private ProfilePictureView profilePictureView;
 	// Variables que maneja la vista para calculos
 	SharedPreferences sharedPrefs;
 	SharedPreferences.Editor editor;
@@ -116,6 +117,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		agregar = (ImageButton)findViewById(R.id.bAgregar);
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
+      //  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
 
 		// Agregar click listener
 		agregar.setOnClickListener(this);
@@ -140,7 +142,23 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//	editor.putString(String.valueOf(extras.getInt("position")), "null;" + (float)extras.getDouble("totalIndi") + ";false");
 		//	editor.commit();
 		//}
-
+		JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
+		JSONArray jArray;
+		try {
+			jArray = json.getJSONArray("usuariosMesa");
+			for(int i=0;i<jArray.length();i++){
+				JSONObject json_data = jArray.getJSONObject(i);
+				/*json_data.getInt("idSistema");
+				json_data.getString("nombre");
+				json_data.getDouble("total");
+				json_data.getInt("pagado");
+				json_data.getString("path");*/
+				//json_data.getString("nombre")
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
 
@@ -329,6 +347,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				names.add(user.getName());
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
+				
+	           //profilePictureView.setProfileId(user.getId());
+
 				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 				Log.e("id-usuario-antes", ":" +usuarios.size());
 
