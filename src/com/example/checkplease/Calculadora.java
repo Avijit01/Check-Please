@@ -365,7 +365,7 @@ public class Calculadora extends Activity{
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
-				intent.putExtra("position", getIntent().getExtras().getInt("position"));
+				intent.putExtra("Position", getIntent().getExtras().getInt("Position"));
 				startActivity(intent);
 				punto = false;
 			}

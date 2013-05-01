@@ -39,6 +39,7 @@ public class Entra extends Activity {
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
+	private boolean isOnline;
 	int numeroMesa = 0;
 	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
 	String usuario, nombreRestaurante;
@@ -47,26 +48,25 @@ public class Entra extends Activity {
 	private int personas;
 	//DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
-
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forma_de_pago);
-		
+
 		cargaMenu();
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
-        numeroMesa = prefs.getInt("Mesa", 0);
-        nombreRestaurante = prefs.getString("RESTAURANTE", "");
+		numeroMesa = prefs.getInt("Mesa", 0);
+		nombreRestaurante = prefs.getString("RESTAURANTE", "");
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
 
 		if(extras !=null){//si no es nulo
-			 estaLogeado = extras.getInt("logeado");//toma el valor de 1
-			 usuario = extras.getString("nombre");
+			estaLogeado = extras.getInt("logeado");//toma el valor de 1
+			usuario = extras.getString("nombre");
+			isOnline = extras.getBoolean("online");
 
-			 if(extras.getInt("mesa")!=0)
-			 { numeroMesa = extras.getInt("mesa");}
+			if(extras.getInt("mesa")!=0)
+			{ numeroMesa = extras.getInt("mesa");}
 		}
-		
+
 		Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
@@ -80,35 +80,40 @@ public class Entra extends Activity {
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-		if(numeroMesa != 0){//si tiene una mesa cargada
-			JSONObject json = userFunctions.getInfoMesa(numeroMesa);
-			try {//si la respuesta de KEY_Succes contiene algo
-				if (json.getString("success") != null) {
-					String res = json.getString("success"); 					
-					if(Integer.parseInt(res) == 1){//si se accedio
-						JSONObject json_mesa = json.getJSONObject("mesa");
-						restaurante.setText(json_mesa.getString("restaurante"));
-						restaurante.setInputType(InputType.TYPE_NULL);
-						//cambiar color a null					
-					}else{
-						// Error al cargar los datos
-						//mensajeError.setText("Usuario y/o contraseña incorrectos");
+		if(isOnline) {
+			if(numeroMesa != 0){//si tiene una mesa cargada
+				JSONObject json = userFunctions.getInfoMesa(numeroMesa);
+				try {//si la respuesta de KEY_Succes contiene algo
+					if (json.getString("success") != null) {
+						String res = json.getString("success"); 					
+						if(Integer.parseInt(res) == 1){//si se accedio
+							JSONObject json_mesa = json.getJSONObject("mesa");
+							restaurante.setText(json_mesa.getString("restaurante"));
+							restaurante.setInputType(InputType.TYPE_NULL);
+							//cambiar color a null					
+						}else{
+							// Error al cargar los datos
+							//mensajeError.setText("Usuario y/o contraseña incorrectos");
+						}
 					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+
 			}
-			
+		} else {
+			Toast toast = Toast.makeText(this, "Modo offline", Toast.LENGTH_LONG);
+			toast.show();
 		}
-		
+
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				ActionBar actionBar = getActionBar();
-			    actionBar.setTitle("Pago igual ");
-			    etTotal.requestFocus ();
+				actionBar.setTitle("Pago igual ");
+				etTotal.requestFocus ();
 				divIgual.setVisibility(view.VISIBLE);
 				restaurante.setInputType(InputType.TYPE_NULL);
-				if(numeroMesa== 0){
+				if(numeroMesa == 0 && isOnline){
 					numeroMesa = agregaRestaurante(restaurante);
 					nombreRestaurante = restaurante.getText().toString();
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
@@ -117,9 +122,10 @@ public class Entra extends Activity {
 			}
 
 		});
+
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				if(numeroMesa== 0){
+				if(numeroMesa == 0 && isOnline){
 					numeroMesa = agregaRestaurante(restaurante);
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 					db.addMesa(usuario, numeroMesa);
@@ -180,7 +186,7 @@ public class Entra extends Activity {
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
 				try {
 					personas = Integer.parseInt(etPersonas.getText().toString());
-				} catch (Exception e) {
+				} catch (NumberFormatException e) {
 					personas = 0;
 				}
 				getTotalPerPerson();
@@ -216,7 +222,7 @@ public class Entra extends Activity {
 		case android.R.id.home://se cierra el menu
 			Entra.this.finish();
 			return true;
-					
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -231,25 +237,25 @@ public class Entra extends Activity {
 			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
 		updateMesa(total, propina, personas);
 	}
-	 /**
-     * Metodo: agregaRestaurante,
-     * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
-     * @param restaurante - EditText del nombre del restaurante
-     * @return boolean 0 si esta en blanco el campo de nombre, 1 tiene algo
-     * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
-     */
+	/**
+	 * Metodo: agregaRestaurante,
+	 * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
+	 * @param restaurante - EditText del nombre del restaurante
+	 * @return boolean 0 si esta en blanco el campo de nombre, 1 tiene algo
+	 * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
+	 */
 	private void updateMesa(float total, float propina, int personas){
-		
-			userFunctions.updateMesa(numeroMesa, total, propina, personas);
-		
+
+		userFunctions.updateMesa(numeroMesa, total, propina, personas);
+
 	}
-	 /**
-     * Metodo: agregaRestaurante,
-     * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
-     * @param restaurante - EditText del nombre del restaurante
-     * @return  idMesa, el id que se creo de la mesa
-     * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
-     */
+	/**
+	 * Metodo: agregaRestaurante,
+	 * Metodo que realiza la accion de agregar a la base de datos el restaurante, creando la mesa
+	 * @param restaurante - EditText del nombre del restaurante
+	 * @return  idMesa, el id que se creo de la mesa
+	 * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
+	 */
 	private int agregaRestaurante(EditText restaurante){
 		String restaurante2 = restaurante.getText().toString();
 		int idMesa=0;
@@ -275,43 +281,43 @@ public class Entra extends Activity {
 			return idMesa;
 		}
 	}
-	  /**
-     * Metodo: facebook,
-     * Metodo que realiza la accion de abrir la actividad de Facebook
-     */
-    private void facebook() {
+	/**
+	 * Metodo: facebook,
+	 * Metodo que realiza la accion de abrir la actividad de Facebook
+	 */
+	private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
-    /**
-     * Metodo: Inicio,
-     * Metodo que realiza la accion de abrir la actividad de Inicio
-     */
+	/**
+	 * Metodo: Inicio,
+	 * Metodo que realiza la accion de abrir la actividad de Inicio
+	 */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
 	/**
-     * Metodo: Acerca,
-     * Metodo que realiza la accion de abrir la actividad de Acerca
-     */
+	 * Metodo: Acerca,
+	 * Metodo que realiza la accion de abrir la actividad de Acerca
+	 */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
-		
+
 	}
 	/**
-     * Metodo: onResume,
-     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
-     * carga nuevamente el Menu para reinicar los valores en cero
-     */
+	 * Metodo: onResume,
+	 * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+	 * carga nuevamente el Menu para reinicar los valores en cero
+	 */
 	@Override
 	protected void onResume() {
-	    super.onResume();
-	    cargaMenu();
-	    // Normal case behavior follows
+		super.onResume();
+		cargaMenu();
+		// Normal case behavior follows
 	}
 	/**
-     * Metodo: cargaMenu(),
-     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
-     */
+	 * Metodo: cargaMenu(),
+	 * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
 		if(estaLogeado==0){
@@ -319,44 +325,44 @@ public class Entra extends Activity {
 		}else{
 			actionBar.setDisplayHomeAsUpEnabled(false);//habilita la opcion de regresar a la actividad anterios
 		}
-	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));//pone color gris
-	    actionBar.setTitle("Forma pago    ");//pone el titulo
-	    
-	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
-	    //agrega las opciones al menu
+		actionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bar_color));//pone color gris
+		actionBar.setTitle("Forma pago    ");//pone el titulo
+
+		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		//agrega las opciones al menu
 		actions.add("Opciones");
 		actions.add("Cerrar Sesion");
 		actions.add("Facebook");
 		actions.add("Acerca");
 		//Crea el adaptar del dropDown del header
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
-        //Habilita la navegacion del DropDown del action bar
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        //Degine la navegacion del dropdown
-        
-        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
-			
-        	@Override
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+		//Habilita la navegacion del DropDown del action bar
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		//Degine la navegacion del dropdown
+
+		ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+
+			@Override
 			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
-        			if(itemPosition==1){//opcion de cerrar cesion
-						userFunctions.logoutUser(getApplicationContext());
-						Inicio();
-						return true;
-					}
-					if(itemPosition==2){//opcion de facebook
-						facebook();
-						return true;	
-					}
-					if(itemPosition==3){//opcion de acerca
-						Acerca();
-					}
+				if(itemPosition==1){//opcion de cerrar cesion
+					userFunctions.logoutUser(getApplicationContext());
+					Inicio();
+					return true;
+				}
+				if(itemPosition==2){//opcion de facebook
+					facebook();
+					return true;	
+				}
+				if(itemPosition==3){//opcion de acerca
+					Acerca();
+				}
 				return false;
-        	}
+			}
 		};
 		//set los elementos del dropdown del actionbar
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
-		
+
 	}
 	@Override
 	protected void onPause() {
@@ -368,5 +374,5 @@ public class Entra extends Activity {
 		editor.putString("RESTAURANTE", nombreRestaurante); 
 		editor.commit(); 
 	}
-	
+
 }

@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,7 +81,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-        path = prefs.getString("path",""); //axesa al path pasado
+        path = prefs.getString("Path", ""); //axesa al path pasado
         //nombrePref = prefs.getString("name", "");
 		
         //inicializacion de Variables globales
@@ -205,7 +206,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
      */
 	protected void onActivityResult( int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
-		if( resultCode == RESULT_OK && null != data){
+		if(resultCode == RESULT_OK && null != data) {
 			Uri selectedImage = data.getData();
 			String[] filePathColumn = { MediaStore.Images.Media.DATA };
 			Cursor cursor = getContentResolver().query( selectedImage, filePathColumn, null, null, null);
@@ -227,7 +228,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		super.onPause();
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString("path",  path);
+		editor.putString("Path",  path);
 		editor.putString("name",  name.getText().toString());
 		editor.commit();
 	}
