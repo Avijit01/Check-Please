@@ -72,11 +72,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private boolean isOnline;
 	SharedPreferences.Editor editor;
 
-	//Mail variables
-	private String to = "";
-	private String from = "checkplease@systheam.com";
-	private String subject = "";
-	private String body = "";
+	//Mail variable
 
 
 	@Override
@@ -90,12 +86,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		/*if( path.equals("null")){
-			path = prefs.getString("path",""); //axesa al path pasado
+		if( path.equals("null")){
+			path = prefs.getString("path","null"); //axesa al path pasado
 		}
 		if( nombrePref.equals("") ){
 			nombrePref = prefs.getString("name", "");
-		}*/
+		}
 
 		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
@@ -123,7 +119,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		terminar = (Button)findViewById(R.id.terminar);
 
 		//se cambian los contenidos de las vistas si hay cambio en estas
-		if( !path.equals("") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
+		if( !path.equals("null") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
 		if( !nombrePref.equals("") ) name.setText(nombrePref);
 
 		//se asigna el valor por default del total
@@ -171,18 +167,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
         		precios.add("" + f);
         		adapter = new DetallesAdapter(Detalles.this, precios);
         		l.setAdapter( adapter );*/
-				mail();
-				subject = name + " te invita a unirte a Check-Please";
-				body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
-						" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
-						"aplicacion las cuentas saldran en uninstante.\n\n" +
-						"Descargalo YA!!!\n\n" +
-						"play.google.com";
-				/*try {
-					sendMail(to, from, subject, body);
-				} catch (MessagingException e) {
-					Log.d("MAIL", e+"");				
-				}*/
 			}
 		});
 
@@ -240,41 +224,6 @@ name.setOnClickListener(new  View.OnClickListener(){
 					public void onClick(DialogInterface dialog, int which) {
 						if( !nameChange.getText().toString().equals("") )
 							name.setText(nameChange.getText().toString());
-					}
-				});
-
-				// Se crea la ventana de dialogo
-				AlertDialog helpDialog = dialog.create();
-				//se muestra la ventana de dialogo
-				dialog.show();
-			}
-
-			/**
-			 * Metodo que permite editar el correo a la que se mandara el mail
-			 * @return void
-			 */
-			public void mail() {
-				//se crea una nueva alerta de dialogo
-				AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-				//se le asigna el titulo a la ventana de dialogo
-				dialog.setTitle("Escribe el correo");
-
-				//se toma el Layout Inflater
-				LayoutInflater inflater = getLayoutInflater();
-				//se toma el layout correspondiente a la ventana del pop up
-				View view = inflater.inflate(R.layout.cambiar_nombre, null);
-				//se asigna esa vista a la ventana de dialogo
-				dialog.setView(view);
-
-				nameChange = (EditText)view.findViewById(R.id.nameChange);
-				nameChange.setTextColor(Color.parseColor("#787878"));
-				nameChange.setInputType(TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
-				//para manejar la acción del boton OK, de la ventana de dialogo
-				dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						if( !nameChange.getText().toString().equals("") )
-							to = nameChange.getText().toString();
 					}
 				});
 
