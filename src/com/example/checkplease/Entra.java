@@ -62,11 +62,11 @@ public class Entra extends Activity {
 			estaLogeado = extras.getInt("logeado");//toma el valor de 1
 			usuario = extras.getString("nombre");
 			isOnline = extras.getBoolean("online");
-
+			
 			if(extras.getInt("mesa")!=0)
 			{ numeroMesa = extras.getInt("mesa");}
 		}
-		
+		isOnline = true;
 		//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
