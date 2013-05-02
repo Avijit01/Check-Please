@@ -4,65 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background" >
 
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/foto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="17dp"
-            android:src="@drawable/user_icon" />
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/foto"
-            android:layout_marginTop="25dp"
-            android:layout_toRightOf="@+id/foto"
-            android:text="@string/name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#ff000000"
-            android:textSize="10pt" />
-
-        <TextView
-            android:id="@+id/totaltext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/foto"
-            android:layout_toLeftOf="@+id/total"
-            android:text="Total: "
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black"
-            android:textSize="10pt" />
-
-        <ImageButton
-            android:id="@+id/facebook_btn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignBottom="@+id/name"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/facebook_button"
-            android:cropToPadding="true"
-            android:padding="1dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/fb_logo" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/foto"
-            android:layout_toRightOf="@+id/name"
-            android:text="@string/totalDetalles"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black"
-            android:textSize="10pt" />
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
@@ -135,5 +76,68 @@
         android:background="@drawable/green_btn"
         android:text="@string/platillo"
         android:textColor="#ffffffff" />
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <ImageView
+            android:id="@+id/foto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="17dp"
+            android:src="@drawable/user_icon" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/foto"
+            android:layout_marginTop="25dp"
+            android:layout_toRightOf="@+id/foto"
+            android:text="@string/name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff000000"
+            android:textSize="10pt" />
+
+        <ImageButton
+            android:id="@+id/facebook_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/name"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/facebook_button"
+            android:cropToPadding="true"
+            android:padding="1dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/fb_logo" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/foto"
+            android:layout_toRightOf="@+id/totaltext"
+            android:text="@string/totalDetalles"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black"
+            android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/totaltext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/name"
+            android:layout_below="@+id/foto"
+            android:layout_marginLeft="50dp"
+            android:text="Total: "
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/black"
+            android:textSize="10pt" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

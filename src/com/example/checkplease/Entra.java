@@ -133,6 +133,7 @@ public class Entra extends Activity {
 				divIgual.setVisibility(RelativeLayout.INVISIBLE);
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("idMesa", numeroMesa);
+				intent.putExtra("online", isOnline);
 				startActivity(intent);
 			}
 		});

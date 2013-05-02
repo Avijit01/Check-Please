@@ -102,6 +102,7 @@ public class MainActivity extends FragmentActivity   {
 			pass = (EditText) findViewById(R.id.pass);
 			entrar = (Button)findViewById(R.id.entrarbtn);
 
+			// Revisa si hay conexion a internet (Wifi o red movil)
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
