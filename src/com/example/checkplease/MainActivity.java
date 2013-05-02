@@ -186,11 +186,11 @@ public class MainActivity extends FragmentActivity   {
 										//se agrega el usuario a la base de datos con el nombre, email, id
 										db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
 										//se manda a la clase Entra
-										//Intent intent = new Intent(view.getContext(), Entra.class);
-										//HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-										//intent.putExtra("nombre",(String)user2.get("name"));
-										//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-										//startActivity(intent);
+										Intent intent = new Intent(view.getContext(), Entra.class);
+										HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+										intent.putExtra("nombre",(String)user2.get("name"));
+										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+										startActivity(intent);
 
 									}else{
 										// Error in login

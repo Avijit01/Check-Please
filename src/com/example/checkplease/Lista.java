@@ -152,22 +152,22 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
 			if(isOnline) {
 				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
-				JSONArray jArray;
+				/*JSONArray jArray;
 				try {
 					jArray = json.getJSONArray("usuariosMesa");
 					for(int i=0;i<jArray.length();i++){
 						JSONObject json_data = jArray.getJSONObject(i);
-						/*json_data.getInt("idSistema");
+						json_data.getInt("idSistema");
 						json_data.getString("nombre");
 						json_data.getDouble("total");
 						json_data.getInt("pagado");
-						json_data.getString("path");*/
-						//json_data.getString("nombre")
+						json_data.getString("path");
+						json_data.getString("nombre")
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}*/
 			} else {
 				Arrays.sort(users);
 				for(int i = 0; i < users.length; i++) {
@@ -191,7 +191,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		}
 		if(extras != null) {
-			Person person = usuarios.get(extras.getInt("Position"));
+			Person person = usuarios.get(0/*extras.getInt("Position")*/);
 			person.setTotal((float)extras.getDouble("totalIndi"));
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
