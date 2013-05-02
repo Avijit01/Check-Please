@@ -90,12 +90,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		if( path.equals("null")){
+		/*if( path.equals("null")){
 			path = prefs.getString("path",""); //axesa al path pasado
 		}
 		if( nombrePref.equals("") ){
 			nombrePref = prefs.getString("name", "");
-		}
+		}*/
 
 		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
@@ -147,8 +147,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			public void onClick(View view){
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("Path", path);
-				intent.putExtra("Nombre", nombrePref);
+				intent.putExtra("Nombre", name.getText().toString());
 				intent.putExtra("Position", position);
+				intent.putExtra("totalIndi", Double.parseDouble(total));
 				startActivity(intent);
 				/*if( editor == null ){
 					editor.clear();

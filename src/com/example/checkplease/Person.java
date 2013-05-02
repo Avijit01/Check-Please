@@ -78,6 +78,6 @@ public class Person {
 	}
 
 	public String toString() {
-		return id + " " + picture + " " + total + " " + paid;
+		return id + " " + name + " " + total + " " + paid;
 	}
 }

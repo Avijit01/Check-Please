@@ -186,18 +186,19 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
 				userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
 			} else {
-				usuarios.add(new Person(usuarios.size(), "Yo", 0.0f, false));
+				Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
+				usuarios.add(p);
 			}
 		}
 		if(extras != null) {
 			Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
-			Log.d("PersonId", extras.getInt("Position") + "");
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
+			if(!person.getName().equals(extras.getString("Nombre")) && extras.getString("Nombre") != null)
+				person.setName(extras.getString("Nombre"));
 			seleccionaAmigos = extras.getInt("friends");
 			idMesa = extras.getInt("idMesa");
-			Log.d("String", String.valueOf(person.getId()) + ";" + person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();
 		}
