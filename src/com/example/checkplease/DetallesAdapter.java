@@ -19,16 +19,18 @@ import android.widget.TextView;
 public class DetallesAdapter extends BaseAdapter {
     
     private Activity activity;
-    private List<String> data = new ArrayList<String>();
+    private List<String> tot = new ArrayList<String>();
+    private List<String> res = new ArrayList<String>();
     private static LayoutInflater inflater=null;
 
     /**
      * Metodo contructor del adater
      */
-    public DetallesAdapter(Activity a, List<String> d) {
+    public DetallesAdapter(Activity a, List<String> r, List<String> t) {
         activity = a;
-        for( int i = 0; i < d.size(); i++ ){
-        	data.add( d.get(i) );
+        for( int i = 0; i < res.size(); i++ ){
+        	res.add( r.get(i) );
+        	tot.add( t.get(i) );
         }
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -39,7 +41,7 @@ public class DetallesAdapter extends BaseAdapter {
      * @
      */
     public int getCount() {
-        return data.size();
+        return res.size();
     }
     /**
      * Metodo que regresa el objeto de la position deseada
@@ -68,11 +70,14 @@ public class DetallesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
-            vi = inflater.inflate(R.layout.detalles_item, null);
+            vi = inflater.inflate(R.layout.list_mesa_item, null);
         
-        EditText text=(EditText)vi.findViewById(R.id.precio);
-        text.setTextColor(Color.parseColor("#787878"));
-        text.setText(data.get(position));
+        TextView to=(TextView)vi.findViewById(R.id.restauranteMesa);
+        TextView re=(TextView)vi.findViewById(R.id.totalMesa);
+        re.setTextColor(Color.parseColor("#ffffff"));
+        to.setTextColor(Color.parseColor("#ffffff"));
+        re.setText(res.get(position));
+        to.setText(tot.get(position));
         return vi;
     }
 }

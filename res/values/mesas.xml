@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="restaurante">Restaurante</string>
+    <string name="totalMesa">Total</string>
+    <string name="regresar">Regresar</string>
+    <string name="cerrarMesa">Cerrar</string>
+    <string name="pago">Pago</string>
+</resources>

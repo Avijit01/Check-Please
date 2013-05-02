@@ -55,7 +55,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-	private List<String> precios = new ArrayList<String>(); //lista de precios en la lista
+	private List<String> totales = new ArrayList<String>(); //lista de precios en la lista
+	private List<String> restaurantes = new ArrayList<String>(); //lista de precios en la lista
 	private Button agregar, terminar, okBtn; // boton  agregar y terminar de la vista  detalles
 	private TextView totalView, name; //cuadro de texto del total y del nombre del usuario
 	private EditText nameChange; //cuadro de texto para editar el nombre
@@ -122,7 +123,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//se asigna el valor por default del total
 		totalView.setText(total);
-		precios.add(total);
+		restaurantes.add("KFC");
+		totales.add("100.00");
 		
 		if(isOnline) {
 			JSONObject json = userFunctions.obtenerMesasUsuario(idUsr);
@@ -145,7 +147,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		adapter = new DetallesAdapter(this, precios);
+		adapter = new DetallesAdapter(this, restaurantes, totales);
 		//se agrega los elementos a la lista
 		l.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
@@ -291,7 +293,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onClick(View v) {}
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {}
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3){
+		
+	}
 
 	/**
 	 * Metodo: onCreateOptionsMenu(),
