@@ -107,11 +107,11 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
-	public JSONObject obtenerMesasUsuario(int idUsr){
+	public JSONObject obtenerMesasUsuario(String idUsr){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "obtenerMesasUsuario"));
-		params.add(new BasicNameValuePair("idUsr", Integer.toString(idUsr)));
+		params.add(new BasicNameValuePair("idUsr", idUsr));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}

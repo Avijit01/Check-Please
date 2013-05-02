@@ -132,7 +132,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		totales.add("100.00");
 		
 		if(isOnline) {
-			JSONObject json = userFunctions.obtenerMesasUsuario(idUsr);
+			HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+			JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
 			JSONArray jArray;
 			try {
 				jArray = json.getJSONArray("mesasUsuario");

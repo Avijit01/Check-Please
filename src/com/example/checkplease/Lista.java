@@ -191,16 +191,17 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		}
 		if(extras != null) {
-			Person person = usuarios.get(0/*extras.getInt("Position")*/);
+			/*Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
 			if(extras.getString("Path") != null)
 				person.setPicture(extras.getString("Path"));
 			if(!person.getName().equals(extras.getString("Nombre")) && extras.getString("Nombre") != null)
 				person.setName(extras.getString("Nombre"));
 			seleccionaAmigos = extras.getInt("friends");
-			idMesa = extras.getInt("idMesa");
 			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
-			editor.commit();
+			editor.commit();*/
+			idMesa = extras.getInt("idMesa");
+
 		}
 		if(seleccionaAmigos == 1){
 			onClickPickFriends();
@@ -250,6 +251,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
 
 		}
+		userFunctions.updateMesa(idMesa, gTotal, Float.parseFloat(etTip.getText().toString()), 0);
 
 		editor.commit();
 	}
