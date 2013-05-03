@@ -299,6 +299,14 @@ public class Entra extends Activity {
 		}
 	}
 	/**
+	 * Metodo: mesaNueva
+	 * Metodo que realiza la accion de  guardar todo lo actual y crear una mesa nueva
+	 */
+	private void mesaNueva() {
+		startActivity(new Intent(this, Facebook.class));
+	}
+	/**
+	/**
 	 * Metodo: facebook,
 	 * Metodo que realiza la accion de abrir la actividad de Facebook
 	 */
@@ -349,6 +357,7 @@ public class Entra extends Activity {
 		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 		//agrega las opciones al menu
 		actions.add("Opciones");
+		actions.add("Mesa Nueva");
 		actions.add("Cerrar Sesion");
 		actions.add("Facebook");
 		actions.add("Acerca");
@@ -367,11 +376,16 @@ public class Entra extends Activity {
 					Inicio();
 					return true;
 				}
-				if(itemPosition==2){//opcion de facebook
+				if(itemPosition==2){//opcion de mesa nueva
+					mesaNueva();
+					Inicio();
+					return true;
+				}
+				if(itemPosition==3){//opcion de facebook
 					facebook();
 					return true;	
 				}
-				if(itemPosition==3){//opcion de acerca
+				if(itemPosition==4){//opcion de acerca
 					Acerca();
 				}
 				return false;

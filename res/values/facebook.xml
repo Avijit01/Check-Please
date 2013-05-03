@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mensaje">CheckPlease desea accesar a tu perfil publico y lista de amigos.</string>
-    <string name="aceptar">Aceptar</string>
+    <string name="aceptar">Continuar</string>
     <string name="rechazar">Rechazar</string>
     <string name="seleccion">Seleccionaste</string>
     <string name="cancelled">Cancelled</string>
