@@ -21,16 +21,18 @@ public class DetallesAdapter extends BaseAdapter {
     private Activity activity;
     private List<String> tot = new ArrayList<String>();
     private List<String> res = new ArrayList<String>();
+    private List<String> mes = new ArrayList<String>();
     private static LayoutInflater inflater=null;
 
     /**
      * Metodo contructor del adater
      */
-    public DetallesAdapter(Activity a, List<String> r, List<String> t) {
+    public DetallesAdapter(Activity a, List<String> r, List<String> t, List<String> m) {
         activity = a;
         for( int i = 0; i < res.size(); i++ ){
         	res.add( r.get(i) );
         	tot.add( t.get(i) );
+        	mes.add( m.get(i) );
         }
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -58,6 +60,15 @@ public class DetallesAdapter extends BaseAdapter {
      */
     public long getItemId(int position) {
         return position;
+    }
+    
+    /**
+     * Metodo que regresa el id de la mesa seleccionada
+     * @return String
+     * @param position
+     */
+    public String getMesaId(int position) {
+        return mes.get(position);
     }
     
     /**

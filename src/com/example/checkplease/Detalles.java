@@ -58,6 +58,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	private List<String> totales = new ArrayList<String>(); //lista de precios en la lista
 	private List<String> restaurantes = new ArrayList<String>(); //lista de precios en la lista
+	private List<String> idMesas = new ArrayList<String>();
 	private Button agregar, terminar, okBtn; // boton  agregar y terminar de la vista  detalles
 	private TextView totalView, name; //cuadro de texto del total y del nombre del usuario
 	private EditText nameChange; //cuadro de texto para editar el nombre
@@ -128,32 +129,36 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//se asigna el valor por default del total
 		totalView.setText(total);
-		restaurantes.add("KFC");
-		totales.add("100.00");
 		
 		if(isOnline) {
-			HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+			/*HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 			JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
 			JSONArray jArray;
 			try {
 				jArray = json.getJSONArray("mesasUsuario");
 				for(int i=0;i<jArray.length();i++){
 					JSONObject json_data = jArray.getJSONObject(i);
-					/*json_data.getInt("idMesa");
-					json_data.getString("restaurante");
-					json_data.getDouble("total");
-					*/
+					//json_data.getInt("idMesa");
+					//json_data.getString("restaurante");
+					//json_data.getDouble("total");
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-		} else {}
+			}*/
+		} else {
+			idMesas.add("0");
+			idMesas.add("1");
+			restaurantes.add("KFC");
+			restaurantes.add("Pizza Hutt");
+			totales.add("100.00");
+			totales.add("235.50");
+		}
 
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		adapter = new DetallesAdapter(this, restaurantes, totales);
+		adapter = new DetallesAdapter(this, restaurantes, totales, idMesas);
 		//se agrega los elementos a la lista
 		l.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
@@ -405,8 +410,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onClick(View v) {}
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3){
-		
+	public void onItemClick(AdapterView<?> parent, View view, int pos, long id){
+		String idmesa = adapter.getMesaId(pos);
+		Intent intent = new Intent(view.getContext(), Mesa.class);
+		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
+		startActivity(intent);
 	}
 
 	/**
