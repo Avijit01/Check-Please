@@ -398,15 +398,15 @@ public class Facebook extends FragmentActivity{
                             Log.e("errornull","a");
  
                     }
+                   
                 }
             };
-
+            
             Request request = new Request(session, "me/feed", postParams, 
                                   HttpMethod.POST, callback);
 
             RequestAsyncTask task = new RequestAsyncTask(request);
             task.execute();
-            
         }
         
         /*if (user != null && hasPublishPermission()) {

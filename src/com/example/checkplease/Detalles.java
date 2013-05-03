@@ -147,14 +147,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				e.printStackTrace();
 			}*/
 		} else {
-			idMesas.add("0");
-			idMesas.add("1");
-			restaurantes.add("KFC");
-			restaurantes.add("Pizza Hutt");
-			totales.add("100.00");
-			totales.add("235.50");
+			
 		}
-
+		idMesas.add("0");
+		idMesas.add("1");
+		restaurantes.add("KFC");
+		restaurantes.add("Pizza Hutt");
+		totales.add("100.00");
+		totales.add("235.50");
+		Log.e("regresa",idMesas.get(0));
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.preciosList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
@@ -171,6 +172,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		terminar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("viene", "detalles");
 				intent.putExtra("Path", path);
 				intent.putExtra("Nombre", name.getText().toString());
 				intent.putExtra("Position", position);

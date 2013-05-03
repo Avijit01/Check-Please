@@ -194,18 +194,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		}
 		if(extras != null) {
-			/*Person person = usuarios.get(extras.getInt("Position"));
+			if(extras.getString("viene").equals("calculadora")){
+			Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
-			if(extras.getString("Path") != null)
+			}
+			if(extras.getString("viene").equals("detalles")){
+				Person person = usuarios.get(extras.getInt("Position"));
+				person.setTotal((float)extras.getDouble("totalIndi"));
 				person.setPicture(extras.getString("Path"));
-			if(!person.getName().equals(extras.getString("Nombre")) && extras.getString("Nombre") != null)
-				person.setName(extras.getString("Nombre"));
-			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
-			editor.commit();*/
+				person.setName(extras.getString("Nombre"));	
+				editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
+				editor.commit();
+			}
+			//si viene de la vista de estra
 			if(extras.getString("viene").equals("entra")){
 				restaurante = extras.getString("restaurante");
 				idMesa = extras.getInt("idMesa");
 			}
+			//si viene de la vista de facebook
 			if(extras.getString("viene").equals("facebook")){
 				seleccionaAmigos = extras.getInt("friends");
 			}
