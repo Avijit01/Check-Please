@@ -174,7 +174,17 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-		}
+		}else {
+            //agrega el prime usuario que es la persona que esta logeada
+                HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+                HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+                idMesa = Integer.parseInt(user.get("mesa"));
+                usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
+                userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+                Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
+                usuarios.add(p);
+          }
+
 		if(extras != null) {
 			if(extras.getString("viene").equals("calculadora")){
 				Person person = usuarios.get(extras.getInt("Position"));

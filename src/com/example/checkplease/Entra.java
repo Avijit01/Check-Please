@@ -349,8 +349,8 @@ public class Entra extends Activity {
 		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 		//agrega las opciones al menu
 		actions.add("Opciones");
-		actions.add("Mesa Nueva");
 		actions.add("Cerrar Sesion");
+		actions.add("Mesa Nueva");
 		actions.add("Facebook");
 		actions.add("Acerca");
 		//Crea el adaptar del dropDown del header
