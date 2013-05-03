@@ -109,9 +109,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// Preferencias para guardar la informacion de la aplicacion
 		sharedPrefs = getSharedPreferences("Prefs", MODE_PRIVATE);
 		editor = sharedPrefs.edit();
+		Log.d("Prefs", sharedPrefs.getAll().toString());
 
 		// Informacion enviada por otras actividades
 		Bundle extras = getIntent().getExtras();
+		Log.d("Extras", extras.getInt("idMesa")+"");
 		// Vistas presentes
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
@@ -139,9 +141,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
-
 		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
 		idMesa = Integer.parseInt(user.get("mesa"));
+
+		if(extras != null) {
+			if(extras.get("clearPrefs") != null && extras.getBoolean("clearPrefs")) {
+				editor.clear();
+				editor.commit();
+			}
+		}
 
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
