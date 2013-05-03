@@ -178,9 +178,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			//agrega el prime usuario que es la persona que esta logeada
 			HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 			HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-			idMesa = Integer.parseInt(user.get("mesa"));
+			idMesa = Integer.parseInt(user.get("mesa"));    
 			usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
 			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+			Person person = usuarios.get(usuarios.size()-1);
+			person.setuId((String)useractual.get("uid"));
 			//Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
 			//usuarios.add(p);
 		}
@@ -386,6 +388,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				{amigos = amigos + ","+ user.getId();}
 
 				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				Person person = usuarios.get(usuarios.size()-1);
+				person.setuId("1");
 				Log.e("id-usuario-antes", ":" +user.getId());
 
 
@@ -468,6 +472,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					//agrega la persona que se agregoa la base y servidor
 					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
 				userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				Person person = usuarios.get(usuarios.size()-1);
+				person.setuId("1");//pone uno al no estar registrado
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -536,8 +542,21 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
 					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
-
+					JSONObject json = userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
+					try {
+						if(json.getString("success") != null) {
+							String res = json.getString("success"); 
+							if(Integer.parseInt(res) == 1){//si es uno el succes, entro con exito
+								//se crea la base de datos interna
+								Person person = usuarios.get(json.getInt("id"));
+								person.setuId(json.getString("regresa"));
+								Log.e("id-regresa","-"+ json.getInt("id")+":"+person.getuId());
+							}else{//error en la conexion
+							}
+						} }catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				}
 			}
 		});

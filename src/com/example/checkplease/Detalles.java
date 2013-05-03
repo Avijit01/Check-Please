@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Properties;
@@ -79,9 +80,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	//Mail variable
 	private String to = "";
-	private String from = "checkplease@systheam.com";
-	private String subject = "";
-	private String body = "";
 
 
 	@Override
@@ -111,7 +109,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			position = extras.getInt("Position");
 			idUsr = extras.getString("IdUsr");
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
-			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 
 		//inicializacion de Variables globales
@@ -120,7 +118,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		foto = (ImageView)findViewById(R.id.foto);
 		agregar = (Button)findViewById(R.id.agregar);
 		terminar = (Button)findViewById(R.id.terminar);
-
+		agregar.setVisibility(RelativeLayout.INVISIBLE);
 		//se cambian los contenidos de las vistas si hay cambio en estas
 		if( !path.equals("null") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
 		if( !nombrePref.equals("") ) name.setText(nombrePref);
@@ -143,12 +141,29 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		idMesas.add("0");
-		idMesas.add("1");
-		restaurantes.add("KFC");
-		restaurantes.add("Pizza Hutt");
-		totales.add("100.00");
-		totales.add("235.50");
+		Log.e("id",":"+idUsr);
+		if(!idUsr.equals("1")){
+		JSONObject json = userFunctions.obtenerMesasUsuario(idUsr);
+		JSONArray jArray;
+		try {
+			jArray = json.getJSONArray("usuariosMesa");
+			for(int i=0;i<jArray.length();i++){
+				JSONObject json_data = jArray.getJSONObject(i);
+				idMesas.add(json_data.getString("mesa"));
+				restaurantes.add(json_data.getString("restaurante"));
+				totales.add(json_data.getString("total"));
+				//agrega las opciones al menu
+				//sugerencia.add(json_data.getString("nombre"));
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}else{
+			agregar.setVisibility(RelativeLayout.VISIBLE);
+
+			
+		}
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.mesasList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
@@ -187,13 +202,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		agregar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				mail();
-				subject = name + " te invita a unirte a Check-Please";
-				body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
-						" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
-						"aplicacion las cuentas saldran en uninstante.\n\n" +
-						"Descargalo YA!!!\n\n" +
-						"play.google.com";
-
 			}
 		});
 
@@ -355,6 +363,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		String idmesa = adapter.getMesaId(pos);
 		Intent intent = new Intent(view.getContext(), Mesa.class);
 		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
+		intent.putExtra("Total",total);
+		intent.putExtra("Nombre",nombrePref);
+		intent.putExtra("Picture",path);
+		intent.putExtra("Position",position);
+		intent.putExtra("IdUsr",idUsr);
+		intent.putExtra("Paid",paid);
 		startActivity(intent);
 	}
 
