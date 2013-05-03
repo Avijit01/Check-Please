@@ -343,7 +343,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id){
 		String idmesa = adapter.getMesaId(pos);
-		Intent intent = new Intent(view.getContext(), Mesa.class);
+		Intent intent = new Intent(view.getContext(), MesaView.class);
 		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
 		intent.putExtra("Total",total);
 		intent.putExtra("Nombre",nombrePref);
