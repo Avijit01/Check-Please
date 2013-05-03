@@ -151,6 +151,18 @@ public class Facebook extends FragmentActivity{
         }
 
         setContentView(R.layout.main);
+        acepta = (Button)findViewById(R.id.sigue);
+      //obtiene si la session de Facebook esta activa o desactiva
+      		Session session = Session.getActiveSession();
+      		if (session == null) {//si es nulla, pone los elementos inivibles
+      			 acepta.setVisibility(RelativeLayout.INVISIBLE);
+      		}else{
+              if (session.isOpened()) {//si esta abierta, despliega los botones
+              	acepta.setVisibility(RelativeLayout.VISIBLE);
+              }else{//de lo contrario los hace invisibles
+              	 acepta.setVisibility(RelativeLayout.INVISIBLE);
+              }
+      		}
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
@@ -165,8 +177,9 @@ public class Facebook extends FragmentActivity{
             }
         });
         //Servira para saber si viene del invita amigos y abrira la activad de Lista con 1 de pickfriends
-        Session session = Session.getActiveSession();
-        if(vieneDe.equals("Invita") && session.isOpened()){
+        Session session2 = Session.getActiveSession();
+        //si viene de la vista de invitar
+        if(vieneDe.equals("Invita") && session2.isOpened()){
 			//onClickPickFriends();
     		finish();//termina la activad de Facebook para que al regresar no pase por esta
     		Intent intent = new Intent(this, Lista.class);
@@ -176,9 +189,9 @@ public class Facebook extends FragmentActivity{
 		}
         
         profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
-        greeting = (TextView) findViewById(R.id.greeting);
+       greeting = (TextView) findViewById(R.id.greeting);
 
-        postStatusUpdateButton = (Button) findViewById(R.id.postStatusUpdateButton);
+      /*  postStatusUpdateButton = (Button) findViewById(R.id.postStatusUpdateButton);
         postStatusUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 onClickPostStatusUpdate();
@@ -204,7 +217,15 @@ public class Facebook extends FragmentActivity{
             public void onClick(View view) {
                 onClickPickPlace();
             }
-        });
+        });*/
+     //al presionar el botor de aceptar, se abre la actividad de entra
+	    acepta.setOnClickListener(new  View.OnClickListener(){
+       	public void onClick(View view){
+       		
+       		finish();//termina la activad de Facebook para que al regresar no pase por esta
+       		
+       	}
+       });	 
 
         controlsContainer = (ViewGroup) findViewById(R.id.main_ui_container);
 
@@ -283,15 +304,16 @@ public class Facebook extends FragmentActivity{
         Session session = Session.getActiveSession();
         boolean enableButtons = (session != null && session.isOpened());
 
-        postStatusUpdateButton.setEnabled(enableButtons);
+       /* postStatusUpdateButton.setEnabled(enableButtons);
         postPhotoButton.setEnabled(enableButtons);
         pickFriendsButton.setEnabled(enableButtons);
-        pickPlaceButton.setEnabled(enableButtons);
+        pickPlaceButton.setEnabled(enableButtons);*/
 
         if (enableButtons && user != null) {
             profilePictureView.setProfileId(user.getId());
             greeting.setText(getString(R.string.hello_user, user.getFirstName()));
         	Log.e("viende",":"+vieneDe);
+          	acepta.setVisibility(RelativeLayout.VISIBLE);
 
             if(vieneDe.equals("Invita")){
             	Log.e("viende","invita");
