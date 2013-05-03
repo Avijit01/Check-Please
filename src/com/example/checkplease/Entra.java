@@ -108,6 +108,11 @@ public class Entra extends Activity {
 
 		igual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				Log.e("restaurante",":"+restaurante);
+				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
+        		{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+        			restaurante.requestFocus ();
+        		}else{//si el numero de mesa es cero
 				ActionBar actionBar = getActionBar();
 				actionBar.setTitle("Pago igual ");
 				etTotal.requestFocus ();
@@ -119,24 +124,32 @@ public class Entra extends Activity {
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 					db.addMesa(usuario, numeroMesa);
 				}
+        		}
 			}
 
 		});
 
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				if(numeroMesa == 0 && isOnline){
-					numeroMesa = agregaRestaurante(restaurante);
-					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-					db.addMesa(usuario, numeroMesa);
-				}			
-				divIgual.setVisibility(RelativeLayout.INVISIBLE);
-				Intent intent = new Intent(view.getContext(), Lista.class);
-				intent.putExtra("viene", "entra");
-				intent.putExtra("idMesa", numeroMesa);
-				intent.putExtra("restaurante", nombreRestaurante);
-				intent.putExtra("online", isOnline);
-				startActivity(intent);
+				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
+        		{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+        			restaurante.requestFocus ();
+        		}else{
+					if(numeroMesa == 0 && isOnline){//si el numero de mesa es cero la agrega
+						numeroMesa = agregaRestaurante(restaurante);
+						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+						db.addMesa(usuario, numeroMesa);
+					}			
+					divIgual.setVisibility(RelativeLayout.INVISIBLE);
+					restaurante.setInputType(InputType.TYPE_NULL);
+
+					Intent intent = new Intent(view.getContext(), Lista.class);
+					intent.putExtra("viene", "entra");
+					intent.putExtra("idMesa", numeroMesa);
+					intent.putExtra("restaurante", nombreRestaurante);
+					intent.putExtra("online", isOnline);
+					startActivity(intent);
+        		}
 			}
 		});
 
