@@ -109,9 +109,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// Preferencias para guardar la informacion de la aplicacion
 		sharedPrefs = getSharedPreferences("Prefs", MODE_PRIVATE);
 		editor = sharedPrefs.edit();
+		Log.d("Prefs", sharedPrefs.getAll().toString());
 
 		// Informacion enviada por otras actividades
 		Bundle extras = getIntent().getExtras();
+		Log.d("Extras", extras.getInt("idMesa")+"");
 		// Vistas presentes
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
