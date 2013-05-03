@@ -15,4 +15,5 @@
     </string-array>
     <color name="spinner_color">#ffd4e1f5</color>
     <color name="negro">#ff000000</color>
+    <string name="invitar">Invitar</string>
 </resources>
