@@ -153,6 +153,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		usuarios = new ArrayList<Person>();
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
+			Arrays.sort(users);
+			for(int i = 0; i < users.length; i++) {
+				String s = users[i];
+				String[] usr = s.split("=|;");
+				Log.d("Usr", s);
+				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
+				usuarios.add(p);
+			}
 			if(isOnline) {
 				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
 				/*JSONArray jArray;
@@ -171,15 +179,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-			} else {
-				Arrays.sort(users);
-				for(int i = 0; i < users.length; i++) {
-					String s = users[i];
-					String[] usr = s.split("=|;");
-					Log.d("Usr", s);
-					Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
-					usuarios.add(p);
-				}
 			}
 		} else {
 			if(isOnline) {//agrega el prime usuario que es la persona que esta logeada
