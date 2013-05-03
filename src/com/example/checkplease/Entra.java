@@ -295,7 +295,6 @@ public class Entra extends Activity {
 	 * Metodo que realiza la accion de  guardar todo lo actual y crear una mesa nueva
 	 */
 	private void mesaNueva() {
-		startActivity(new Intent(this, Facebook.class));
 	}
 	/**
 	/**
@@ -370,7 +369,6 @@ public class Entra extends Activity {
 				}
 				if(itemPosition==2){//opcion de mesa nueva
 					mesaNueva();
-					Inicio();
 					return true;
 				}
 				if(itemPosition==3){//opcion de facebook
