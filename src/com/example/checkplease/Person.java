@@ -7,6 +7,7 @@ public class Person {
     private float total;
     private float totalTip;
     private boolean paid;
+    private String uId;
     
     public Person(int id, String name, float total, boolean paid, String picture) {
     	this.id = id;
@@ -79,5 +80,13 @@ public class Person {
 
 	public String toString() {
 		return id + " " + name + " " + total + " " + paid;
+	}
+
+	public String getuId() {
+		return uId;
+	}
+
+	public void setuId(String uId) {
+		this.uId = uId;
 	}
 }
