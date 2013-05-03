@@ -80,9 +80,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	//Mail variable
 	private String to = "";
-	private String from = "checkplease@systheam.com";
-	private String subject = "";
-	private String body = "";
 
 
 	@Override
@@ -112,7 +109,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			position = extras.getInt("Position");
 			idUsr = extras.getString("IdUsr");
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
-			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
 
 		//inicializacion de Variables globales
@@ -205,13 +202,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		agregar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				mail();
-				subject = name + " te invita a unirte a Check-Please";
-				body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
-						" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
-						"aplicacion las cuentas saldran en uninstante.\n\n" +
-						"Descargalo YA!!!\n\n" +
-						"play.google.com";
-
 			}
 		});
 
@@ -373,6 +363,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		String idmesa = adapter.getMesaId(pos);
 		Intent intent = new Intent(view.getContext(), Mesa.class);
 		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
+		intent.putExtra("Total",total);
+		intent.putExtra("Nombre",nombrePref);
+		intent.putExtra("Picture",path);
+		intent.putExtra("Position",position);
+		intent.putExtra("IdUsr",idUsr);
+		intent.putExtra("Paid",paid);
 		startActivity(intent);
 	}
 

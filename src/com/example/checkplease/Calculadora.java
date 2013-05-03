@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,7 @@ public class Calculadora extends Activity{
 		asignar = (Button)findViewById(R.id.asignar);
 
 		result = (EditText)findViewById(R.id.cuadroCalc);
-		
+
 		// Desactiva el teclado del EditText
 		result.setInputType(InputType.TYPE_NULL);
 		result.setTextColor(Color.parseColor("#787878"));
@@ -277,7 +278,7 @@ public class Calculadora extends Activity{
 						texto = texto + ".";
 						result.setText(texto);
 					}
-				 punto = true; 
+					punto = true; 
 				}
 			}
 		});
@@ -319,7 +320,7 @@ public class Calculadora extends Activity{
 				//simbolo activo que por default es 's'
 				for( int i = 0; i < split.length; i++ ){
 					try{
-							 if( split[i].equals("+") ) op = 's';
+						if( split[i].equals("+") ) op = 's';
 						else if( split[i].equals("-") ) op = 'r';
 						else if( split[i].equals("*") ) op = 'm';
 						else if( split[i].equals("/") ) op = 'd';
@@ -331,17 +332,18 @@ public class Calculadora extends Activity{
 						result.setText("ERROR");
 					}
 				}
-				
+
 				int decimalPlaces = 2;
 				BigDecimal bd = new BigDecimal(calculo);
 				// setScale is immutable
 				bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
 				calculo = bd.doubleValue();
-				
+
 				result.setText(texto + "\n = " + calculo);
 				igualText = "" + calculo;
 				texto = "" + calculo;
 				calculo = 0.0;
+				op = 's';
 				punto = false;
 			}
 		});
@@ -352,11 +354,12 @@ public class Calculadora extends Activity{
 		asignar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				split = texto.split(" ");
+				Log.d("hola", texto);
 				try{
 					//va verificando split al encontrarse con un numero hace el calculo con 
 					//simbolo activo que por default es 's'
 					for( int i = 0; i < split.length; i++ ){
-							 if( split[i].equals("+") ) op = 's';
+						if( split[i].equals("+") ) op = 's';
 						else if( split[i].equals("-") ) op = 'r';
 						else if( split[i].equals("*") ) op = 'm';
 						else if( split[i].equals("/") ) op = 'd';
@@ -368,14 +371,14 @@ public class Calculadora extends Activity{
 				} catch(NumberFormatException ex) { 
 					result.setText("ERROR");
 				}
-				
+
 				int decimalPlaces = 2;
 				BigDecimal bd = new BigDecimal(calculo);
 				// setScale is immutable
 				bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
 				calculo = bd.doubleValue();
 				result.setText(calculo+"");
-				
+
 				//se regresan los valores necesarios a la lista
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("viene", "calculadora");
@@ -389,10 +392,12 @@ public class Calculadora extends Activity{
 		});
 
 	}
-/**
- * MEtodo que realiza las operciones de la calculadora
- * @param op
- */
+	
+	
+	/**
+	 * Metodo que realiza las operciones de la calculadora
+	 * @param op
+	 */
 	public void realizaOp(char op){
 		switch( op ){
 		case 's': calculo += aux; break;
@@ -405,115 +410,115 @@ public class Calculadora extends Activity{
 	}
 
 	/**
-     * Metodo: onCreateOptionsMenu(),
-     * Metodo que agrega las opciones que se hicieron en menu->main.xml
-     * @param menu
-     * @return bolean, true se hizo corectamente
-     */
-		@Override
-		public boolean onCreateOptionsMenu(Menu menu) {
-			// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.main, menu);
+	 * Metodo: onCreateOptionsMenu(),
+	 * Metodo que agrega las opciones que se hicieron en menu->main.xml
+	 * @param menu
+	 * @return bolean, true se hizo corectamente
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	/**
+	 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
+	 *@param item
+	 *elemento que se selecciono
+	 */
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//respond to menu item selection
+		switch (item.getItemId()) {
+		case R.id.acerca://si se presiona la opcion de acerca
+			startActivity(new Intent(this, Acerca.class));
 			return true;
+		case android.R.id.home://si se presiona el regresar a la activad actual
+			Calculadora.this.finish();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		/**
-		 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
-		 *@param item
-		 *elemento que se selecciono
-		 */
-		public boolean onOptionsItemSelected(MenuItem item) {
-		    //respond to menu item selection
-			switch (item.getItemId()) {
-		    case R.id.acerca://si se presiona la opcion de acerca
-		    	startActivity(new Intent(this, Acerca.class));
-		    return true;
-		    case android.R.id.home://si se presiona el regresar a la activad actual
-				Calculadora.this.finish();
-				return true;
-		    
-		    default:
-		    return super.onOptionsItemSelected(item);
-		}
-		}
-	  /**
-     * Metodo: facebook,
-     * Metodo que realiza la accion de abrir la actividad de Facebook
-     */
-    private void facebook() {
+	}
+	/**
+	 * Metodo: facebook,
+	 * Metodo que realiza la accion de abrir la actividad de Facebook
+	 */
+	private void facebook() {
 		startActivity(new Intent(this, Facebook.class));
 	}
-    /**
-     * Metodo: Inicio,
-     * Metodo que realiza la accion de abrir la actividad de Inicio
-     */
+	/**
+	 * Metodo: Inicio,
+	 * Metodo que realiza la accion de abrir la actividad de Inicio
+	 */
 	private void Inicio() {
 		startActivity(new Intent(this, MainActivity.class));
 	}
 	/**
-     * Metodo: Acerca,
-     * Metodo que realiza la accion de abrir la actividad de Acerca
-     */
+	 * Metodo: Acerca,
+	 * Metodo que realiza la accion de abrir la actividad de Acerca
+	 */
 	private void Acerca(){
 		startActivity(new Intent(this, Acerca.class));
-		
+
 	}
 	/**
-     * Metodo: onResume,
-     * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
-     * carga nuevamente el Menu para reinicar los valores en cero
-     */
+	 * Metodo: onResume,
+	 * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+	 * carga nuevamente el Menu para reinicar los valores en cero
+	 */
 	@Override
 	protected void onResume() {
-	    super.onResume();
-	    cargaMenu();
-	    // Normal case behavior follows
+		super.onResume();
+		cargaMenu();
+		// Normal case behavior follows
 	}
 	/**
-     * Metodo: cargaMenu(),
-     * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
-     */
+	 * Metodo: cargaMenu(),
+	 * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-	    actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
-	    actionBar.setBackgroundDrawable(getResources().getDrawable(
-	            R.drawable.bar_color));//pone color gris
-	    actionBar.setTitle("Calculadora ");//pone el titulo
-	    
-	    ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
-	    //agrega las opciones al menu
+		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		actionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bar_color));//pone color gris
+		actionBar.setTitle("Calculadora ");//pone el titulo
+
+		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		//agrega las opciones al menu
 		actions.add("Opciones");
 		actions.add("Cerrar Sesion");
 		actions.add("Facebook");
 		actions.add("Acerca");
 		//Crea el adaptar del dropDown del header
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
-        //Habilita la navegacion del DropDown del action bar
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        //Degine la navegacion del dropdown
-        
-        ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
-			
-        	@Override
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+		//Habilita la navegacion del DropDown del action bar
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		//Degine la navegacion del dropdown
+
+		ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+
+			@Override
 			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
-        			if(itemPosition==1){//opcion de cerrar cesion
-						userFunctions.logoutUser(getApplicationContext());
-						Inicio();
-						return true;
-					}
-					if(itemPosition==2){//opcion de facebook
-						facebook();
-						return true;	
-					}
-					if(itemPosition==3){//opcion de acerca
-						Acerca();
-					}
+				if(itemPosition==1){//opcion de cerrar cesion
+					userFunctions.logoutUser(getApplicationContext());
+					Inicio();
+					return true;
+				}
+				if(itemPosition==2){//opcion de facebook
+					facebook();
+					return true;	
+				}
+				if(itemPosition==3){//opcion de acerca
+					Acerca();
+				}
 				return false;
-        	}
+			}
 		};
 		//set los elementos del dropdown del actionbar
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
-		
+
 	}
-	
+
 }
 
