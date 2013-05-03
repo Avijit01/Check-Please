@@ -75,7 +75,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private int idMesa = 0;
 	private int paid = 0;
 	private boolean isOnline;
-	private int idUsr;
+	private String idUsr;
 	SharedPreferences.Editor editor;
 
 	//Mail variable
@@ -111,7 +111,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
 			isOnline = extras.getBoolean("online");
-			idUsr = extras.getInt("IdUsr");
+			idUsr = extras.getString("IdUsr");
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
@@ -147,14 +147,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				e.printStackTrace();
 			}*/
 		} else {
-			idMesas.add("0");
-			idMesas.add("1");
-			restaurantes.add("KFC");
-			restaurantes.add("Pizza Hutt");
-			totales.add("100.00");
-			totales.add("235.50");
+			
 		}
-
+		idMesas.add("0");
+		idMesas.add("1");
+		restaurantes.add("KFC");
+		restaurantes.add("Pizza Hutt");
+		totales.add("100.00");
+		totales.add("235.50");
+		Log.e("regresa",idMesas.get(0));
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.mesasList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
@@ -171,6 +172,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		terminar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("viene", "detalles");
 				intent.putExtra("Path", path);
 				intent.putExtra("Nombre", name.getText().toString());
 				intent.putExtra("Position", position);
@@ -191,37 +193,14 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		 */
 		agregar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				//guardar el valor generado por cada agrega
-				/*float f = Float.parseFloat(precios.get(precios.size()-1)) - Float.parseFloat(total);
-        		precios.add("" + f);
-        		adapter = new DetallesAdapter(Detalles.this, precios);
-        		l.setAdapter( adapter );*/
-        		mail();
-        		/*Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-
-        		String receiver = to;
-        		String subject  = "Invitación";
-        		String body     = "your email body";
-
-        		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, receiver);
-        		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
-        		emailIntent.setType("plain/text");
-        		emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
-        		        		startActivity(emailIntent);
-*/
-        		
+				mail();
         		subject = name + " te invita a unirte a Check-Please";
         		body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
         				" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
         				"aplicacion las cuentas saldran en uninstante.\n\n" +
         				"Descargalo YA!!!\n\n" +
         				"play.google.com";
-        		/*try {
-					sendMail(to, from, subject, body);
-				} catch (MessagingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+        		
         	}
         });
 		
@@ -253,37 +232,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		});
 		
 	}
-	
-	public void sendMail(String to, String from, String subject, String body) throws MessagingException {
-        // 1 - get a mail session
-		Log.e("hola", ":"+to + from);
-        Properties props = new Properties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", 587);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.quitwait", "false");
-        Session session = Session.getDefaultInstance(props);
-        session.setDebug(true);
-
-        // 2 - create a message
-        Message message = new MimeMessage(session);
-        message.setSubject(subject);
-        message.setText(body);
-
-        // 3 - address the message
-        Address fromAddress = new InternetAddress(from);
-        Address toAddress = new InternetAddress(to);
-        message.setFrom(fromAddress);
-        message.setRecipient(Message.RecipientType.TO, toAddress);
-
-        // 4 - send the message
-        Transport transport = session.getTransport();
-        transport.connect("checkplease@systheam.com", "qwertycheck");
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
-    }
 	
 	/**
      * Metodo que permite editar el nombre por default del usuario
@@ -350,7 +298,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				String uriText =
         			    "mailto:"+to + 
         			    "?subject=" + URLEncoder.encode("Bienvenido a CheckPlease") + 
-        			    "&body=" + URLEncoder.encode("some text here");
+        			    "&body=" + URLEncoder.encode("Descarga la app desde Google Play");
 
         			Uri uri = Uri.parse(uriText);
 

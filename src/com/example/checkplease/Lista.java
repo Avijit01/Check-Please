@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.checkplease.libreria.DatabaseHandler;
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
@@ -153,6 +154,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		usuarios = new ArrayList<Person>();
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
+			Arrays.sort(users);
+			for(int i = 0; i < users.length; i++) {
+				String s = users[i];
+				String[] usr = s.split("=|;");
+				Log.d("Usr", s);
+				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
+				usuarios.add(p);
+			}
 			if(isOnline) {
 				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
 				/*JSONArray jArray;
@@ -171,15 +180,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-			} else {
-				Arrays.sort(users);
-				for(int i = 0; i < users.length; i++) {
-					String s = users[i];
-					String[] usr = s.split("=|;");
-					Log.d("Usr", s);
-					Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
-					usuarios.add(p);
-				}
 			}
 		} else {
 			if(isOnline) {//agrega el prime usuario que es la persona que esta logeada
@@ -194,18 +194,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		}
 		if(extras != null) {
-			/*Person person = usuarios.get(extras.getInt("Position"));
+			if(extras.getString("viene").equals("calculadora")){
+			Person person = usuarios.get(extras.getInt("Position"));
 			person.setTotal((float)extras.getDouble("totalIndi"));
-			if(extras.getString("Path") != null)
+			}
+			if(extras.getString("viene").equals("detalles")){
+				Person person = usuarios.get(extras.getInt("Position"));
+				person.setTotal((float)extras.getDouble("totalIndi"));
 				person.setPicture(extras.getString("Path"));
-			if(!person.getName().equals(extras.getString("Nombre")) && extras.getString("Nombre") != null)
-				person.setName(extras.getString("Nombre"));
-			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
-			editor.commit();*/
+				person.setName(extras.getString("Nombre"));	
+				editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
+				editor.commit();
+			}
+			//si viene de la vista de estra
 			if(extras.getString("viene").equals("entra")){
 				restaurante = extras.getString("restaurante");
 				idMesa = extras.getInt("idMesa");
 			}
+			//si viene de la vista de facebook
 			if(extras.getString("viene").equals("facebook")){
 				seleccionaAmigos = extras.getInt("friends");
 			}
@@ -537,9 +543,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
 					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
-
+					JSONObject json = userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
+					try {
+						if(json.getString("success") != null) {
+							String res = json.getString("success"); 
+							if(Integer.parseInt(res) == 1){//si es uno el succes, entro con exito
+								//se crea la base de datos interna
+								Person person = usuarios.get(json.getInt("id"));
+								person.setuId(json.getString("regresa"));
+							}else{//error en la conexion
+							}
+					} }catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
+				
+				
 			}
 		});
 

@@ -378,6 +378,7 @@ public class Calculadora extends Activity{
 				
 				//se regresan los valores necesarios a la lista
 				Intent intent = new Intent(view.getContext(), Lista.class);
+				intent.putExtra("viene", "calculadora");
 				intent.putExtra("totalIndi", calculo);
 				intent.putExtra("calculos", split);
 				intent.putExtra("Position", getIntent().getExtras().getInt("Position"));
