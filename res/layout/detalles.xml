@@ -15,9 +15,8 @@
 
         <TextView
             android:id="@+id/TextView01"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/precio"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -29,7 +28,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="right"
             android:text="@string/orden"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
@@ -46,7 +45,7 @@
         android:background="@android:color/darker_gray" />
 
     <ListView
-        android:id="@+id/preciosList"
+        android:id="@+id/mesasList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/agregar"

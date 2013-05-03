@@ -156,7 +156,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		}
 
 		//se declara la lista asociada con la lista del layout
-		l = (ListView) findViewById(R.id.preciosList);
+		l = (ListView) findViewById(R.id.mesasList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
 		adapter = new DetallesAdapter(this, restaurantes, totales, idMesas);
 		//se agrega los elementos a la lista
