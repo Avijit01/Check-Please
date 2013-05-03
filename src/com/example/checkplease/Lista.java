@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.checkplease.libreria.DatabaseHandler;
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
@@ -542,9 +543,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
 					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
-
+					JSONObject json = userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
+					try {
+						if(json.getString("success") != null) {
+							String res = json.getString("success"); 
+							if(Integer.parseInt(res) == 1){//si es uno el succes, entro con exito
+								//se crea la base de datos interna
+								Person person = usuarios.get(json.getInt("id"));
+								person.setuId(json.getString("regresa"));
+							}else{//error en la conexion
+							}
+					} }catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				}
+				
+				
 			}
 		});
 
