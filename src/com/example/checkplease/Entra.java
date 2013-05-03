@@ -39,7 +39,6 @@ public class Entra extends Activity {
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
-	private boolean isOnline;
 	int numeroMesa = 0;
 	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
 	String usuario, nombreRestaurante;
@@ -61,12 +60,10 @@ public class Entra extends Activity {
 		if(extras !=null){//si no es nulo
 			estaLogeado = extras.getInt("logeado");//toma el valor de 1
 			usuario = extras.getString("nombre");
-			isOnline = extras.getBoolean("online");
-			
+
 			if(extras.getInt("mesa")!=0)
 			{ numeroMesa = extras.getInt("mesa");}
 		}
-		isOnline = true;
 		//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);
@@ -80,30 +77,25 @@ public class Entra extends Activity {
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-		if(isOnline) {
-			if(numeroMesa != 0){//si tiene una mesa cargada
-				JSONObject json = userFunctions.getInfoMesa(numeroMesa);
-				try {//si la respuesta de KEY_Succes contiene algo
-					if (json.getString("success") != null) {
-						String res = json.getString("success"); 					
-						if(Integer.parseInt(res) == 1){//si se accedio
-							JSONObject json_mesa = json.getJSONObject("mesa");
-							restaurante.setText(json_mesa.getString("restaurante"));
-							restaurante.setInputType(InputType.TYPE_NULL);
-							//cambiar color a null					
-						}else{
-							// Error al cargar los datos
-							//mensajeError.setText("Usuario y/o contraseña incorrectos");
-						}
+		if(numeroMesa != 0){//si tiene una mesa cargada
+			JSONObject json = userFunctions.getInfoMesa(numeroMesa);
+			try {//si la respuesta de KEY_Succes contiene algo
+				if (json.getString("success") != null) {
+					String res = json.getString("success"); 					
+					if(Integer.parseInt(res) == 1){//si se accedio
+						JSONObject json_mesa = json.getJSONObject("mesa");
+						restaurante.setText(json_mesa.getString("restaurante"));
+						restaurante.setInputType(InputType.TYPE_NULL);
+						//cambiar color a null					
+					}else{
+						// Error al cargar los datos
+						//mensajeError.setText("Usuario y/o contraseña incorrectos");
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
 				}
-
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
-		} else {
-			Toast toast = Toast.makeText(this, "Modo offline", Toast.LENGTH_LONG);
-			toast.show();
+
 		}
 
 		igual.setOnClickListener(new  View.OnClickListener(){
@@ -118,7 +110,7 @@ public class Entra extends Activity {
 				etTotal.requestFocus ();
 				divIgual.setVisibility(view.VISIBLE);
 				restaurante.setInputType(InputType.TYPE_NULL);
-				if(numeroMesa == 0 && isOnline){
+				if(numeroMesa == 0){
 					numeroMesa = agregaRestaurante(restaurante);
 					nombreRestaurante = restaurante.getText().toString();
 					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
@@ -135,10 +127,10 @@ public class Entra extends Activity {
         		{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
         			restaurante.requestFocus ();
         		}else{
-					if(numeroMesa == 0 && isOnline){//si el numero de mesa es cero la agrega
-						numeroMesa = agregaRestaurante(restaurante);
-						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-						db.addMesa(usuario, numeroMesa);
+					if(numeroMesa == 0){//si el numero de mesa es cero la agrega
+					numeroMesa = agregaRestaurante(restaurante);
+					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+					db.addMesa(usuario, numeroMesa);
 					}			
 					divIgual.setVisibility(RelativeLayout.INVISIBLE);
 					restaurante.setInputType(InputType.TYPE_NULL);
@@ -147,9 +139,9 @@ public class Entra extends Activity {
 					intent.putExtra("viene", "entra");
 					intent.putExtra("idMesa", numeroMesa);
 					intent.putExtra("restaurante", nombreRestaurante);
-					intent.putExtra("online", isOnline);
 					startActivity(intent);
         		}
+
 			}
 		});
 
@@ -281,7 +273,7 @@ public class Entra extends Activity {
 				if (json.getString("success") != null) {
 					idMesa = json.getInt("mesa"); 
 				}
-				
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

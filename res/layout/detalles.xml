@@ -15,11 +15,10 @@
 
         <TextView
             android:id="@+id/TextView01"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/precio"
+            android:text="@string/orden"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
@@ -29,8 +28,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/orden"
+            android:layout_marginRight="30dp"
+            android:gravity="right"
+            android:text="@string/precio"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
@@ -46,36 +46,13 @@
         android:background="@android:color/darker_gray" />
 
     <ListView
-        android:id="@+id/preciosList"
+        android:id="@+id/mesasList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/agregar"
         android:layout_below="@+id/linearLayout2"
         android:layout_marginBottom="10dp" >
     </ListView>
-
-    <Button
-        android:id="@+id/terminar"
-        android:layout_width="110dp"
-        android:layout_height="35dp"
-        android:layout_alignRight="@+id/linearLayout2"
-        android:layout_below="@+id/preciosList"
-        android:layout_marginRight="35dp"
-        android:background="@drawable/facebook_button"
-        android:text="@string/aorden"
-        android:textColor="#ffffffff" />
-
-    <Button
-        android:id="@+id/agregar"
-        android:layout_width="110dp"
-        android:layout_height="35dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="17dp"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@+id/terminar"
-        android:background="@drawable/green_btn"
-        android:text="@string/platillo"
-        android:textColor="#ffffffff" />
 
     <RelativeLayout
         android:id="@+id/header"
@@ -139,5 +116,29 @@
             android:textSize="10pt" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/terminar"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_alignBaseline="@+id/agregar"
+        android:layout_alignBottom="@+id/agregar"
+        android:layout_alignRight="@+id/linearLayout2"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/facebook_button"
+        android:text="@string/aorden"
+        android:textColor="#ffffffff" />
+
+    <Button
+        android:id="@+id/agregar"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toLeftOf="@+id/terminar"
+        android:background="@drawable/green_btn"
+        android:text="@string/platillo"
+        android:textColor="#ffffffff" />
 
 </RelativeLayout>

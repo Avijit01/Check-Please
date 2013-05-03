@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class DetallesAdapter extends BaseAdapter {
      */
     public DetallesAdapter(Activity a, List<String> r, List<String> t, List<String> m) {
         activity = a;
-        for( int i = 0; i < res.size(); i++ ){
+        for( int i = 0; i < r.size(); i++ ){
         	res.add( r.get(i) );
         	tot.add( t.get(i) );
         	mes.add( m.get(i) );
@@ -85,8 +86,11 @@ public class DetallesAdapter extends BaseAdapter {
         
         TextView to=(TextView)vi.findViewById(R.id.restauranteMesa);
         TextView re=(TextView)vi.findViewById(R.id.totalMesa);
-        re.setTextColor(Color.parseColor("#ffffff"));
-        to.setTextColor(Color.parseColor("#ffffff"));
+        re.setTextColor(Color.parseColor("#555555"));
+        to.setTextColor(Color.parseColor("#555555"));
+        Log.e("res",res.get(position));
+        Log.e("tot",tot.get(position));
+        Log.e("mes",mes.get(position));
         re.setText(res.get(position));
         to.setText(tot.get(position));
         return vi;
