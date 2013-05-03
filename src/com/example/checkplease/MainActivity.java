@@ -104,13 +104,13 @@ public class MainActivity extends FragmentActivity   {
 
 			// Revisa si hay conexion a internet (Wifi o red movil)
 			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-			if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
+			//NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			//NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			//if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
 				isOnline = true;
-			} else {
-				isOnline = false;
-			}
+			//} else {
+			//	isOnline = false;
+			//}
 
 			// No hay conexion a internet
 			if(!isOnline) {

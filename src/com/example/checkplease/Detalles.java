@@ -155,7 +155,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		restaurantes.add("Pizza Hutt");
 		totales.add("100.00");
 		totales.add("235.50");
-		Log.e("regresa",idMesas.get(0));
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.mesasList);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
