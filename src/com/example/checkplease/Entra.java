@@ -304,7 +304,9 @@ public class Entra extends Activity {
 		editor.putInt("MESA", 0);
 		editor.commit();
 		numeroMesa = 0;
-		restaurante.setInputType(InputType.TYPE_CLASS_TEXT);
+		restaurante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		restaurante.setText("");
+		restaurante.requestFocus();
 	}
 	/**
 	/**
