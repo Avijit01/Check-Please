@@ -77,6 +77,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	SharedPreferences sharedPrefs;
 	SharedPreferences.Editor editor;
 	ListView layout;
+	String amigos = "";
+	String restaurante;
 	PersonAdapter adapter;
 	ArrayList<Person> usuarios;
 	EditText etTip;
@@ -138,6 +140,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				return false;
 			}
 		});
+		
 
 		if(isOnline) {
 			HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
@@ -197,10 +200,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				person.setPicture(extras.getString("Path"));
 			if(!person.getName().equals(extras.getString("Nombre")) && extras.getString("Nombre") != null)
 				person.setName(extras.getString("Nombre"));
-			seleccionaAmigos = extras.getInt("friends");
 			editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
 			editor.commit();*/
-			idMesa = extras.getInt("idMesa");
+			if(extras.getString("viene").equals("entra")){
+				restaurante = extras.getString("restaurante");
+				idMesa = extras.getInt("idMesa");
+			}
+			if(extras.getString("viene").equals("facebook")){
+				seleccionaAmigos = extras.getInt("friends");
+			}
 
 		}
 		if(seleccionaAmigos == 1){
@@ -322,17 +330,25 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			showInfo();
 			break;
 		case R.id.bFacebook:
-			Session session2 = Session.getActiveSession();
-			if (session2 == null) {
-				Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
+			
+			Session session = Session.getActiveSession();
+			if (session == null) {
+				Intent intent = new Intent(this, Facebook.class);
+				intent.putExtra("viene", "postea");
+				intent.putExtra("restaurante", restaurante);
+				intent.putExtra("amigos", amigos);
+				startActivity(intent);
 			}else{
-				if (session2.isOpened()) {
-					postStatusUpdate();
+				if (session.isOpened()) {
+					Intent intent = new Intent(this, Facebook.class);
+					intent.putExtra("viene", "postea");
+					intent.putExtra("restaurante", restaurante);
+					intent.putExtra("amigos", amigos);
+					startActivity(intent);
 				}else{
-					Toast.makeText(getApplicationContext(),"No esta logeado con Facebook",Toast.LENGTH_SHORT).show();
-				}
+					Intent intent = new Intent(this, Facebook.class);
+					startActivity(intent);					}
 			}
-			Toast.makeText(this, "Compartir en Facebook", Toast.LENGTH_SHORT);
 			break;
 		case R.id.bEliminar:
 			positions.clear();
@@ -365,9 +381,13 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
 
 				//profilePictureView.setProfileId(user.getId());
+				if(amigos.equals(""))//si es el primer usuario que se agrega solo se pone ese sin como
+					{amigos = user.getId();}
+				else//sino todo lo que ya esta , el nuevo usuario
+					{amigos = amigos + ","+ user.getId();}
 
-				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
-				Log.e("id-usuario-antes", ":" +usuarios.size());
+					userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				Log.e("id-usuario-antes", ":" +user.getId());
 
 
 			}
@@ -382,7 +402,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	private void postStatusUpdate() {
 		Log.d("entra", "ONCLICK");
 		if (user != null ) {
-			final String message = getString(R.string.aceptar, user.getFirstName(), (new Date().toString()));
+			String friends = "623811006";
+			final String message = getString(R.string.status_update, user.getFirstName(), (new Date().toString()));
+			 Bundle postParams = new Bundle();
+			 postParams.putString("message", message);
+			 postParams.putString("tags", friends);
 			Request request = Request
 
 					.newStatusUpdateRequest(Session.getActiveSession(), message, new Request.Callback() {
