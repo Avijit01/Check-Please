@@ -147,45 +147,74 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
 
 		usuarios = new ArrayList<Person>();
-		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
-		if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
-			Arrays.sort(users);
-			for(int i = 0; i < users.length; i++) {
-				String s = users[i];
-				String[] usr = s.split("=|;");
-				Log.d("Usr", s);
-				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
-				usuarios.add(p);
-			}
-			JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
-			JSONArray jArray;
-			try {
-				jArray = json.getJSONArray("usuariosMesa");
-				for(int i=0;i<jArray.length();i++){
-					JSONObject json_data = jArray.getJSONObject(i);
-					json_data.getInt("idSistema");
-					json_data.getString("nombre");
-					json_data.getDouble("total");
-					json_data.getInt("pagado");
-					json_data.getString("path");
-					json_data.getString("nombre");
+		JSONObject json = new JSONObject();
+		JSONArray jArray;
+		try {
+			json = userFunctions.obtenerUsuarioMesa(idMesa);
+			if (json.getString("success") != null) {
+				String res = json.getString("success"); 
+				if(Integer.parseInt(res) == 1){
+					jArray = json.getJSONArray("usuariosMesa");
+					if(jArray.length()==0){
+						HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+						HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+						idMesa = Integer.parseInt(user.get("mesa"));    
+						usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
+						userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+						Person person = usuarios.get(usuarios.size()-1);
+						person.setuId((String)useractual.get("uid"));
+					}else{
+					Log.e("dimension","==="+jArray.length());
+					for(int i=0;i<jArray.length();i++){
+						JSONObject json_data = jArray.getJSONObject(i);
+						boolean pagado2 = false;
+						String imagen;
+						if(json_data.getInt("pagado")==1){
+							pagado2 = true;
+						}
+						if(json_data.getString("path").equals("path")){
+							imagen = "null";
+						}else{
+							imagen = json_data.getString("path");
+						}
+						Person p = new Person(json_data.getInt("idSistema"), json_data.getString("nombre"), (float)json_data.getDouble("total"), pagado2, imagen);
+						p.setuId(json_data.getString("idUsuario"));
+						usuarios.add(p);
+					}}
+				}else{
+					if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
+						Arrays.sort(users);
+						for(int i = 0; i < users.length; i++) {
+							String s = users[i];
+							String[] usr = s.split("=|;");
+							Log.d("Usr", s);
+							Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
+							p.setuId("1");
+							usuarios.add(p);
+						}
+						
+					}else {
+						//agrega el prime usuario que es la persona que esta logeada
+						HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+						HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+						idMesa = Integer.parseInt(user.get("mesa"));    
+						usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
+						userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+						Person person = usuarios.get(usuarios.size()-1);
+						person.setuId((String)useractual.get("uid"));
+						//Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
+						//usuarios.add(p);
+					}
+					
 				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		}else {
-			//agrega el prime usuario que es la persona que esta logeada
-			HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-			HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-			idMesa = Integer.parseInt(user.get("mesa"));    
-			usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
-			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
-			Person person = usuarios.get(usuarios.size()-1);
-			person.setuId((String)useractual.get("uid"));
-			//Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
-			//usuarios.add(p);
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
+		
 
 		if(extras != null) {
 			if(extras.getString("viene").equals("calculadora")){
@@ -212,6 +241,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		}
 		if(seleccionaAmigos == 1){
+			Log.e("entra",":amigos");
 			onClickPickFriends();
 		}
 		Toast.makeText(getApplicationContext(),"Agrega"+idMesa,Toast.LENGTH_SHORT).show();
