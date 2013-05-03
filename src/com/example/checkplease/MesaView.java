@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ListMesa extends Activity implements OnItemClickListener, OnClickListener{
+public class MesaView extends Activity implements OnItemClickListener, OnClickListener{
 	
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
@@ -98,7 +98,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 		String idmesa = adapter.getMesaId(pos);
-		Intent intent = new Intent(view.getContext(), MesaView.class);
+		Intent intent = new Intent(view.getContext(), Mesa.class);
 		startActivity(intent);
 	}
 

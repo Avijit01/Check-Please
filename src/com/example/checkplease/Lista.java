@@ -158,35 +158,34 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				usuarios.add(p);
 			}
 			JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
-			/*JSONArray jArray;
-				try {
-					jArray = json.getJSONArray("usuariosMesa");
-					for(int i=0;i<jArray.length();i++){
-						JSONObject json_data = jArray.getJSONObject(i);
-						json_data.getInt("idSistema");
-						json_data.getString("nombre");
-						json_data.getDouble("total");
-						json_data.getInt("pagado");
-						json_data.getString("path");
-						json_data.getString("nombre")
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+			JSONArray jArray;
+			try {
+				jArray = json.getJSONArray("usuariosMesa");
+				for(int i=0;i<jArray.length();i++){
+					JSONObject json_data = jArray.getJSONObject(i);
+					json_data.getInt("idSistema");
+					json_data.getString("nombre");
+					json_data.getDouble("total");
+					json_data.getInt("pagado");
+					json_data.getString("path");
+					json_data.getString("nombre");
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}else {
-            //agrega el prime usuario que es la persona que esta logeada
-                HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-                HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-                idMesa = Integer.parseInt(user.get("mesa"));
-              
-                usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
-                userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
-                Person person = usuarios.get(usuarios.size()-1);
-				person.setuId((String)useractual.get("uid"));
-                //Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
-                //usuarios.add(p);
-          }
+			//agrega el prime usuario que es la persona que esta logeada
+			HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+			HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+			idMesa = Integer.parseInt(user.get("mesa"));    
+			usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
+			userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
+			Person person = usuarios.get(usuarios.size()-1);
+			person.setuId((String)useractual.get("uid"));
+			//Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
+			//usuarios.add(p);
+		}
 
 		if(extras != null) {
 			if(extras.getString("viene").equals("calculadora")){
@@ -255,14 +254,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		for(Person p : usuarios) {
 			editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 			Log.e("pagado",":"+p.isPaid());
-			pagado =1;
+			pagado = 1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
 			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
+			Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture());
 
 		}
 		userFunctions.updateMesa(idMesa, gTotal, Float.parseFloat(etTip.getText().toString()), 0);
-
 		editor.commit();
+		finish();
 	}
 
 	// Metodo para actualizar la lista de usuarios y sus totales
@@ -553,10 +553,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 								Log.e("id-regresa","-"+ json.getInt("id")+":"+person.getuId());
 							}else{//error en la conexion
 							}
-					} }catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+						} }catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				}
 			}
 		});
@@ -571,6 +571,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	// Elimina elementos de la lista de usuarios
 	public void deleteItem() {
+		Log.d("Prefs", sharedPrefs.getAll().toString());
 		//se toma el Layout Inflater
 		LayoutInflater inflater = getLayoutInflater();
 		View lvView = inflater.inflate(R.layout.lista_usuarios_delete, null);
