@@ -141,9 +141,15 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
-
 		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
 		idMesa = Integer.parseInt(user.get("mesa"));
+
+		if(extras != null) {
+			if(extras.get("clearPrefs") != null && extras.getBoolean("clearPrefs")) {
+				editor.clear();
+				editor.commit();
+			}
+		}
 
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");

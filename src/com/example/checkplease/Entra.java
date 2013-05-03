@@ -39,7 +39,7 @@ public class Entra extends Activity {
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
-	int numeroMesa = 0;
+	int numeroMesa = 0, prevNumeroMesa;
 	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
 	String usuario, nombreRestaurante;
 	private Button regresa, igual, individual;
@@ -139,6 +139,9 @@ public class Entra extends Activity {
 					intent.putExtra("viene", "entra");
 					intent.putExtra("idMesa", numeroMesa);
 					intent.putExtra("restaurante", nombreRestaurante);
+					if(numeroMesa != prevNumeroMesa)
+						intent.putExtra("clearPrefs", true);
+					prevNumeroMesa = numeroMesa;
 					startActivity(intent);
 				}
 
