@@ -74,7 +74,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private int position;
 	private int idMesa = 0;
 	private int paid = 0;
-	private boolean isOnline;
 	private String idUsr;
 	SharedPreferences.Editor editor;
 
@@ -110,12 +109,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			nombrePref = extras.getString("Nombre");
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
-			isOnline = extras.getBoolean("online");
 			idUsr = extras.getString("IdUsr");
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 		}
-		
+
 		//inicializacion de Variables globales
 		totalView = (TextView)findViewById(R.id.total);
 		name = (TextView)findViewById(R.id.name);
@@ -129,26 +127,22 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//se asigna el valor por default del total
 		totalView.setText(total);
-		
-		if(isOnline) {
-			/*HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-			JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
-			JSONArray jArray;
-			try {
-				jArray = json.getJSONArray("mesasUsuario");
-				for(int i=0;i<jArray.length();i++){
-					JSONObject json_data = jArray.getJSONObject(i);
-					//json_data.getInt("idMesa");
-					//json_data.getString("restaurante");
-					//json_data.getDouble("total");
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-		} else {
-			
-		}
+
+		/*HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+		JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
+		JSONArray jArray;
+		try {
+			jArray = json.getJSONArray("mesasUsuario");
+			for(int i=0;i<jArray.length();i++){
+				JSONObject json_data = jArray.getJSONObject(i);
+				//json_data.getInt("idMesa");
+				//json_data.getString("restaurante");
+				//json_data.getDouble("total");
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		idMesas.add("0");
 		idMesas.add("1");
 		restaurantes.add("KFC");
@@ -193,32 +187,32 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		agregar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				mail();
-        		subject = name + " te invita a unirte a Check-Please";
-        		body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
-        				" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
-        				"aplicacion las cuentas saldran en uninstante.\n\n" +
-        				"Descargalo YA!!!\n\n" +
-        				"play.google.com";
-        		
-        	}
-        });
-		
+				subject = name + " te invita a unirte a Check-Please";
+				body = "Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
+						" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
+						"aplicacion las cuentas saldran en uninstante.\n\n" +
+						"Descargalo YA!!!\n\n" +
+						"play.google.com";
+
+			}
+		});
+
 		/**
-	     * Metodo del evento OnClick que se asgina a la vista 
-	     * name que cambia el nombre del usuario
-	     * @return void
-	     */
+		 * Metodo del evento OnClick que se asgina a la vista 
+		 * name que cambia el nombre del usuario
+		 * @return void
+		 */
 		name.setOnClickListener(new  View.OnClickListener(){
-        	public void onClick(View view){
-        		cambiarNombre();
-        	}
-        });
-		
+			public void onClick(View view){
+				cambiarNombre();
+			}
+		});
+
 		/**
-	     * Metodo del evento OnClick que se asgina al boton 
-	     * foto que cambia la imgen a desplegar del usuario
-	     * @return void
-	     */
+		 * Metodo del evento OnClick que se asgina al boton 
+		 * foto que cambia la imgen a desplegar del usuario
+		 * @return void
+		 */
 		foto .setOnClickListener( new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -229,13 +223,13 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				startActivityForResult(Intent.createChooser(intent,  "Selecciona Imagen"), SELECT_PICTURE);
 			}
 		});
-		
+
 	}
-	
+
 	/**
-     * Metodo que permite editar el nombre por default del usuario
-     * @return void
-     */
+	 * Metodo que permite editar el nombre por default del usuario
+	 * @return void
+	 */
 	public void cambiarNombre() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -248,7 +242,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		View view = inflater.inflate(R.layout.cambiar_nombre, null);
 		//se asigna esa vista a la ventana de dialogo
 		dialog.setView(view);
-		
+
 		nameChange = (EditText)view.findViewById(R.id.nameChange);
 		nameChange.setTextColor(Color.parseColor("#787878"));
 
@@ -266,11 +260,11 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		dialog.show();
 	}
 
-	
+
 	/**
-     * Metodo que permite editar el correo a la que se mandara el mail
-     * @return void
-     */
+	 * Metodo que permite editar el correo a la que se mandara el mail
+	 * @return void
+	 */
 	public void mail() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -283,7 +277,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		View view = inflater.inflate(R.layout.cambiar_nombre, null);
 		//se asigna esa vista a la ventana de dialogo
 		dialog.setView(view);
-		
+
 		nameChange = (EditText)view.findViewById(R.id.nameChange);
 		nameChange.setTextColor(Color.parseColor("#787878"));
 		nameChange.setInputType(TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -295,15 +289,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 					to = nameChange.getText().toString();
 				@SuppressWarnings("deprecation")
 				String uriText =
-        			    "mailto:"+to + 
-        			    "?subject=" + URLEncoder.encode("Bienvenido a CheckPlease") + 
-        			    "&body=" + URLEncoder.encode("Descarga la app desde Google Play");
+				"mailto:"+to + 
+				"?subject=" + URLEncoder.encode("Bienvenido a CheckPlease") + 
+				"&body=" + URLEncoder.encode("Descarga la app desde Google Play");
 
-        			Uri uri = Uri.parse(uriText);
+				Uri uri = Uri.parse(uriText);
 
-        			Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
-        			sendIntent.setData(uri);
-        			startActivity(Intent.createChooser(sendIntent, "Send email")); 
+				Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+				sendIntent.setData(uri);
+				startActivity(Intent.createChooser(sendIntent, "Send email")); 
 			}
 		});
 
@@ -315,13 +309,13 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 
 
-			
 
-			/**
-			 * Metodo que nos permite accesar a la galeria de imagenes y traer el path
-			 * de la imagen seleccionada
-			 * @return void
-			 */
+
+	/**
+	 * Metodo que nos permite accesar a la galeria de imagenes y traer el path
+	 * de la imagen seleccionada
+	 * @return void
+	 */
 	protected void onActivityResult( int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == RESULT_OK && null != data) {
@@ -335,9 +329,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			foto.setImageBitmap(BitmapFactory.decodeFile(path));
 		}
 	}
-	
 
-		
+
+
 
 	@Override
 	/**

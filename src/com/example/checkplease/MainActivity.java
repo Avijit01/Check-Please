@@ -61,7 +61,6 @@ public class MainActivity extends FragmentActivity   {
 	EditText usuario, pass, passcon;
 	UserFunctions userFunctions;
 	TextView mensajeError;
-	private boolean isOnline;
 
 	// JSON Respuestas que se tienen
 	private static String KEY_SUCCESS = "success";
@@ -102,27 +101,8 @@ public class MainActivity extends FragmentActivity   {
 			pass = (EditText) findViewById(R.id.pass);
 			entrar = (Button)findViewById(R.id.entrarbtn);
 
-			// Revisa si hay conexion a internet (Wifi o red movil)
-			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-			//NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			//NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-			//if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
-				isOnline = true;
-			//} else {
-			//	isOnline = false;
-			//}
-
-			// No hay conexion a internet
-			if(!isOnline) {
-				Intent intent = new Intent(this, Entra.class);
-				intent.putExtra("logeado", 0);//envia el parametro de que esta logeado
-				intent.putExtra("nombre", "Yo");
-				intent.putExtra("mesa", 0);
-				intent.putExtra("online", "false");
-				startActivity(intent);
-			}
 			//checa en la base de datos local si esta logeado, y se habre la clase Entra
-			else if(userFunctions.isUserLoggedIn(getApplicationContext())){
+			if(userFunctions.isUserLoggedIn(getApplicationContext())){
 				HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
 				Intent intent = new Intent(this, Entra.class);
 				intent.putExtra("logeado",1);//envia el parametro de que esta logeado
@@ -171,35 +151,36 @@ public class MainActivity extends FragmentActivity   {
 							usuario.setBackgroundResource(R.drawable.blanco_btn);
 							pass.setBackgroundResource(R.drawable.blanco_btn);
 							mensajeError.setText("");
-							//se manda llamar el metodo loginUser de la clase userFunctions
-							JSONObject json = new JSONObject();
-							// check la respuesta del login
-							try {
-								json = userFunctions.loginUser(user, password);//si la respuesta de KEY_Succes contiene algo
-								if (json.getString(KEY_SUCCESS) != null) {
-									String res = json.getString(KEY_SUCCESS); 
-									if(Integer.parseInt(res) == 1){//si se accedio
-										//se crea de manera local(celular) el usuario 
-										DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-										JSONObject json_user = json.getJSONObject("user");
-										userFunctions.logoutUser(getApplicationContext());
-										//se agrega el usuario a la base de datos con el nombre, email, id
-										db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
-										//se manda a la clase Entra
-										Intent intent = new Intent(view.getContext(), Entra.class);
-										HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-										intent.putExtra("nombre",(String)user2.get("name"));
-										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-										startActivity(intent);
+							if(MainActivity.this.isConnected()) {
+								//se manda llamar el metodo loginUser de la clase userFunctions
+								JSONObject json = new JSONObject();
+								// check la respuesta del login
+								try {
+									json = userFunctions.loginUser(user, password);//si la respuesta de KEY_Succes contiene algo
+									if (json.getString(KEY_SUCCESS) != null) {
+										String res = json.getString(KEY_SUCCESS); 
+										if(Integer.parseInt(res) == 1){//si se accedio
+											//se crea de manera local(celular) el usuario 
+											DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+											JSONObject json_user = json.getJSONObject("user");
+											userFunctions.logoutUser(getApplicationContext());
+											//se agrega el usuario a la base de datos con el nombre, email, id
+											db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));						
+											//se manda a la clase Entra
+											Intent intent = new Intent(view.getContext(), Entra.class);
+											HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
+											intent.putExtra("nombre",(String)user2.get("name"));
+											intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+											startActivity(intent);
 
-									}else{
-										// Error in login
-										mensajeError.setText("Usuario y/o contraseña incorrectos");
+										}else{
+											// Error in login
+											mensajeError.setText("Usuario y/o contraseña incorrectos");
+										}
 									}
+								} catch (JSONException e) {
+									e.printStackTrace();
 								}
-							} catch (JSONException e) {
-								//e.printStackTrace();
-								Log.d("JSON", json.toString());
 							}
 						}
 					}
@@ -207,15 +188,19 @@ public class MainActivity extends FragmentActivity   {
 				//al darle click al boton de registrar, se inicia la activad registrar
 				registrar.setOnClickListener(new  View.OnClickListener(){
 					public void onClick(View view){
-						Intent intent = new Intent(view.getContext(), Registro.class);
-						startActivity(intent);
+						if(MainActivity.this.isConnected()) {
+							Intent intent = new Intent(view.getContext(), Registro.class);
+							startActivity(intent);
+						}
 					}
 				});
 				//al darle click al boton de facebook, se inicia la activad de facebook
 				facebook.setOnClickListener(new  View.OnClickListener(){
 					public void onClick(View view){
-						Intent intent = new Intent(view.getContext(), Facebook.class);
-						startActivity(intent);	        		
+						if(MainActivity.this.isConnected()) {
+							Intent intent = new Intent(view.getContext(), Facebook.class);
+							startActivity(intent);
+						}
 					}
 				});
 			}
@@ -250,5 +235,17 @@ public class MainActivity extends FragmentActivity   {
 		}
 	}
 
-
+	private boolean isConnected() {
+		// Revisa si hay conexion a internet (Wifi o red movil)
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
+			return true;
+		} else {
+			Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_SHORT);
+			toast.show();
+			return false;
+		}
+	}
 }

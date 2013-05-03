@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.checkplease.libreria.DatabaseHandler;
 import com.example.checkplease.libreria.UserFunctions;
 import com.facebook.FacebookException;
 import com.facebook.FacebookRequestError;
@@ -93,7 +92,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	int guardaPrimera = 0;
 	ArrayList<Integer> positions;
 	int seleccionaAmigos = 0;//si abrira el popup para selccionar amigos
-	private boolean isOnline;
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -122,7 +120,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		facebook = (ImageButton)findViewById(R.id.bFacebook);
 		eliminar = (ImageButton)findViewById(R.id.bEliminar);
 		//	  profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
-		isOnline = extras.getBoolean("online");
 
 		// Agregar click listener
 		agregar.setOnClickListener(this);
@@ -141,12 +138,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				return false;
 			}
 		});
-		
 
-		if(isOnline) {
-			HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
-			idMesa = Integer.parseInt(user.get("mesa"));
-		}
+
+		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+		idMesa = Integer.parseInt(user.get("mesa"));
 
 		// Parse al string para saber los valores guardados
 		users = sharedPrefs.getAll().toString().replaceAll("\\{|\\}", "").split(",.?");
@@ -162,9 +157,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				Person p = new Person(Integer.parseInt(usr[0]), usr[1], Float.parseFloat(usr[2]), Boolean.parseBoolean(usr[3]), usr[4]);
 				usuarios.add(p);
 			}
-			if(isOnline) {
-				JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
-				/*JSONArray jArray;
+			JSONObject json = userFunctions.obtenerUsuarioMesa(idMesa);
+			/*JSONArray jArray;
 				try {
 					jArray = json.getJSONArray("usuariosMesa");
 					for(int i=0;i<jArray.length();i++){
@@ -180,23 +174,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-			}
-		} else {
-			if(isOnline) {//agrega el prime usuario que es la persona que esta logeada
-				HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-				HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
-				idMesa = Integer.parseInt(user.get("mesa"));
-				usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
-				userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
-			} else {
-				Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
-				usuarios.add(p);
-			}
 		}
 		if(extras != null) {
 			if(extras.getString("viene").equals("calculadora")){
-			Person person = usuarios.get(extras.getInt("Position"));
-			person.setTotal((float)extras.getDouble("totalIndi"));
+				Person person = usuarios.get(extras.getInt("Position"));
+				person.setTotal((float)extras.getDouble("totalIndi"));
 			}
 			if(extras.getString("viene").equals("detalles")){
 				Person person = usuarios.get(extras.getInt("Position"));
@@ -272,7 +254,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	// Metodo para actualizar la lista de usuarios y sus totales
 	public void updatePersonAdapter(float tip) {
-		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions, isOnline);
+		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
@@ -336,7 +318,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			showInfo();
 			break;
 		case R.id.bFacebook:
-			
+
 			Session session = Session.getActiveSession();
 			if (session == null) {
 				Intent intent = new Intent(this, Facebook.class);
@@ -388,11 +370,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 				//profilePictureView.setProfileId(user.getId());
 				if(amigos.equals(""))//si es el primer usuario que se agrega solo se pone ese sin como
-					{amigos = user.getId();}
+				{amigos = user.getId();}
 				else//sino todo lo que ya esta , el nuevo usuario
-					{amigos = amigos + ","+ user.getId();}
+				{amigos = amigos + ","+ user.getId();}
 
-					userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 				Log.e("id-usuario-antes", ":" +user.getId());
 
 
@@ -410,9 +392,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		if (user != null ) {
 			String friends = "623811006";
 			final String message = getString(R.string.status_update, user.getFirstName(), (new Date().toString()));
-			 Bundle postParams = new Bundle();
-			 postParams.putString("message", message);
-			 postParams.putString("tags", friends);
+			Bundle postParams = new Bundle();
+			postParams.putString("message", message);
+			postParams.putString("tags", friends);
 			Request request = Request
 
 					.newStatusUpdateRequest(Session.getActiveSession(), message, new Request.Callback() {
@@ -543,24 +525,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
 					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
-					JSONObject json = userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
-					try {
-						if(json.getString("success") != null) {
-							String res = json.getString("success"); 
-							if(Integer.parseInt(res) == 1){//si es uno el succes, entro con exito
-								//se crea la base de datos interna
-								Person person = usuarios.get(json.getInt("id"));
-								person.setuId(json.getString("regresa"));
-							}else{//error en la conexion
-							}
-					} }catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+					userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
+
 				}
-				
-				
 			}
 		});
 
@@ -585,7 +552,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		//se toma el layout correspondiente a la ventana del pop up
 		View checkboxLayout = inflater.inflate(R.layout.lista_usuarios_delete, null);
-		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions, isOnline);
+		PersonAdapter deleteAdapter = new PersonAdapter(this, R.layout.lista_usuarios_delete_item,usuarios, 0.0f, 1, positions);
 		lvDelete.setAdapter(deleteAdapter);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(lvView);
