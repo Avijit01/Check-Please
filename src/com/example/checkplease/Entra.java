@@ -36,7 +36,7 @@ public class Entra extends Activity {
 	EditText etTotal;
 	EditText etPropina;
 	EditText etPersonas, restaurante;
-	TextView tvPagoPorPersona;
+	TextView tvPagoPorPersona, mensaje;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 	int numeroMesa = 0, prevNumeroMesa;
@@ -74,6 +74,7 @@ public class Entra extends Activity {
 		etPersonas = (EditText)findViewById(R.id.personas);
 		tvPagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
 		divIgual = (RelativeLayout)findViewById(R.id.divIgual);
+		mensaje = (TextView)findViewById(R.id.textView1);
 
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
@@ -86,6 +87,11 @@ public class Entra extends Activity {
 						JSONObject json_mesa = json.getJSONObject("mesa");
 						restaurante.setText(json_mesa.getString("restaurante"));
 						restaurante.setInputType(InputType.TYPE_NULL);
+						mensaje.setText("Tu mesa actual es de manera:");
+						if(json_mesa.getInt("tipo")==0){
+							individual.setVisibility(RelativeLayout.INVISIBLE);
+						}else
+							igual.setVisibility(RelativeLayout.INVISIBLE);
 						//cambiar color a null					
 					}else{
 						// Error al cargar los datos
@@ -111,7 +117,7 @@ public class Entra extends Activity {
 					divIgual.setVisibility(view.VISIBLE);
 					restaurante.setInputType(InputType.TYPE_NULL);
 					if(numeroMesa == 0){
-						numeroMesa = agregaRestaurante(restaurante);
+						numeroMesa = agregaRestaurante(restaurante, 0);
 						nombreRestaurante = restaurante.getText().toString();
 						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 						db.addMesa(usuario, numeroMesa);
@@ -128,7 +134,7 @@ public class Entra extends Activity {
 				restaurante.requestFocus ();
 				}else{
 					if(numeroMesa == 0){//si el numero de mesa es cero la agrega
-						numeroMesa = agregaRestaurante(restaurante);
+						numeroMesa = agregaRestaurante(restaurante,1);
 						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 						db.addMesa(usuario, numeroMesa);
 					}			
@@ -267,11 +273,12 @@ public class Entra extends Activity {
 	 * @return  idMesa, el id que se creo de la mesa
 	 * si no tiene nada como quiera se crea la mesa para tener un id de la mesa
 	 */
-	private int agregaRestaurante(EditText restaurante){
+	private int agregaRestaurante(EditText restaurante, int tipo){
 		String restaurante2 = restaurante.getText().toString();
+		Log.e("tipo",":"+tipo);
 		int idMesa=0;
 		if(restaurante.equals("")){
-			JSONObject json = userFunctions.agregaRestaurante("-");
+			JSONObject json = userFunctions.agregaRestaurante("-", tipo);
 			try {//si la respuesta de KEY_Succes contiene algo
 				if (json.getString("success") != null) {
 					idMesa = json.getInt("mesa"); 
@@ -282,7 +289,7 @@ public class Entra extends Activity {
 			}
 			return idMesa;
 		}else{
-			JSONObject json = userFunctions.agregaRestaurante(restaurante2);
+			JSONObject json = userFunctions.agregaRestaurante(restaurante2, tipo);
 			try {//si la respuesta de KEY_Succes contiene algo
 				if (json.getString("success") != null) {
 					idMesa = json.getInt("mesa");  

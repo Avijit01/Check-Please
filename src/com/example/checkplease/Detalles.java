@@ -128,9 +128,10 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		Log.e("id",":"+idUsr);
 		if(!idUsr.equals("1")){
-		JSONObject json = userFunctions.obtenerMesasUsuario(idUsr);
+		JSONObject json = new JSONObject();
 		JSONArray jArray;
 		try {
+			json = userFunctions.obtenerMesasUsuario(idUsr);
 			jArray = json.getJSONArray("usuariosMesa");
 			for(int i=0;i<jArray.length();i++){
 				JSONObject json_data = jArray.getJSONObject(i);

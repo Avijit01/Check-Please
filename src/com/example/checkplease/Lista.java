@@ -166,7 +166,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					if(jArray.length()==0){
 						HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 						HashMap<String, String> user2 = userFunctions.getUsuarioId(getApplicationContext());
-						idMesa = Integer.parseInt(user.get("mesa"));    
+						idMesa = Integer.parseInt(user.get("mesa"));
 						usuarios.add(new Person(usuarios.size(), (String)useractual.get("name"), 0.0f, false));
 						userFunctions.agregaUsuarioMesa(idMesa, (String)useractual.get("name"),Integer.toString(usuarios.size()-1), (String)useractual.get("uid"));
 						Person person = usuarios.get(usuarios.size()-1);
@@ -185,6 +185,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 						}else{
 							imagen = json_data.getString("path");
 						}
+						etTip.setText(json_data.getString("propina"));
 						Person p = new Person(json_data.getInt("idSistema"), json_data.getString("nombre"), (float)json_data.getDouble("total"), pagado2, imagen);
 						p.setuId(json_data.getString("idUsuario"));
 						usuarios.add(p);

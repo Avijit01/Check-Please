@@ -71,11 +71,12 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
-	public JSONObject agregaRestaurante(String restaurante){
+	public JSONObject agregaRestaurante(String restaurante, int tipo){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", restaurante_tag));
 		params.add(new BasicNameValuePair("restaurante", restaurante));
+		params.add(new BasicNameValuePair("tipo", Integer.toString(tipo)));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
