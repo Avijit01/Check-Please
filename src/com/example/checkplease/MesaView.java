@@ -10,12 +10,15 @@ import org.json.JSONObject;
 
 import com.example.checkplease.libreria.UserFunctions;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -129,6 +132,76 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 		Intent intent = new Intent(view.getContext(), Mesa.class);
 		startActivity(intent);
+	}
+	
+	/**
+	 * Metodo: facebook,
+	 * Metodo que realiza la accion de abrir la actividad de Facebook
+	 */
+	private void facebook() {
+		startActivity(new Intent(this, Facebook.class));
+	}
+	/**
+	 * Metodo: Inicio,
+	 * Metodo que realiza la accion de abrir la actividad de Inicio
+	 */
+	private void Inicio() {
+		startActivity(new Intent(this, MainActivity.class));
+	}
+	/**
+	 * Metodo: Acerca,
+	 * Metodo que realiza la accion de abrir la actividad de Acerca
+	 */
+	private void Acerca(){
+		startActivity(new Intent(this, Acerca.class));
+
+	}
+	
+	/**
+	 * Metodo: cargaMenu(),
+	 * Metodo que personaliza la vista del ActionBar con el color, titulo, y opciones
+	 */
+	void cargaMenu(){
+		ActionBar actionBar = getActionBar();//obtiene el ActionBar
+		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		actionBar.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.bar_color));//pone color gris
+		actionBar.setTitle("Detalles    ");//pone el titulo
+
+		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
+		//agrega las opciones al menu
+		actions.add("Opciones");
+		actions.add("Cerrar Sesion");
+		actions.add("Facebook");
+		actions.add("Acerca");
+		//Crea el adaptar del dropDown del header
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, actions);
+		//Habilita la navegacion del DropDown del action bar
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		//Degine la navegacion del dropdown
+
+		ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+
+			@Override
+			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
+				if(itemPosition==1){//opcion de cerrar cesion
+					userFunctions.logoutUser(getApplicationContext());
+					Inicio();
+					return true;
+				}
+				if(itemPosition==2){//opcion de facebook
+					facebook();
+					return true;	
+				}
+				if(itemPosition==3){//opcion de acerca
+					Acerca();
+				}
+				return false;
+			}
+		};
+		//set los elementos del dropdown del actionbar
+		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
+
 	}
 
 }
