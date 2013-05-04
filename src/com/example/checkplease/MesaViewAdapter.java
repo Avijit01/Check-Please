@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
@@ -74,15 +75,19 @@ public class MesaViewAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.mesa_item, null);
         
-        ImageView pic = (ImageView)vi.findViewById(R.id.ibPictureMesa);
+        TextView name = (TextView)vi.findViewById(R.id.ibNombreMesa);
         TextView totalUsr=(TextView)vi.findViewById(R.id.tvTotalMesa);
-        CheckBox pago=(CheckBox)vi.findViewById(R.id.cbPaidMesa);
+        final CheckBox pago=(CheckBox)vi.findViewById(R.id.cbPaidMesa);
         totalUsr.setTextColor(Color.parseColor("#555555"));
+        name.setTextColor(Color.parseColor("#555555"));
         totalUsr.setText(m.get(position).getTotal()+"");
-        if(!m.get(position).getPath().equals("null")) {
-        	pic.setImageBitmap(BitmapFactory.decodeFile(m.get(position).getPath()));
-		}
+        name.setText(m.get(position).getNombre());
         if(m.get(position).getPago() == 1) pago.setChecked(true);
+        pago.setOnClickListener(new  View.OnClickListener(){
+			public void onClick(View view){
+				pago.setChecked(true);
+			}
+		});
         return vi;
     }
 }
