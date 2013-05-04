@@ -26,12 +26,18 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 	
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
-	private List<String> totales = new ArrayList<String>(); //lista de precios en la lista
-	private List<String> restaurantes = new ArrayList<String>(); //lista de precios en la lista
-	private List<String> idMesas = new ArrayList<String>();
-	private DetallesAdapter adapter;//adapter de la lista de productos
+	private List<Mesa> usrMesa = new ArrayList<Mesa>(); //lista de precios en la lista
+	private MesaViewAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
-	private Button regrear; // boton  agregar y terminar de la vista  detalles
+	private Button cerrar; // boton  agregar y terminar de la vista  detalles
+	private TextView total; 
+	private int idMesa = 0;
+	private String totalS = "";
+	private String nombrePref = "";
+	private String path = "";
+	private int position = 0;
+	private String idUsr = "";
+	private int paid = 0;
 	
 	@Override
 	/**
@@ -40,48 +46,72 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list_mesa);
+		setContentView(R.layout.mesa);
 		
-		regrear = (Button)findViewById(R.id.agregar);
+		cerrar = (Button)findViewById(R.id.cerrarMesa);
+		total = (TextView)findViewById(R.id.tvgTotal);
 		
-		HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-		JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
-		JSONArray jArray;
-		try {
-			jArray = json.getJSONArray("mesasUsuario");
-			for(int i=0;i<jArray.length();i++){
-				JSONObject json_data = jArray.getJSONObject(i);
-				json_data.getInt("idMesa");
-				json_data.getString("restaurante");
-				json_data.getDouble("total");
+		//Recoleta  los parametros recibidos de la vista Lista
+		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
+		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
+			idMesa = extras.getInt("IdMesa");
+			if(extras.getString("Viene").equals("detalles")){
+				totalS = "" + extras.getFloat("Total");
+				nombrePref = extras.getString("Nombre");
+				path = extras.getString("Picture");
+				position = extras.getInt("Position");
+				idUsr = extras.getString("IdUsr");
+				if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		idMesas.add("0");
-		idMesas.add("1");
-		restaurantes.add("KFC");
-		restaurantes.add("Pizza Hutt");
-		totales.add("100.00");
-		totales.add("235.50");
+		
+		usrMesa.add(new Mesa(0, 1, "Raul", (float)120.00, 1, "null"));		
+		usrMesa.add(new Mesa(0, 1, "Cesar", (float)80.00, 1, "null"));
+		usrMesa.add(new Mesa(0, 1, "Mario", (float)110.50, 1, "null"));
+
+		//HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+		//JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
+		//JSONArray jArray;
+		//try {
+		//	jArray = json.getJSONArray("mesasUsuario");
+		//	for(int i=0;i<jArray.length();i++){
+		//		JSONObject json_data = jArray.getJSONObject(i);
+		//		json_data.getInt("idMesa");
+		//		json_data.getString("restaurante");
+		//		json_data.getDouble("total");
+		//	}
+		//} catch (JSONException e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
 		//se declara la lista asociada con la lista del layout
-		l = (ListView) findViewById(R.id.mesasList);
+		l = (ListView) findViewById(R.id.lvUsuarios);
 		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		adapter = new DetallesAdapter(this, restaurantes, totales, idMesas);
+		adapter = new MesaViewAdapter(this, usrMesa);
 		//se agrega los elementos a la lista
 		l.setAdapter( adapter );
 		//se habilita el evente OnCLick en cada elemto de la lista
 		l.setOnItemClickListener(this);
+		
+		float t = 0;
+		for( int i = 0; i < usrMesa.size(); i++ ){
+			t+=usrMesa.get(i).getTotal();
+		}
+		total.setText(t+"");
 
 		/**
 		 * Metodo del evento OnClick que se asgina al boton terminar que regresa a Lista
 		 * @return void
 		 */
-		regrear.setOnClickListener(new  View.OnClickListener(){
+		cerrar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				Intent intent = new Intent(view.getContext(), Entra.class);
-				//intent.putExtra("viene", "detalles");
+				Intent intent = new Intent(view.getContext(), MesaView.class);
+				intent.putExtra("Total",totalS);
+				intent.putExtra("Nombre",nombrePref);
+				intent.putExtra("Picture",path);
+				intent.putExtra("Position",position);
+				intent.putExtra("IdUsr",idUsr);
+				intent.putExtra("Paid",paid);
 				startActivity(intent);
 				finish();
 			}
@@ -97,7 +127,6 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-		String idmesa = adapter.getMesaId(pos);
 		Intent intent = new Intent(view.getContext(), Mesa.class);
 		startActivity(intent);
 	}

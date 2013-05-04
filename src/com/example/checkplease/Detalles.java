@@ -369,6 +369,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		intent.putExtra("Position",position);
 		intent.putExtra("IdUsr",idUsr);
 		intent.putExtra("Paid",paid);
+		intent.putExtra("Viene","detalles");
 		startActivity(intent);
 	}
 
