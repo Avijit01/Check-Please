@@ -135,26 +135,6 @@
             android:text="0.0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/tvFalta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Falta:"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/tvgFalta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:text="0.0"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </RelativeLayout>
