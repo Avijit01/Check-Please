@@ -314,6 +314,8 @@ public class Entra extends Activity {
 		restaurante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		restaurante.setText("");
 		restaurante.requestFocus();
+		individual.setVisibility(RelativeLayout.INVISIBLE);
+		igual.setVisibility(RelativeLayout.INVISIBLE);
 	}
 	/**
 	/**

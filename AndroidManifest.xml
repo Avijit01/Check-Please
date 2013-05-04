@@ -72,10 +72,6 @@
              
                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.example.checkplease.MesaView"
-             
-                 android:screenOrientation="portrait">
-        </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
         <meta-data android:value="@string/app_id" android:name="com.facebook.sdk.ApplicationId"/>
         
