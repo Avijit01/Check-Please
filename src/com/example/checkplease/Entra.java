@@ -39,7 +39,7 @@ public class Entra extends Activity {
 	TextView tvPagoPorPersona;
 	RelativeLayout divIgual;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
-	int numeroMesa = 0;
+	int numeroMesa = 0, prevNumeroMesa;
 	int estaLogeado = 0;//1 cuando este logeado desde antes y entra a la actividad
 	String usuario, nombreRestaurante;
 	private Button regresa, igual, individual;
@@ -102,21 +102,21 @@ public class Entra extends Activity {
 			public void onClick(View view){
 				Log.e("restaurante",":"+restaurante);
 				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
-        		{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
-        			restaurante.requestFocus ();
-        		}else{//si el numero de mesa es cero
-				ActionBar actionBar = getActionBar();
-				actionBar.setTitle("Pago igual ");
-				etTotal.requestFocus ();
-				divIgual.setVisibility(view.VISIBLE);
-				restaurante.setInputType(InputType.TYPE_NULL);
-				if(numeroMesa == 0){
-					numeroMesa = agregaRestaurante(restaurante);
-					nombreRestaurante = restaurante.getText().toString();
-					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-					db.addMesa(usuario, numeroMesa);
+				{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+				restaurante.requestFocus ();
+				}else{//si el numero de mesa es cero
+					ActionBar actionBar = getActionBar();
+					actionBar.setTitle("Pago igual ");
+					etTotal.requestFocus ();
+					divIgual.setVisibility(view.VISIBLE);
+					restaurante.setInputType(InputType.TYPE_NULL);
+					if(numeroMesa == 0){
+						numeroMesa = agregaRestaurante(restaurante);
+						nombreRestaurante = restaurante.getText().toString();
+						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+						db.addMesa(usuario, numeroMesa);
+					}
 				}
-        		}
 			}
 
 		});
@@ -124,13 +124,13 @@ public class Entra extends Activity {
 		individual.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
-        		{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
-        			restaurante.requestFocus ();
-        		}else{
+				{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+				restaurante.requestFocus ();
+				}else{
 					if(numeroMesa == 0){//si el numero de mesa es cero la agrega
-					numeroMesa = agregaRestaurante(restaurante);
-					DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-					db.addMesa(usuario, numeroMesa);
+						numeroMesa = agregaRestaurante(restaurante);
+						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+						db.addMesa(usuario, numeroMesa);
 					}			
 					divIgual.setVisibility(RelativeLayout.INVISIBLE);
 					restaurante.setInputType(InputType.TYPE_NULL);
@@ -139,8 +139,11 @@ public class Entra extends Activity {
 					intent.putExtra("viene", "entra");
 					intent.putExtra("idMesa", numeroMesa);
 					intent.putExtra("restaurante", nombreRestaurante);
+					if(numeroMesa != prevNumeroMesa)
+						intent.putExtra("clearPrefs", true);
+					prevNumeroMesa = numeroMesa;
 					startActivity(intent);
-        		}
+				}
 
 			}
 		});
@@ -295,7 +298,15 @@ public class Entra extends Activity {
 	 * Metodo que realiza la accion de  guardar todo lo actual y crear una mesa nueva
 	 */
 	private void mesaNueva() {
-		startActivity(new Intent(this, Facebook.class));
+		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.clear();
+		editor.putInt("MESA", 0);
+		editor.commit();
+		numeroMesa = 0;
+		restaurante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		restaurante.setText("");
+		restaurante.requestFocus();
 	}
 	/**
 	/**
@@ -370,7 +381,6 @@ public class Entra extends Activity {
 				}
 				if(itemPosition==2){//opcion de mesa nueva
 					mesaNueva();
-					Inicio();
 					return true;
 				}
 				if(itemPosition==3){//opcion de facebook
