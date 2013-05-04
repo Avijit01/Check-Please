@@ -126,21 +126,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		//se asigna el valor por default del total
 		totalView.setText(total);
 
-		/*HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
-		JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
-		JSONArray jArray;
-		try {
-			jArray = json.getJSONArray("mesasUsuario");
-			for(int i=0;i<jArray.length();i++){
-				JSONObject json_data = jArray.getJSONObject(i);
-				//json_data.getInt("idMesa");
-				//json_data.getString("restaurante");
-				//json_data.getDouble("total");
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 		Log.e("id",":"+idUsr);
 		if(!idUsr.equals("1")){
 		JSONObject json = userFunctions.obtenerMesasUsuario(idUsr);

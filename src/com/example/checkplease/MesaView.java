@@ -105,7 +105,7 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 		 */
 		cerrar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
-				Intent intent = new Intent(view.getContext(), MesaView.class);
+				Intent intent = new Intent(view.getContext(), Detalles.class);
 				intent.putExtra("Total",totalS);
 				intent.putExtra("Nombre",nombrePref);
 				intent.putExtra("Picture",path);
