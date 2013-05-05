@@ -100,13 +100,17 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		// Vista para eliminar usuarios
 		else if(action == 1) {
 			if (p != null) {
-				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
+				//ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
+				TextView tvNombre = (TextView)view.findViewById(R.id.ibNombreDelete);
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
 				final CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
+				tvNombre.setText(p.getName());
 				tvTotal.setText(String.valueOf(p.getTotal()));
-				if(!p.getPicture().equals("null")) {
+				Log.e("nombres", p.getName());
+				
+				/*if(!p.getPicture().equals("null")) {
 					iv.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
-				}
+				}*/
 				view.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View arg0) {

@@ -15,14 +15,17 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="5dp" >
-		
+
         <TextView
             android:id="@+id/ibNombre"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="32dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.76"
             android:background="@android:color/transparent"
+            android:maxHeight="32dp"
+            android:maxWidth="80dp"
             android:textColor="@android:color/black" />
 
         <TextView

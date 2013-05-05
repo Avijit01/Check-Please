@@ -127,10 +127,27 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	public JSONObject updateAmigos(int mesa, String  amigos){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "updateAmigos"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("amigos", amigos));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	public JSONObject getInfoMesa(int mesa){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "getInfoMesa"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}	
+	public JSONObject getAmigos(int mesa){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "getAmigos"));
 		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;

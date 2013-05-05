@@ -99,7 +99,7 @@ public class Facebook extends FragmentActivity{
     private PendingAction pendingAction = PendingAction.NONE;
     private ViewGroup controlsContainer;
     private GraphUser user;
-    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions", "user_location");
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
 
@@ -560,6 +560,8 @@ public class Facebook extends FragmentActivity{
         } else {
 			Log.e("id-usuario-antes", "Ningun amigos seleccionada");
         }
+        userFunctions.updateAmigos(idMesa, nombresFacebook);
+
         Intent intent = new Intent(this, Lista.class);
     	    intent.putExtra("viene", "facebook");
     		intent.putExtra("selecciono", nombresFacebook);

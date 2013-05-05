@@ -256,11 +256,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					usersFacebook = seleccionaAmigos.split(",.?");
 					for(int i = 0; i < usersFacebook.length; i++) {
 						String s = usersFacebook[i];
+						Log.e("Los que selecciono===",s);
 						usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
-						userFunctions.agregaUsuarioMesa(idMesa,usersFacebook[i],Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+						userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 						Person person = usuarios.get(usuarios.size()-1);
 						person.setuId("1");
-						Log.e("Los que selecciono===",s);
 						
 					}
 
