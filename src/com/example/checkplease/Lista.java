@@ -91,7 +91,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 	int guardaPrimera = 0;
 	ArrayList<Integer> positions;
-	int seleccionaAmigos = 0;//si abrira el popup para selccionar amigos
+	String seleccionaAmigos = "";//si abrira el popup para selccionar amigos
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -104,6 +104,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		setContentView(R.layout.lista_usuarios);
 
 		String[] users;
+		String[] usersFacebook;//los usuarios que se obtienen de facebook
 		// Arreglo para saber que posiciones se desean eliminar
 		positions = new ArrayList<Integer>();
 		// Preferencias para guardar la informacion de la aplicacion
@@ -113,7 +114,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 
 		// Informacion enviada por otras actividades
 		Bundle extras = getIntent().getExtras();
-		Log.d("Extras", extras.getInt("idMesa")+"");
+		//Log.d("Extras", extras.getInt("idMesa")+"");
 		// Vistas presentes
 		etTip = (EditText)findViewById(R.id.etTip);
 		etTip.setTextColor(Color.parseColor("#787878"));
@@ -245,14 +246,29 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 			//si viene de la vista de facebook
 			if(extras.getString("viene").equals("facebook")){
-				seleccionaAmigos = extras.getInt("friends");
+				//seleccionaAmigos = extras.getInt("friends");
+				seleccionaAmigos = extras.getString("selecciono");
+				amigos = extras.getString("amigos");
+				if(seleccionaAmigos.equals("")){
+					Log.e("entra",":amigos");
+					//onClickPickFriends();
+				}else{
+					usersFacebook = seleccionaAmigos.split(",.?");
+					for(int i = 0; i < usersFacebook.length; i++) {
+						String s = usersFacebook[i];
+						usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
+						userFunctions.agregaUsuarioMesa(idMesa,usersFacebook[i],Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+						Person person = usuarios.get(usuarios.size()-1);
+						person.setuId("1");
+						Log.e("Los que selecciono===",s);
+						
+					}
+
+				}
 			}
 
 		}
-		if(seleccionaAmigos == 1){
-			Log.e("entra",":amigos");
-			onClickPickFriends();
-		}
+		
 		Toast.makeText(getApplicationContext(),"Agrega"+idMesa,Toast.LENGTH_SHORT).show();
 
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
@@ -295,6 +311,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			Log.e("pagado",":"+p.isPaid());
 			pagado = 1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
+			Log.e("totalpersona", ":"+p.getTotal());
 			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
 			Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture());
 
@@ -371,24 +388,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			break;
 		case R.id.bFacebook:
 
-			Session session = Session.getActiveSession();
-			if (session == null) {
+				//Log.e("restaurante",restaurante);
 				Intent intent = new Intent(this, Facebook.class);
 				intent.putExtra("viene", "postea");
-				intent.putExtra("restaurante", restaurante);
+				intent.putExtra("IdMesa", idMesa);
 				intent.putExtra("amigos", amigos);
 				startActivity(intent);
-			}else{
-				if (session.isOpened()) {
-					Intent intent = new Intent(this, Facebook.class);
-					intent.putExtra("viene", "postea");
-					intent.putExtra("restaurante", restaurante);
-					intent.putExtra("amigos", amigos);
-					startActivity(intent);
-				}else{
-					Intent intent = new Intent(this, Facebook.class);
-					startActivity(intent);					}
-			}
+			
+			
 			break;
 		case R.id.bEliminar:
 			positions.clear();
@@ -517,18 +524,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				Session session = Session.getActiveSession();
-				if (session == null) {
+				
 					Intent intent = new Intent(view.getContext(), Facebook.class);
 					intent.putExtra("viene", "Invita");
 					startActivity(intent);
-				}else{
-					if (session.isOpened()) {
-						onClickPickFriends();
-					}else{
-						Intent intent = new Intent(view.getContext(), Facebook.class);
-						startActivity(intent);					}
-				}
+				
 			}
 		});
 
@@ -666,7 +666,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	private void onClickPickFriends() {
 		FriendPickerApplication application = (FriendPickerApplication) getApplication();
 		application.setSelectedUsers(null);
-
 		Intent intent = new Intent(this, FriendPicker.class);
 		// Note: The following line is optional, as multi-select behavior is the default for
 		// FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
@@ -674,9 +673,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		// desired (for instance, to see friends of a friend).
 		FriendPicker.populateParameters(intent, null, true, true);
 		startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
-
-
 	}
+	
 	/**
 	 * Metodo: facebook,
 	 * Metodo que realiza la accion de abrir la actividad de Facebook

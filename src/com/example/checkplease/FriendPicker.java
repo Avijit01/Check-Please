@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.FacebookException;
@@ -18,6 +19,9 @@ import com.facebook.widget.PickerFragment;
 
 public class FriendPicker extends FragmentActivity {
     FriendPickerFragment friendPickerFragment;
+	Collection<GraphUser> selection;
+	String nombresFacebook = "";
+	String amigos = "";
 
     // A helper to simplify life for callers who want to populate a Bundle with the necessary
     // parameters. A more sophisticated Activity might define its own set of parameters; our needs
@@ -62,12 +66,49 @@ public class FriendPicker extends FragmentActivity {
                 // We just store our selection in the Application for other activities to look at.
                 FriendPickerApplication application = (FriendPickerApplication) getApplication();
                 application.setSelectedUsers(friendPickerFragment.getSelection());
-                
+        		selection = application.getSelectedUsers();
+        		if (selection != null && selection.size() > 0) {
+        			for (GraphUser user : selection) {
+        				//Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
+        				if(nombresFacebook.equals("")){
+        					nombresFacebook = user.getName().toString();
+        				}else{
+            				nombresFacebook = nombresFacebook + "," + user.getName().toString();
+        				}
+        				//profilePictureView.setProfileId(user.getId());
+        				if(amigos.equals(""))//si es el primer usuario que se agrega solo se pone ese sin como
+        				{amigos = user.getId();}
+        				else//sino todo lo que ya esta , el nuevo usuario
+        				{amigos = amigos + ","+ user.getId();}
+
+        				
+        				Log.e("id-usuario-antes", ":" +user.getId());
+
+
+        			}
+        			//results = TextUtils.join(", ", names);
+        		} else {
+        			//results = "<No friends selected>";
+        		}
+        		Log.e("usuario",":"+selection);
                 setResult(RESULT_OK, null);
                 finish();
+                termina();
+				
             }
         });
     }
+    /**
+	 * Metodo: facebook,
+	 * Metodo que realiza la accion de abrir la actividad de Facebook
+	 */
+	private void termina() {
+		Intent intent = new Intent(this, Lista.class);
+	//	intent.putExtra("viene", "Invita");
+		//intent.putExtra("selecciono", selection);
+		startActivity(intent);
+		finish();
+	}
    
     private void onError(Exception error) {
         new AlertDialog.Builder(this)

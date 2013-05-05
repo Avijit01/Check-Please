@@ -52,6 +52,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -84,7 +85,10 @@ public class Facebook extends FragmentActivity{
     private static final int PICK_FRIENDS_ACTIVITY = 1;
     String vieneDe = "nada";
     String restaurante;
-    String amigos;
+    int idMesa;
+    String amigos = "";
+	String nombresFacebook = "";
+
     private Button postStatusUpdateButton;
     private Button postPhotoButton;
     private Button pickFriendsButton;
@@ -141,8 +145,9 @@ public class Facebook extends FragmentActivity{
 				vieneDe = extras.getString("viene");//toma el valor de 1
 			else vieneDe = "nada";
 			if(vieneDe.equals("postea")){
-				restaurante = extras.getString("restaurante");
+				//restaurante = extras.getString("restaurante");
 				amigos = extras.getString("amigos");
+				idMesa = extras.getInt("IdMesa");
 			}
 		}
         if (savedInstanceState != null) {
@@ -180,12 +185,13 @@ public class Facebook extends FragmentActivity{
         Session session2 = Session.getActiveSession();
         //si viene de la vista de invitar
         if(vieneDe.equals("Invita") && session2.isOpened()){
-			//onClickPickFriends();
-    		finish();//termina la activad de Facebook para que al regresar no pase por esta
+        	Log.e("ENTRA","ENTRA");
+			onClickPickFriends();
+    		/*finish();//termina la activad de Facebook para que al regresar no pase por esta
     		Intent intent = new Intent(this, Lista.class);
     		intent.putExtra("viene", "facebook");
 			intent.putExtra("friends", 1);//si va abrir el popup de seleccionar amigo
-			startActivity(intent);
+			startActivity(intent);*/
 		}
         
         profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
@@ -317,14 +323,16 @@ public class Facebook extends FragmentActivity{
 
             if(vieneDe.equals("Invita")){
             	Log.e("viende","invita");
-    			//onClickPickFriends();
-        		finish();//termina la activad de Facebook para que al regresar no pase por esta
+            	vieneDe="otra";//para que no vuela a entrar
+    			onClickPickFriends();
+        		/*finish();//termina la activad de Facebook para que al regresar no pase por esta
         		Intent intent = new Intent(this, Lista.class);
         		intent.putExtra("viene", "facebook");
 				intent.putExtra("friends", 1);//si va abrir el popup de seleccionar amigo
-				startActivity(intent);
+				startActivity(intent);*/
     		}else if(vieneDe.equals("postea")){
             	Log.e("viende","post");
+            	vieneDe="otra";//para que no vuela a entrar
             	 postStatusUpdate();
     		}
         } else {
@@ -392,14 +400,30 @@ public class Facebook extends FragmentActivity{
             session.requestNewPublishPermissions(newPermissionsRequest);
                 return;
             }
-
+            JSONObject json = userFunctions.getInfoMesa(idMesa);
+			try {//si la respuesta de KEY_Succes contiene algo
+				if (json.getString("success") != null) {
+					String res = json.getString("success"); 					
+					if(Integer.parseInt(res) == 1){//si se accedio
+						JSONObject json_mesa = json.getJSONObject("mesa");
+						restaurante = json_mesa.getString("restaurante");
+						
+					}else{
+						// Error al cargar los datos
+						//mensajeError.setText("Usuario y/o contraseña incorrectos");
+					}
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
             Bundle postParams = new Bundle();
-            final String message =  "Comiendo en "+restaurante;
+            final String message =  "Comiendo en las " + restaurante;
             postParams.putString("message", message);
             if(!amigos.equals("")){
 	            postParams.putString("tags", amigos);
-	            postParams.putString("place", "152852791404880");
             }
+            postParams.putString("place", "110852402276862");
+
             Request.Callback callback= new Request.Callback() {
                 public void onCompleted(Response response) {
                 	showPublishResult(message, response.getGraphObject(), response.getError());
@@ -521,14 +545,28 @@ public class Facebook extends FragmentActivity{
         if (selection != null && selection.size() > 0) {
             ArrayList<String> names = new ArrayList<String>();
             for (GraphUser user : selection) {
-                names.add(user.getName());
+            	if(nombresFacebook.equals("")){
+					nombresFacebook = user.getName().toString();
+				}else{
+    				nombresFacebook = nombresFacebook + ", " + user.getName().toString();
+				}
+            	if(amigos.equals(""))//si es el primer usuario que se agrega solo se pone ese sin como
+				{amigos = user.getId();}
+				else//sino todo lo que ya esta , el nuevo usuario
+				{amigos = amigos + ","+ user.getId();}
             }
-            results = TextUtils.join(", ", names);
+			Log.e("id-usuario-antes", ":" +nombresFacebook);
+			Log.e("id-usuario-antes", ":" +amigos);
         } else {
-            results = getString(R.string.no_friends_selected);
+			Log.e("id-usuario-antes", "Ningun amigos seleccionada");
         }
-
-        showAlert(getString(R.string.you_picked), results);
+        Intent intent = new Intent(this, Lista.class);
+    	    intent.putExtra("viene", "facebook");
+    		intent.putExtra("selecciono", nombresFacebook);
+    		intent.putExtra("amigos", amigos);
+    		startActivity(intent);
+    		finish();
+        //showAlert(getString(R.string.you_picked), results);
     }
 
     private void onPlacePickerDone(PlacePickerFragment fragment) {
@@ -646,7 +684,7 @@ public class Facebook extends FragmentActivity{
 		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
-		actionBar.setTitle("Pago Individ");//pone el titulo
+		actionBar.setTitle("Facebook    ");//pone el titulo
 
 		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 		//agrega las opciones al menu

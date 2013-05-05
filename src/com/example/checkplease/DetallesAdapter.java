@@ -71,6 +71,14 @@ public class DetallesAdapter extends BaseAdapter {
     public String getMesaId(int position) {
         return mes.get(position);
     }
+    /**
+     * Metodo que regresa el el restaurante seleccionada
+     * @return String
+     * @param position
+     */
+    public String getRestaurante(int position) {
+        return res.get(position);
+    }
     
     /**
      * Metodo que genera la vista en cada esacio de la lista

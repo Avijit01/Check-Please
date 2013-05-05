@@ -1,6 +1,7 @@
 package com.example.checkplease;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import android.app.Activity;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -40,6 +42,7 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 	private String path = "";
 	private int position = 0;
 	private String idUsr = "";
+	private String vieneDe = "";
 	private int paid = 0;
 	
 	@Override
@@ -58,19 +61,38 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
 			idMesa = extras.getInt("IdMesa");
-			if(extras.getString("Viene").equals("detalles")){
+			if(extras.getString("viene").equals("detalles")){
 				totalS = "" + extras.getFloat("Total");
 				nombrePref = extras.getString("Nombre");
 				path = extras.getString("Picture");
 				position = extras.getInt("Position");
 				idUsr = extras.getString("IdUsr");
 				if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
+			}else if(extras.getString("viene").equals("mesas")){
+				vieneDe = "mesas";
 			}
 		}
+		JSONObject json = new JSONObject();
+		JSONArray jArray;
+		try {
+			json = userFunctions.obtenerUsuarioMesa(idMesa);
+			if (json.getString("success") != null) {
+				String res = json.getString("success"); 
+				if(Integer.parseInt(res) == 1){
+					jArray = json.getJSONArray("usuariosMesa");
+					Log.e("dimension","==="+jArray.length());
+					for(int i=0;i<jArray.length();i++){
+						JSONObject json_data = jArray.getJSONObject(i);
+						usrMesa.add(new Mesa(0, 1, json_data.getString("nombre"), (float)json_data.getDouble("total")*(1+(float)json_data.getDouble("propina")/100), 1, "null"));		
+					}}
+				}
+			
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		usrMesa.add(new Mesa(0, 1, "Raul", (float)120.00, 1, "null"));		
-		usrMesa.add(new Mesa(0, 1, "Cesar", (float)80.00, 1, "null"));
-		usrMesa.add(new Mesa(0, 1, "Mario", (float)110.50, 1, "null"));
 
 		//HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 		//JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
@@ -108,6 +130,9 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 		 */
 		cerrar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				if(!vieneDe.equals("")){
+					finish();
+				}else{
 				Intent intent = new Intent(view.getContext(), Detalles.class);
 				intent.putExtra("Total",totalS);
 				intent.putExtra("Nombre",nombrePref);
@@ -116,7 +141,7 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 				intent.putExtra("IdUsr",idUsr);
 				intent.putExtra("Paid",paid);
 				startActivity(intent);
-				finish();
+				finish();}
 			}
 		});
 		
@@ -166,7 +191,7 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
-		actionBar.setTitle("Detalles    ");//pone el titulo
+		actionBar.setTitle("Detalles Mesa");//pone el titulo
 
 		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 		//agrega las opciones al menu
@@ -203,5 +228,17 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 
 	}
+	/**
+	 * Metodo: onResume,
+	 * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+	 * carga nuevamente el Menu para reinicar los valores en cero
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		cargaMenu();
+		// Normal case behavior follows
+	}
+	
 
 }
