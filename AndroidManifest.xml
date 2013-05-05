@@ -59,6 +59,12 @@
          <activity android:name="com.example.checkplease.Lista"
              android:windowSoftInputMode="adjustPan"
              android:screenOrientation="portrait">
+        </activity> 
+        <activity android:name="com.example.checkplease.MesaView"
+             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.example.checkplease.ListMesa"
+             android:screenOrientation="portrait">
         </activity>
              <activity android:name="com.example.checkplease.Acerca"
              
@@ -69,10 +75,6 @@
                  android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.example.checkplease.Detalles"
-             
-                 android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.example.checkplease.MesaView"
              
                  android:screenOrientation="portrait">
         </activity>

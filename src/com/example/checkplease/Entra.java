@@ -314,6 +314,19 @@ public class Entra extends Activity {
 		restaurante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		restaurante.setText("");
 		restaurante.requestFocus();
+		individual.setVisibility(RelativeLayout.VISIBLE);
+		igual.setVisibility(RelativeLayout.VISIBLE);
+	}
+	
+	/**
+	/**
+	 * Metodo: mesas usuario,
+	 * Metodo que realiza la accion de abrir la actividad de MesaView
+	 */
+	private void mesasUsuario() {
+		HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
+		Intent intent = new Intent(this, ListMesa.class);
+		startActivity(intent);
 	}
 	/**
 	/**
@@ -369,6 +382,7 @@ public class Entra extends Activity {
 		actions.add("Opciones");
 		actions.add("Cerrar Sesion");
 		actions.add("Mesa Nueva");
+		actions.add("Mesas Usuario");
 		actions.add("Facebook");
 		actions.add("Acerca");
 		//Crea el adaptar del dropDown del header
@@ -389,12 +403,16 @@ public class Entra extends Activity {
 				if(itemPosition==2){//opcion de mesa nueva
 					mesaNueva();
 					return true;
+				}				
+				if(itemPosition==3){//opcion de mesas del usuario
+					mesasUsuario();
+					return true;
 				}
-				if(itemPosition==3){//opcion de facebook
+				if(itemPosition==4){//opcion de facebook
 					facebook();
 					return true;	
 				}
-				if(itemPosition==4){//opcion de acerca
+				if(itemPosition==5){//opcion de acerca
 					Acerca();
 				}
 				return false;

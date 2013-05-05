@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -34,7 +35,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	private List<String> idMesas = new ArrayList<String>();
 	private DetallesAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
-	private Button regrear; // boton  agregar y terminar de la vista  detalles
+	private Button regresar; // boton  agregar y terminar de la vista  detalles
 	
 	@Override
 	/**
@@ -45,43 +46,38 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_mesa);
 		
-		regrear = (Button)findViewById(R.id.agregar);
+		regresar = (Button)findViewById(R.id.regresarMesa);
 		
 		HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 		JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
 		JSONArray jArray;
 		try {
-			jArray = json.getJSONArray("mesasUsuario");
+			jArray = json.getJSONArray("usuariosMesa");
 			for(int i=0;i<jArray.length();i++){
 				JSONObject json_data = jArray.getJSONObject(i);
-				json_data.getInt("idMesa");
-				json_data.getString("restaurante");
-				json_data.getDouble("total");
+				idMesas.add(json_data.getString("mesa"));
+				restaurantes.add(json_data.getString("restaurante"));
+				totales.add(json_data.getString("total"));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		idMesas.add("0");
-		idMesas.add("1");
-		restaurantes.add("KFC");
-		restaurantes.add("Pizza Hutt");
-		totales.add("100.00");
-		totales.add("235.50");
+		
 		//se declara la lista asociada con la lista del layout
-		l = (ListView) findViewById(R.id.mesasList);
-		//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
-		adapter = new DetallesAdapter(this, restaurantes, totales, idMesas);
-		//se agrega los elementos a la lista
-		l.setAdapter( adapter );
-		//se habilita el evente OnCLick en cada elemto de la lista
-		l.setOnItemClickListener(this);
+				l = (ListView) findViewById(R.id.listMesas);
+				//se crea el adapter para llenar los elemtnos de la lista con los datos de frutas
+				adapter = new DetallesAdapter(this, restaurantes, totales, idMesas);
+				//se agrega los elementos a la lista
+				l.setAdapter( adapter );
+				//se habilita el evente OnCLick en cada elemto de la lista
+				l.setOnItemClickListener(this);
 
 		/**
 		 * Metodo del evento OnClick que se asgina al boton terminar que regresa a Lista
 		 * @return void
 		 */
-		regrear.setOnClickListener(new  View.OnClickListener(){
+		regresar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				Intent intent = new Intent(view.getContext(), Entra.class);
 				//intent.putExtra("viene", "detalles");
@@ -101,7 +97,10 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 		String idmesa = adapter.getMesaId(pos);
+		Log.e("mesa", ":"+Integer.parseInt(idmesa));
 		Intent intent = new Intent(view.getContext(), MesaView.class);
+		intent.putExtra("viene","mesas");
+		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
 		startActivity(intent);
 	}
 	
@@ -137,7 +136,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
-		actionBar.setTitle("Detalles    ");//pone el titulo
+		actionBar.setTitle("Lista Mesas ");//pone el titulo
 
 		ArrayList<String> actions = new ArrayList<String>();//arreglo que guardara las acciones de menu del action bar
 		//agrega las opciones al menu
@@ -174,5 +173,15 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
 
 	}
-
+	/**
+	 * Metodo: onResume,
+	 * Metodo que se manda llamar al regresar a la activadad desde otra activdad o desde otra app
+	 * carga nuevamente el Menu para reinicar los valores en cero
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		cargaMenu();
+		// Normal case behavior follows
+	}
 }
