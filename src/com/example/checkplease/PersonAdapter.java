@@ -54,13 +54,11 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		if(action == 0) {
 			float tTip;
 			if (p != null) {
-				ImageButton ib = (ImageButton)view.findViewById(R.id.ibPicture);
+				TextView ib = (TextView)view.findViewById(R.id.ibNombre);
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotal);
 				TextView tvTotalTip = (TextView)view.findViewById(R.id.tvTotalTip);
 				CheckBox cb = (CheckBox)view.findViewById(R.id.cbPaid);
-				if(!p.getPicture().equals("null")) {
-					ib.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
-				}
+				ib.setText(p.getName());
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
