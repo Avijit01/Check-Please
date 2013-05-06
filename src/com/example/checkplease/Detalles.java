@@ -77,6 +77,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private int idMesa = 0;
 	private int paid = 0;
 	private String idUsr;
+	private String idUsr2 = "0";
 	SharedPreferences.Editor editor;
 
 	//Mail variable
@@ -104,7 +105,6 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		paid = prefs.getInt("paid", 0);
 		path = prefs.getString("path", "");
 		position = prefs.getInt("position", 0);
-		
 
 		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
@@ -118,7 +118,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				position = extras.getInt("Position");
 				idUsr = extras.getString("IdUsr");
 				if(idUsr.length() < 3){
-					idUsr = "1";
+					idUsr2 = "1";
 				}
 			}else{
 			total = "" + extras.getFloat("Total");
@@ -126,7 +126,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
 			idUsr = extras.getString("IdUsr");
-			
+			if(idUsr.length() < 3){
+				idUsr2 = "1";
+			}
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 			}
@@ -153,7 +155,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//Jala los datos de la base de datos hacia la vista
 		Log.e("id",":"+idUsr);
-		if(!idUsr.equals("1")){
+		if(!idUsr2.equals("1")){
 		JSONObject json = new JSONObject();
 		JSONArray jArray;
 		try {
@@ -196,6 +198,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		 */
 		terminar.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
+				finish();
 				Intent intent = new Intent(view.getContext(), Lista.class);
 				intent.putExtra("viene", "detalles");
 				intent.putExtra("Path", path);
@@ -207,7 +210,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 					editor.clear();
 					editor.commit();
 				}*/
-				finish();
+				
 			}
 		});
 

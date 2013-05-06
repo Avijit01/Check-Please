@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="45dp"
             facebook:confirm_logout="false"
             facebook:fetch_user_info="true" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="40dp"
                 android:layout_alignRight="@+id/mensaje"
                 android:layout_alignTop="@+id/imageView3"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginTop="21dp"
                 android:background="@drawable/green_btn"
                 android:text="@string/aceptar" />
@@ -100,6 +100,18 @@
                     />
             -->
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/mensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Al entrar en facebook podras: seleccionar amigos para la mesa y publicar un status"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff000000"
+            android:textSize="7.5pt" />
 
     </LinearLayout>
     <FrameLayout

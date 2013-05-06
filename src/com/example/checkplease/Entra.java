@@ -61,7 +61,7 @@ public class Entra extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forma_de_pago);
 
-		cargaMenu();
+		//cargaMenu();
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
 		numeroMesa = prefs.getInt("Mesa", 0);
 		nombreRestaurante = prefs.getString("RESTAURANTE", "");
@@ -74,6 +74,8 @@ public class Entra extends Activity {
 			if(extras.getInt("mesa")!=0)
 			{ numeroMesa = extras.getInt("mesa");}
 		}
+		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+		numeroMesa = Integer.parseInt(user.get("mesa"));
 		//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
 		igual = (Button)findViewById(R.id.igual);
 		individual = (Button)findViewById(R.id.individual);

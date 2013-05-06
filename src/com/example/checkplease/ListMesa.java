@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -40,6 +41,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	private List<String> idMesas = new ArrayList<String>();
 	private DetallesAdapter adapter;//adapter de la lista de productos
 	private ListView l; //vista de la lista
+	TextView mensaje, total, restaurante;
 	private Button regresar; // boton  agregar y terminar de la vista  detalles
 	
 	@Override
@@ -50,19 +52,29 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_mesa);
-		
+		cargaMenu();
 		regresar = (Button)findViewById(R.id.regresarMesa);
+		mensaje = (TextView)findViewById(R.id.mensaje);
+		restaurante = (TextView)findViewById(R.id.restauranteTitleMesa);
+		total = (TextView)findViewById(R.id.totalTitleMesa);
 		
 		HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
 		JSONObject json = userFunctions.obtenerMesasUsuario((String)useractual.get("uid"));
 		JSONArray jArray;
 		try {
+			String res = json.getString("success"); 
+			if(Integer.parseInt(res) == 1){
 			jArray = json.getJSONArray("usuariosMesa");
 			for(int i=0;i<jArray.length();i++){
 				JSONObject json_data = jArray.getJSONObject(i);
 				idMesas.add(json_data.getString("mesa"));
 				totales.add(json_data.getString("restaurante"));//estan alreves para que se muestren bien
 				restaurantes.add(json_data.getString("total"));
+			}}else{
+			mensaje.setVisibility(RelativeLayout.VISIBLE);
+			mensaje.setText("No tienes mesas individuales");
+			total.setVisibility(RelativeLayout.INVISIBLE);
+			restaurante.setVisibility(RelativeLayout.INVISIBLE);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -141,7 +153,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		actionBar.setDisplayHomeAsUpEnabled(false);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
 		actionBar.setTitle("Lista Mesas ");//pone el titulo

@@ -198,7 +198,7 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		actionBar.setDisplayHomeAsUpEnabled(false);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
 		actionBar.setTitle("Detalles Mesa");//pone el titulo
