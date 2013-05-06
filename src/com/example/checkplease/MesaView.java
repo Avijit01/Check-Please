@@ -27,6 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Clase que maneja la vista de Mess  seleccionada por el usuario 
+ * @author Cesar Amaro
+ *
+ */
 public class MesaView extends Activity implements OnItemClickListener, OnClickListener{
 	
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions

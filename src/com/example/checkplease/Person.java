@@ -1,5 +1,11 @@
 package com.example.checkplease;
 
+/**
+ * Clase que genera el objeto Persona con todos los datos de los comensales
+ * para pasarlos a la DB
+ * @author Mario Trujillo
+ *
+ */
 public class Person {
 	private int id;
 	private String name;
@@ -9,6 +15,14 @@ public class Person {
     private boolean paid;
     private String uId;
     
+    /**
+     * Metodo constructor con imagen
+     * @param id
+     * @param name
+     * @param total
+     * @param paid
+     * @param picture
+     */
     public Person(int id, String name, float total, boolean paid, String picture) {
     	this.id = id;
     	this.picture = picture;
@@ -17,6 +31,13 @@ public class Person {
     	this.name = name;
     }
     
+    /**
+     * Metodo constructor sin imagen
+     * @param id
+     * @param name
+     * @param total
+     * @param paid
+     */
     public Person(int id, String name, float total, boolean paid) {
     	this.id = id;
     	this.total = total;

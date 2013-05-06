@@ -31,6 +31,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Clase que maneja la vista de forma de pago
+ * @author Raul Gomez
+ *
+ */
 public class Entra extends Activity {
 
 	EditText etTotal;
@@ -48,6 +53,10 @@ public class Entra extends Activity {
 	boolean esIgual = false;
 	//DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
+	/**
+	 * Metodo que maneja la funcionalidad de la vista forma de pago
+	 * @param Bundle savedInstanceState
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forma_de_pago);
@@ -156,6 +165,7 @@ public class Entra extends Activity {
 					restaurante.setInputType(InputType.TYPE_NULL);
 					restaurante.setBackgroundResource(R.drawable.blanco_btn);
 
+					//Llamada a la vista de Lista
 					Intent intent = new Intent(view.getContext(), Lista.class);
 					intent.putExtra("viene", "entra");
 					intent.putExtra("idMesa", numeroMesa);
@@ -169,6 +179,7 @@ public class Entra extends Activity {
 			}
 		});
 
+		//agrega  el total de todos los comensales
 		etTotal.addTextChangedListener(new TextWatcher() {
 			
 			@Override
@@ -192,6 +203,7 @@ public class Entra extends Activity {
 			}
 		});
 
+		//agrega el total de la propina de los comensales
 		etPropina.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
@@ -214,6 +226,7 @@ public class Entra extends Activity {
 			}
 		});
 
+		//agrega el numero de comensales en la mesa
 		etPersonas.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
@@ -450,6 +463,9 @@ public class Entra extends Activity {
 
 	}
 	@Override
+	/**
+	 * Metodo que se activa cuando se sale de esta actividad
+	 */
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();

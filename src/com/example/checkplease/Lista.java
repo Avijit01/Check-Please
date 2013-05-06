@@ -60,6 +60,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Clase que  accesa a los elementos y maneja sus acciones de la vista list_usuarios
+ * @author Mario Trujillo
+ *
+ */
 public class Lista extends FragmentActivity  implements OnClickListener {
 
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
@@ -273,6 +278,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		Toast.makeText(getApplicationContext(),"Agrega"+idMesa,Toast.LENGTH_SHORT).show();
 
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
+		//agrega el total de la mesa  en la pantalla
 		etTip.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
@@ -296,6 +302,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 		});
 
+		//inicializacion de los elemntos total y falta
 		tvgTotal = (TextView)findViewById(R.id.tvgTotal);
 		tvFalta = (TextView)findViewById(R.id.tvgFalta);
 
@@ -323,15 +330,21 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		editor.commit();
 		finish();
 	}
-
-	// Metodo para actualizar la lista de usuarios y sus totales
+	
+	/**
+	 * Metodo para actualizar la lista de usuarios y sus totales
+	 * @param tip
+	 */
 	public void updatePersonAdapter(float tip) {
 		adapter = new PersonAdapter(this, R.layout.lista_usuarios_item, usuarios, tip, 0, positions);
 		layout = (ListView)findViewById(R.id.lvUsuarios);
 		layout.setAdapter(adapter);
 	}
 
-	// Actualiza el total de todas las personas
+	/**
+	 *  Actualiza el total de todas las personas
+	 *  
+	 */
 	public void updateTotal() {
 		gTotal = 0;
 		for(Person p : usuarios)
@@ -340,7 +353,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		tvgTotal.setText(String.valueOf(gTotal));
 	}
 
-	// Actualiza la cantidad que falta por pagar
+	/**
+	 *  Actualiza la cantidad que falta por pagar
+	 */
 	public void updateRemaining() {
 		falta = 0;
 		for(Person p : usuarios) {
@@ -543,6 +558,9 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		helpDialog.show();
 	}
 
+	/**
+	 * Metodo que genera el popup para invitar gente
+	 */
 	public void showInfo() {
 		//se crea una nueva alerta de dialogo
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);

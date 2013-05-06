@@ -24,6 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Clase que accesa a la vista dde la calculadora y maneja la funcionalidad de esta
+ * @author Cesar Amaro
+ *
+ */
 public class Calculadora extends Activity{
 	//botones numerioc de la calculadora
 	private Button regresa, igual, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, cero;
@@ -41,7 +46,8 @@ public class Calculadora extends Activity{
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
 	/**
-	 * Metodo que maneja lacciones de la calculadora
+	 * Metodo que maneja las acciones de la calculadora
+	 * @param Bundle savedInstanceState
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -81,6 +87,7 @@ public class Calculadora extends Activity{
 
 		/**
 		 * Metodo que maneja el boton 1
+		 * @param View view
 		 * @return void
 		 */
 		uno.setOnClickListener(new  View.OnClickListener(){
@@ -93,6 +100,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 2
+		 * @param View view
 		 * @return void
 		 */
 		dos.setOnClickListener(new  View.OnClickListener(){
@@ -105,6 +113,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 3
+		 * @param View view
 		 * @return void
 		 */
 		tres.setOnClickListener(new  View.OnClickListener(){
@@ -117,6 +126,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 4
+		 * @param View view
 		 * @return void
 		 */
 		cuatro.setOnClickListener(new  View.OnClickListener(){
@@ -129,6 +139,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 5
+		 * @param View view
 		 * @return void
 		 */
 		cinco.setOnClickListener(new  View.OnClickListener(){
@@ -141,6 +152,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 6
+		 * @param View view
 		 * @return void
 		 */
 		seis.setOnClickListener(new  View.OnClickListener(){
@@ -153,6 +165,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 7
+		 * @param View view
 		 * @return void
 		 */
 		siete.setOnClickListener(new  View.OnClickListener(){
@@ -165,6 +178,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 8
+		 * @param View view
 		 * @return void
 		 */
 		ocho.setOnClickListener(new  View.OnClickListener(){
@@ -177,6 +191,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 9
+		 * @param View view
 		 * @return void
 		 */
 		nueve.setOnClickListener(new  View.OnClickListener(){
@@ -189,6 +204,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton 0
+		 * @param View view
 		 * @return void
 		 */
 		cero.setOnClickListener(new  View.OnClickListener(){
@@ -201,6 +217,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton +
+		 * @param View view
 		 * @return void
 		 */
 		suma.setOnClickListener(new  View.OnClickListener(){
@@ -218,6 +235,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton -
+		 * @param View view
 		 * @return void
 		 */
 		resta.setOnClickListener(new  View.OnClickListener(){
@@ -235,6 +253,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton *
+		 * @param View view
 		 * @return void
 		 */
 		multi.setOnClickListener(new  View.OnClickListener(){
@@ -252,6 +271,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton /
+		 * @param View view
 		 * @return void
 		 */
 		div.setOnClickListener(new  View.OnClickListener(){
@@ -269,6 +289,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton punto
+		 * @param View view
 		 * @return void
 		 */
 		point.setOnClickListener(new  View.OnClickListener(){
@@ -284,6 +305,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton erase
+		 * @param View view
 		 * @return void
 		 */
 		erase.setOnClickListener(new  View.OnClickListener(){
@@ -296,6 +318,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton delete
+		 * @param View view
 		 * @return void
 		 */
 		delete.setOnClickListener(new  View.OnClickListener(){
@@ -311,6 +334,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton igual
+		 * @param View view
 		 * @return void
 		 */
 		igual.setOnClickListener(new  View.OnClickListener(){
@@ -349,6 +373,7 @@ public class Calculadora extends Activity{
 		});
 		/**
 		 * Metodo que maneja el boton asignar que regresa el total a la Lista
+		 * @param View view
 		 * @return void
 		 */
 		asignar.setOnClickListener(new  View.OnClickListener(){
@@ -423,8 +448,8 @@ public class Calculadora extends Activity{
 	}
 	/**
 	 * Metodo que maneja las respuesta de selccionar una aprte del menu o elemento de android
-	 *@param item
 	 *elemento que se selecciono
+	 *  @param MenuItem item
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		//respond to menu item selection

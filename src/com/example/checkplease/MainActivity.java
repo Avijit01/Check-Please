@@ -236,6 +236,10 @@ public class MainActivity extends FragmentActivity   {
 		}
 	}
 
+	/**
+	 * Metodo que verifica la coneccion a internet
+	 * @return
+	 */
 	private boolean isConnected() {
 		// Revisa si hay conexion a internet (Wifi o red movil)
 		try{
