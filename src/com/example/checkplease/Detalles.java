@@ -49,6 +49,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 /**
+ * @author Cesar Amaro
  * Clase con la que se podran visualizar datos del usuario tanto 
  * como para visualizarlos como para editarlos
  * 
@@ -152,6 +153,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		//se asigna el valor por default del total
 		totalView.setText(total);
 
+		//Jala los datos de la base de datos hacia la vista
 		Log.e("id",":"+idUsr);
 		if(!idUsr2.equals("1")){
 		JSONObject json = new JSONObject();
@@ -382,11 +384,18 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	@Override
 	public void onClick(View v) {}
+	
 	@Override
+	/**
+	 * Metodo que maneja el evento del click sobre los items de la Lista
+	 * @param parent, view, pos, id
+	 */
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id){
 		String idmesa = adapter.getMesaId(pos);
 		Log.e("total en detalles",":"+totalView.getText());
+		//inicia el cambia de actividad en la plicacion
 		Intent intent = new Intent(view.getContext(), MesaView.class);
+		//manda estos datos a la vista MesaView
 		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
 		intent.putExtra("Total", Float.parseFloat((String) totalView.getText()));
 		intent.putExtra("Nombre",nombrePref);
@@ -395,6 +404,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		intent.putExtra("IdUsr",idUsr);
 		intent.putExtra("Paid",paid);
 		intent.putExtra("viene","detalles");
+		//empieza la actividad MesaView
 		startActivity(intent);
 	}
 

@@ -27,6 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Clase que maneja los elementos y y maneja sus acciones de la vista list_mesa
+ * @author Cesar Amaro
+ *
+ */
 public class ListMesa extends Activity implements OnItemClickListener, OnClickListener{
 	
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
@@ -107,6 +112,9 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	}
 
 	@Override
+	/**
+	 * Metodo que maneja el click en cada item de  la lista de esta vista
+	 */
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 		String idmesa = adapter.getMesaId(pos);
 		Log.e("mesa", ":"+Integer.parseInt(idmesa));

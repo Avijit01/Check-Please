@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
+ * @Cesar Amaro
  * Clase que maneja la crecaion de la lista de Detalles
  */
 public class DetallesAdapter extends BaseAdapter {

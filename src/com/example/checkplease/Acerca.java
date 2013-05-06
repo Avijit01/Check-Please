@@ -16,10 +16,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * @author Raul Gomez
+ * Esta clase accesa a la vista de la informacion de los desarroladores
+ */
 public class Acerca extends Activity{
 	private Button regresa;
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
 
+	/**
+	 * Este metodo permite iniciar la actividad acerca_check.xml
+	 * @param savedInstanceState
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -85,6 +93,11 @@ public class Acerca extends Activity{
         ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
 			
         	@Override
+        	/**
+        	 * Metodo que te da la posicion en la cual el usuario dio clcik en el menu
+        	 * @param int itemPosition
+        	 * @param long itemId
+        	 */
 			public boolean onNavigationItemSelected(int itemPosition, long itemId) {				
         			if(itemPosition==1){//opcion de cerrar cesion
 						userFunctions.logoutUser(getApplicationContext());
