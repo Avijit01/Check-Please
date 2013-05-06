@@ -288,11 +288,13 @@ public class Facebook extends FragmentActivity{
     public void onPause() {
         super.onPause();
         uiHelper.onPause();
+        controlsContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        controlsContainer.setVisibility(View.VISIBLE);
         uiHelper.onDestroy();
     }
 
@@ -605,11 +607,12 @@ public class Facebook extends FragmentActivity{
 			Log.e("id-usuario-antes", "Ningun amigos seleccionada");
         }
         userFunctions.updateAmigos(idMesa, amigos);
-        finish();
+        this.finish();
         Intent intent = new Intent(this, Lista.class);
     	    intent.putExtra("viene", "facebook");
     		intent.putExtra("selecciono", nombresFacebook);
     		intent.putExtra("amigos", amigos);
+    		 this.finish();
     		startActivity(intent);
     		
         //showAlert(getString(R.string.you_picked), results);
@@ -717,7 +720,7 @@ public class Facebook extends FragmentActivity{
 		super.onResume();
 		//cargaMenu();
 		uiHelper.onResume();
-
+		
         updateUI();
 		// Normal case behavior follows
 	}
