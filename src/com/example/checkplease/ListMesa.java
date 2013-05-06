@@ -47,7 +47,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_mesa);
-		
+		cargaMenu();
 		regresar = (Button)findViewById(R.id.regresarMesa);
 		mensaje = (TextView)findViewById(R.id.mensaje);
 		restaurante = (TextView)findViewById(R.id.restauranteTitleMesa);
@@ -145,7 +145,7 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		actionBar.setDisplayHomeAsUpEnabled(false);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
 		actionBar.setTitle("Lista Mesas ");//pone el titulo
