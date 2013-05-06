@@ -63,11 +63,12 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 			idMesa = extras.getInt("IdMesa");
 			if(extras.getString("viene").equals("detalles")){
 				totalS = "" + extras.getFloat("Total");
+				Log.e("total en mesaVie",":"+totalS);
 				nombrePref = extras.getString("Nombre");
 				path = extras.getString("Picture");
 				position = extras.getInt("Position");
 				idUsr = extras.getString("IdUsr");
-				if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
+				//if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			}else if(extras.getString("viene").equals("mesas")){
 				vieneDe = "mesas";
 			}
@@ -83,7 +84,8 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 					Log.e("dimension","==="+jArray.length());
 					for(int i=0;i<jArray.length();i++){
 						JSONObject json_data = jArray.getJSONObject(i);
-						usrMesa.add(new Mesa(0, 1, json_data.getString("nombre"), (float)json_data.getDouble("total")*(1+(float)json_data.getDouble("propina")/100), 1, "null"));		
+						//usrMesa.add(new Mesa(0, 1, json_data.getString("nombre"), (float)json_data.getDouble("total")*(1+(float)json_data.getDouble("propina")/100), 1, "null"));		
+						usrMesa.add(new Mesa(0, 1, json_data.getString("nombre"), (float)json_data.getDouble("total"),(float)json_data.getDouble("total")*((float)json_data.getDouble("propina")/100), 1, "null"));		
 					}}
 				}
 			
@@ -133,13 +135,16 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 				if(!vieneDe.equals("")){
 					finish();
 				}else{
+					Log.e("total al salir de mesaview",":"+totalS);
+
 				Intent intent = new Intent(view.getContext(), Detalles.class);
+				intent.putExtra("viene","mesas");
 				intent.putExtra("Total",totalS);
 				intent.putExtra("Nombre",nombrePref);
 				intent.putExtra("Picture",path);
 				intent.putExtra("Position",position);
 				intent.putExtra("IdUsr",idUsr);
-				intent.putExtra("Paid",paid);
+				//intent.putExtra("Paid",paid);
 				startActivity(intent);
 				finish();}
 			}
@@ -155,8 +160,8 @@ public class MesaView extends Activity implements OnItemClickListener, OnClickLi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-		Intent intent = new Intent(view.getContext(), Mesa.class);
-		startActivity(intent);
+		//Intent intent = new Intent(view.getContext(), Mesa.class);
+		//startActivity(intent);
 	}
 	
 	/**

@@ -198,7 +198,8 @@ public class MainActivity extends FragmentActivity   {
 				facebook.setOnClickListener(new  View.OnClickListener(){
 					public void onClick(View view){
 						if(MainActivity.this.isConnected()) {
-							Intent intent = new Intent(view.getContext(), Facebook.class);
+							Intent intent = new Intent(view.getContext(), Registro.class);
+							intent.putExtra("viene", "inicio");
 							startActivity(intent);
 						}
 					}

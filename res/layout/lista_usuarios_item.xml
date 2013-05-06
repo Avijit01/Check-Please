@@ -15,22 +15,31 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="5dp" >
-		
+
         <TextView
             android:id="@+id/ibNombre"
-            android:layout_width="wrap_content"
+            android:layout_width="67dp"
             android:layout_height="32dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.76"
-            android:background="@android:color/transparent"
+            android:maxHeight="32dp"
+            android:maxWidth="67dp"
+            android:background="@drawable/btn_calcu"
+            android:lines="1"
+		    android:scrollHorizontally="true"
+		    android:ellipsize="end"
+		    android:singleLine="true" 
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvTotal"
             android:layout_width="35dp"
             android:layout_height="32dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
+              android:maxHeight="32dp"
+            android:maxWidth="35dp"
             android:gravity="center"
             android:background="@drawable/btn_calcu"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -40,7 +49,9 @@
             android:id="@+id/tvTotalTip"
             android:layout_width="45dp"
             android:layout_height="32dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="3dp"
+            android:maxHeight="32dp"
+            android:maxWidth="45dp"
             android:layout_weight="1"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"

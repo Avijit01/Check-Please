@@ -88,6 +88,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	float falta;
 	int idMesa = 0;
 	int pagado = 0;
+	int posicionLista = 0;//al momento de guardar la lista
 
 	int guardaPrimera = 0;
 	ArrayList<Integer> positions;
@@ -233,11 +234,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			}
 			if(extras.getString("viene").equals("detalles")){
 				Person person = usuarios.get(extras.getInt("Position"));
-				person.setTotal((float)extras.getDouble("totalIndi"));
-				person.setPicture(extras.getString("Path"));
+				//person.setTotal((float)extras.getDouble("totalIndi"));
+				//person.setPicture(extras.getString("Path"));
 				person.setName(extras.getString("Nombre"));	
-				editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
-				editor.commit();
+				//editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
+				//editor.commit();
 			}
 			//si viene de la vista de estra
 			if(extras.getString("viene").equals("entra")){
@@ -256,11 +257,11 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					usersFacebook = seleccionaAmigos.split(",.?");
 					for(int i = 0; i < usersFacebook.length; i++) {
 						String s = usersFacebook[i];
+						Log.e("Los que selecciono===",s);
 						usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
-						userFunctions.agregaUsuarioMesa(idMesa,usersFacebook[i],Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+						userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 						Person person = usuarios.get(usuarios.size()-1);
 						person.setuId("1");
-						Log.e("Los que selecciono===",s);
 						
 					}
 
@@ -306,15 +307,17 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		posicionLista = 0;
+
 		for(Person p : usuarios) {
 			editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 			Log.e("pagado",":"+p.isPaid());
 			pagado = 1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
 			Log.e("totalpersona", ":"+p.getTotal());
-			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture());
-			Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture());
-
+			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture(), posicionLista);
+			Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture()+" "+posicionLista );
+			posicionLista++;
 		}
 		userFunctions.updateMesa(idMesa, gTotal, Float.parseFloat(etTip.getText().toString()), 0);
 		editor.commit();
@@ -332,7 +335,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 	public void updateTotal() {
 		gTotal = 0;
 		for(Person p : usuarios)
-			gTotal += p.getTotalTip();
+			//gTotal += p.getTotalTip();
+			gTotal += p.getTotal();
 		tvgTotal.setText(String.valueOf(gTotal));
 	}
 
@@ -341,7 +345,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		falta = 0;
 		for(Person p : usuarios) {
 			if(!p.isPaid())
-				falta += p.getTotalTip();
+				//falta += p.getTotalTip();
+				falta += p.getTotal();
 		}
 		tvFalta.setText(String.valueOf(falta));
 	}
@@ -634,8 +639,10 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				positions = adapter.getPositions();
 				for(Integer i : positions) {
 					//usuarios.remove(i.intValue());
-					Log.e("elimina", ":"+i.intValue());
-					userFunctions.eliminaUsuarioMesa(idMesa, i.intValue());
+					Person person = usuarios.get(i.intValue());
+					Log.e("elimina", ":"+i.intValue()+person.getId());
+
+					userFunctions.eliminaUsuarioMesa(idMesa, person.getId());
 					usuarios.get(i.intValue()).setId(-1);
 				}
 				int index = 0;

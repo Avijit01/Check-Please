@@ -62,6 +62,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
+						intent.putExtra("viene", "personAdapter");
 						intent.putExtra("Nombre", p.getName());
 						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
@@ -87,7 +88,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				});
 				cb.setChecked(p.isPaid());
 				tvTotal.setText(String.valueOf(p.getTotal()));
-				tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
+				tTip = p.getTotal() * (propina / 100.0f) /*+ p.getTotal()*/;
 				int decimalPlaces = 2;
 				BigDecimal bd = new BigDecimal(tTip);
 				// setScale is immutable
@@ -100,13 +101,17 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		// Vista para eliminar usuarios
 		else if(action == 1) {
 			if (p != null) {
-				ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
+				//ImageView iv = (ImageView)view.findViewById(R.id.ivPictureDelete);
+				TextView tvNombre = (TextView)view.findViewById(R.id.ibNombreDelete);
 				TextView tvTotal = (TextView)view.findViewById(R.id.tvTotalDelete);
 				final CheckBox cb = (CheckBox)view.findViewById(R.id.cbDelete);
+				tvNombre.setText(p.getName());
 				tvTotal.setText(String.valueOf(p.getTotal()));
-				if(!p.getPicture().equals("null")) {
+				Log.e("nombres", p.getName());
+				
+				/*if(!p.getPicture().equals("null")) {
 					iv.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
-				}
+				}*/
 				view.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View arg0) {

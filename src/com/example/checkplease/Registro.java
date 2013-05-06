@@ -29,8 +29,9 @@ public class Registro extends Activity{
 	//Inicializa botones, funciones y textos
 	private Button regresa, registro;
 	EditText user, pass, passcon, mail;
-	TextView mensajeError;
+	TextView mensajeError, mensajeRegistro;
 	RelativeLayout header;
+	String vieneDe = "";
 	// JSON Respuestas que se tienen
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
@@ -59,9 +60,30 @@ public class Registro extends Activity{
 		passcon = (EditText) findViewById(R.id.pssConf);
 		mail = (EditText) findViewById(R.id.mail);
 		mensajeError = (TextView)findViewById(R.id.error);
+		mensajeRegistro = (TextView)findViewById(R.id.textView1);
 		header = (RelativeLayout)findViewById(R.id.header);
 
+		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
+		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
+			if(extras.getString("viene").equals("inicio")){
+				vieneDe = "inicio";
+			}else vieneDe = "nada";
+		}else vieneDe = "nada";
        	//al dar click a registro obtiene obtiene los string de los campos y valida
+		if(vieneDe.equals("inicio")){
+			mensajeRegistro.setVisibility(RelativeLayout.VISIBLE);
+		}else{
+			mensajeRegistro.setVisibility(RelativeLayout.INVISIBLE);
+		}
+			
+		mensajeRegistro.setOnClickListener(new  View.OnClickListener(){
+        	public void onClick(View view){
+        		Intent dashboard = new Intent(getApplicationContext(), MainActivity.class);
+				dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(dashboard);
+				finish();//cierra la actividad
+        	}
+		});
 		registro.setOnClickListener(new  View.OnClickListener(){
         	public void onClick(View view){
         		String nombre = user.getText().toString();
@@ -127,10 +149,18 @@ public class Registro extends Activity{
 								// Termina la ccion de Registro, con fines de que no vuelva a ella al darle regresar
 								Registro.this.finish();
 				        		//abre la clase entra
+								if(vieneDe.equals("inicio")){
+									Intent dashboard = new Intent(getApplicationContext(), Facebook.class);
+									dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(dashboard);
+									finish();//cierra la actividad
+
+								}else{
 								Intent dashboard = new Intent(getApplicationContext(), Entra.class);
 								dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(dashboard);
 								finish();//cierra la actividad
+								}
 							}else{//error en la conexion
 								mensajeError.setText("Ocurrio un error en registro, intentar nuevamente");
 							}

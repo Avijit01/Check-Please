@@ -45,6 +45,7 @@ public class Entra extends Activity {
 	private Button regresa, igual, individual;
 	private float total, propina;
 	private int personas;
+	boolean esIgual = false;
 	//DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,9 @@ public class Entra extends Activity {
 		divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
 		if(numeroMesa != 0){//si tiene una mesa cargada
-			JSONObject json = userFunctions.getInfoMesa(numeroMesa);
 			try {//si la respuesta de KEY_Succes contiene algo
+				JSONObject json = userFunctions.getInfoMesa(numeroMesa);
+
 				if (json.getString("success") != null) {
 					String res = json.getString("success"); 					
 					if(Integer.parseInt(res) == 1){//si se accedio
@@ -90,6 +92,15 @@ public class Entra extends Activity {
 						mensaje.setText("Tu mesa actual es de manera:");
 						if(json_mesa.getInt("tipo")==0){
 							individual.setVisibility(RelativeLayout.INVISIBLE);
+							divIgual.setVisibility(RelativeLayout.VISIBLE);
+							total = (float)json_mesa.getDouble("total");
+							propina = (float)json_mesa.getDouble("propina");
+							personas = json_mesa.getInt("personas");
+							etTotal.setHint(" "+total); 
+							etPropina.setHint(" "+propina); 
+							etPersonas.setHint(" "+personas);
+							getTotalPerPerson();
+							
 						}else
 							igual.setVisibility(RelativeLayout.INVISIBLE);
 						//cambiar color a null					
@@ -109,12 +120,14 @@ public class Entra extends Activity {
 				Log.e("restaurante",":"+restaurante);
 				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
 				{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
-				restaurante.requestFocus ();
+					restaurante.requestFocus ();
 				}else{//si el numero de mesa es cero
 					ActionBar actionBar = getActionBar();
 					actionBar.setTitle("Pago igual ");
 					etTotal.requestFocus ();
+					restaurante.setBackgroundResource(R.drawable.blanco_btn);
 					divIgual.setVisibility(view.VISIBLE);
+					individual.setVisibility(view.INVISIBLE);
 					restaurante.setInputType(InputType.TYPE_NULL);
 					if(numeroMesa == 0){
 						numeroMesa = agregaRestaurante(restaurante, 0);
@@ -122,6 +135,7 @@ public class Entra extends Activity {
 						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 						db.addMesa(usuario, numeroMesa);
 					}
+					esIgual = true;
 				}
 			}
 
@@ -140,6 +154,7 @@ public class Entra extends Activity {
 					}			
 					divIgual.setVisibility(RelativeLayout.INVISIBLE);
 					restaurante.setInputType(InputType.TYPE_NULL);
+					restaurante.setBackgroundResource(R.drawable.blanco_btn);
 
 					Intent intent = new Intent(view.getContext(), Lista.class);
 					intent.putExtra("viene", "entra");
@@ -155,6 +170,7 @@ public class Entra extends Activity {
 		});
 
 		etTotal.addTextChangedListener(new TextWatcher() {
+			
 			@Override
 			public void onTextChanged(CharSequence seq, int start, int before, int count) {
 				try {
@@ -249,10 +265,14 @@ public class Entra extends Activity {
 	 * Calcula el total de cada persona
 	 */
 	private void getTotalPerPerson() {
+		Log.e("entra","calcula"+" "+total+" "+propina+" "+personas);
 		float ppp = (total + (total * (propina / 100.0f))) / personas;
 		if(!Float.isNaN(ppp) && !Float.isInfinite(ppp))
 			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
-		updateMesa(total, propina, personas);
+		esIgual = true;
+		
+		
+	//	updateMesa(total, propina, personas);
 	}
 	/**
 	 * Metodo: agregaRestaurante,
@@ -311,11 +331,18 @@ public class Entra extends Activity {
 		editor.putInt("MESA", 0);
 		editor.commit();
 		numeroMesa = 0;
+		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+		db.addMesa(usuario, 0);
 		restaurante.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		restaurante.setText("");
 		restaurante.requestFocus();
 		individual.setVisibility(RelativeLayout.VISIBLE);
 		igual.setVisibility(RelativeLayout.VISIBLE);
+		divIgual.setVisibility(RelativeLayout.INVISIBLE);
+		etTotal.setHint("Total"); 
+		etPropina.setHint("Propina"); 
+		etPersonas.setHint("Persona");
+
 	}
 	
 	/**
@@ -426,6 +453,9 @@ public class Entra extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		if(esIgual){
+			userFunctions.updateMesa(numeroMesa, total, propina, personas);
+		}
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
 		SharedPreferences.Editor editor = prefs.edit(); 
 		editor.putInt("MESA", numeroMesa); 

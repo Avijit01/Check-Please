@@ -11,4 +11,5 @@
     <string name="formaPago">Forma de Pago</string>
     <string name="textoPago">Introduce:</string>
     <string name="restaurante">Restaurante</string>
+    <string name="mensajeRegistro"><u>Ya estoy registrado en el sistema!</u></string>
 </resources>

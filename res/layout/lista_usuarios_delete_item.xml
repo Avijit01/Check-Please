@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <ImageView
+       <!-- <ImageView
             android:id="@+id/ivPictureDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +19,20 @@
             android:maxHeight="56dp"
             android:maxWidth="56dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/user_icon" />
+            android:src="@drawable/user_icon" /> -->
+
+        <TextView
+            android:id="@+id/ibNombreDelete"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.76"
+            android:background="@android:color/transparent"
+            android:maxHeight="32dp"
+            android:maxWidth="80dp"
+                      />
 
         <TextView
             android:id="@+id/tvTotalDelete"

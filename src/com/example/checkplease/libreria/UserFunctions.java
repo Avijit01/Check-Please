@@ -127,6 +127,15 @@ public class UserFunctions {
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
 	}
+	public JSONObject updateAmigos(int mesa, String  amigos){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "updateAmigos"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		params.add(new BasicNameValuePair("amigos", amigos));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
+	}
 	public JSONObject getInfoMesa(int mesa){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -134,9 +143,17 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
+	}	
+	public JSONObject getAmigos(int mesa){
+		// Building Parameters
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("tag", "getAmigos"));
+		params.add(new BasicNameValuePair("mesa", Integer.toString(mesa)));
+		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+		return json;
 	}
 	
-	public JSONObject guardaLista(int mesa, int idSistema, String nombre, float total, int isPaid, String path){
+	public JSONObject guardaLista(int mesa, int idSistema, String nombre, float total, int isPaid, String path, int posicion){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "guardaLista"));
@@ -146,6 +163,7 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("total", Float.toString(total)));
 		params.add(new BasicNameValuePair("pago", Integer.toString(isPaid)));
 		params.add(new BasicNameValuePair("path", path));
+		params.add(new BasicNameValuePair("posicion", Integer.toString(posicion)));
 
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;
