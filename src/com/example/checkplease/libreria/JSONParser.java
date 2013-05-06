@@ -20,6 +20,11 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+/**
+ * Hace una coneccion a la libreria con JSON a la base dedatos
+ * @author Raul Gomez
+ *
+ */
 public class JSONParser {
 
 	static InputStream is = null;

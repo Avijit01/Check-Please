@@ -11,6 +11,11 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
+/**
+ * Clase que genera la extraccion de datos de la DB
+ * @author Cesar
+ *
+ */
 public class UserFunctions {
 	
 	private JSONParser jsonParser;

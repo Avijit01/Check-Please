@@ -10,6 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+/**
+ * Clase que se conecta a la DB, extrae e inserta informacion dentor de esta
+ * @author Raul Gomez
+ *
+ */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables

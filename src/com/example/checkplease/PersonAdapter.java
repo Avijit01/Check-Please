@@ -22,6 +22,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Objeto que crea cad elemento de la lista 
+ * de usuarios y asigna los valores apropiado
+ * @author Cesar
+ *
+ */
 public class PersonAdapter extends ArrayAdapter<Person> {
 
 	private Context context;
@@ -31,6 +37,15 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	private int action;
 	private ArrayList<Integer> positions;
 
+	/**
+	 * Contructor del Objeto adapter
+	 * @param context
+	 * @param layoutResourceId
+	 * @param usuarios
+	 * @param propina
+	 * @param action
+	 * @param positions
+	 */
 	public PersonAdapter(Context context, int layoutResourceId, ArrayList<Person> usuarios, float propina, int action, ArrayList<Integer> positions) {
 		super(context, layoutResourceId, usuarios);
 		this.context = context;
@@ -61,6 +76,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ib.setText(p.getName());
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
+						//llama a la actividad Detalles
 						Intent intent = new Intent(view.getContext(), Detalles.class);
 						intent.putExtra("viene", "personAdapter");
 						intent.putExtra("Nombre", p.getName());

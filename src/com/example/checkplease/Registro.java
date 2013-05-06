@@ -25,6 +25,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Clase que accesa a los elmentos de la vista registro.xml
+ * @author Raul Gomez
+ *
+ */
 public class Registro extends Activity{
 	//Inicializa botones, funciones y textos
 	private Button regresa, registro;
