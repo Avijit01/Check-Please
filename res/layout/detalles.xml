@@ -19,7 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/orden"
+            android:text="@string/precio"
+           android:layout_marginLeft="10dp"
+            
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
@@ -31,7 +33,7 @@
             android:layout_weight="1"
             android:layout_marginRight="30dp"
             android:gravity="right"
-            android:text="@string/precio"
+            android:text="@string/orden"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
@@ -62,46 +64,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-        <ImageView
-            android:id="@+id/foto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="17dp"
-            android:src="@drawable/user_icon" />
-
         <TextView
             android:id="@+id/name"
-            android:layout_width="160dp"
-            android:layout_height="45dp"
+            android:layout_width="180dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="60dp"
             android:maxHeight="45dp"
-            android:maxWidth="160dp"
-            android:layout_alignTop="@+id/foto"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/foto"
+            android:maxWidth="180dp"
             android:text="@string/name"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="10pt" />
 
-        <ImageButton
-            android:id="@+id/facebook_btn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignBottom="@+id/name"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/facebook_button"
-            android:cropToPadding="true"
-            android:padding="1dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/fb_logo" />
-
         <TextView
             android:id="@+id/total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/foto"
             android:layout_toRightOf="@+id/totaltext"
             android:text="@string/totalDetalles"
+            android:layout_marginTop="97dp"
+            
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
@@ -111,12 +94,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/name"
-            android:layout_below="@+id/foto"
-            android:layout_marginLeft="23dp"
+            android:layout_marginTop="97dp"
+            
+            android:layout_marginLeft="40dp"
             android:text="Total: "
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black"
             android:textSize="10pt" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            
+            android:layout_marginLeft="15dp"
+            android:text="Nombre: "
+            android:textColor="#ff000000"
+            android:textSize="11pt"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/noRegistrado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+                    android:gravity="center"
+            android:textColor="#ff000000"
+            android:textSize="11pt"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -86,6 +87,7 @@ public class Facebook extends FragmentActivity{
     String vieneDe = "nada";
     String restaurante;
     int idMesa;
+    int vista = 0;
     String amigos = "";
 	String nombresFacebook = "";
 
@@ -99,7 +101,7 @@ public class Facebook extends FragmentActivity{
     private PendingAction pendingAction = PendingAction.NONE;
     private ViewGroup controlsContainer;
     private GraphUser user;
-    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions", "user_location");
+    private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     private static final String PENDING_PUBLISH_KEY = "pendingPublishReauthorization";
     private boolean pendingPublishReauthorization = false;
 
@@ -137,6 +139,8 @@ public class Facebook extends FragmentActivity{
         } catch (NoSuchAlgorithmException e) {
 
         }
+        HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+		idMesa = Integer.parseInt(user.get("mesa"));
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
@@ -146,8 +150,7 @@ public class Facebook extends FragmentActivity{
 			else vieneDe = "nada";
 			if(vieneDe.equals("postea")){
 				//restaurante = extras.getString("restaurante");
-				amigos = extras.getString("amigos");
-				idMesa = extras.getInt("IdMesa");
+				//amigos = extras.getString("amigos");
 			}
 		}
         if (savedInstanceState != null) {
@@ -227,7 +230,9 @@ public class Facebook extends FragmentActivity{
      //al presionar el botor de aceptar, se abre la actividad de entra
 	    acepta.setOnClickListener(new  View.OnClickListener(){
        	public void onClick(View view){
-       		
+       		Intent dashboard = new Intent(getApplicationContext(), Entra.class);
+			dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(dashboard);
        		finish();//termina la activad de Facebook para que al regresar no pase por esta
        		
        	}
@@ -241,6 +246,7 @@ public class Facebook extends FragmentActivity{
             // If we're being re-created and have a fragment, we need to a) hide the main UI controls and
             // b) hook up its listeners again.
             controlsContainer.setVisibility(View.GONE);
+            vista = 1;
             if (fragment instanceof FriendPickerFragment) {
                 setFriendPickerListeners((FriendPickerFragment) fragment);
             } else if (fragment instanceof PlacePickerFragment) {
@@ -416,6 +422,21 @@ public class Facebook extends FragmentActivity{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			JSONObject json2 = userFunctions.getAmigos(idMesa);
+    		try {//si la respuesta de KEY_Succes contiene algo
+    			if (json2.getString("success") != null) {
+    				String res = json2.getString("success"); 					
+    				if(Integer.parseInt(res) == 1){//si se accedio
+    					amigos = json2.getString("amigos");
+    					Log.e("amigos de la base", amigos);
+    				}else{
+    					// Error al cargar los datos
+    					//mensajeError.setText("Usuario y/o contraseña incorrectos");
+    				}
+    			}
+    		} catch (JSONException e) {
+    			e.printStackTrace();
+    		}
             Bundle postParams = new Bundle();
             final String message =  "Comiendo en las " + restaurante;
             postParams.putString("message", message);
@@ -509,8 +530,11 @@ public class Facebook extends FragmentActivity{
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
-
+        Log.e("la vista es","==="+vista);
+        if(vista != 1){
         controlsContainer.setVisibility(View.GONE);
+        }
+       // Log.e("la vista es","==="+controlsContainer.getVisibility());
 
         // We want the fragment fully created so we can use it immediately.
         fm.executePendingTransactions();
@@ -524,6 +548,7 @@ public class Facebook extends FragmentActivity{
         setFriendPickerListeners(fragment);
 
         showPickerFragment(fragment);
+
     }
 
     private void setFriendPickerListeners(final FriendPickerFragment fragment) {
@@ -543,6 +568,21 @@ public class Facebook extends FragmentActivity{
 
         Collection<GraphUser> selection = fragment.getSelection();
         if (selection != null && selection.size() > 0) {
+        	JSONObject json = userFunctions.getAmigos(idMesa);
+    		try {//si la respuesta de KEY_Succes contiene algo
+    			if (json.getString("success") != null) {
+    				String res = json.getString("success"); 					
+    				if(Integer.parseInt(res) == 1){//si se accedio
+    					amigos = json.getString("amigos");
+    					Log.e("amigos de la base", amigos);
+    				}else{
+    					// Error al cargar los datos
+    					//mensajeError.setText("Usuario y/o contraseña incorrectos");
+    				}
+    			}
+    		} catch (JSONException e) {
+    			e.printStackTrace();
+    		}
             ArrayList<String> names = new ArrayList<String>();
             for (GraphUser user : selection) {
             	if(nombresFacebook.equals("")){
@@ -560,14 +600,14 @@ public class Facebook extends FragmentActivity{
         } else {
 			Log.e("id-usuario-antes", "Ningun amigos seleccionada");
         }
-        userFunctions.updateAmigos(idMesa, nombresFacebook);
-
+        userFunctions.updateAmigos(idMesa, amigos);
+        finish();
         Intent intent = new Intent(this, Lista.class);
     	    intent.putExtra("viene", "facebook");
     		intent.putExtra("selecciono", nombresFacebook);
     		intent.putExtra("amigos", amigos);
     		startActivity(intent);
-    		finish();
+    		
         //showAlert(getString(R.string.you_picked), results);
     }
 

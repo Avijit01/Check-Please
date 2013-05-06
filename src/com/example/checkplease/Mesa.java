@@ -6,6 +6,7 @@ public class Mesa {
 	private int position;
 	private String nombre;
 	private float total;
+	private float propina;
 	private int pago;
 	private String path;
 	
@@ -14,6 +15,15 @@ public class Mesa {
 		this.position = position;
 		this.nombre = nombre;
 		this.total = total;
+		this.pago = pago;
+		this.path = path;
+	}	
+	public Mesa( int idMesa, int position, String nombre, float total, float propina, int pago, String path){
+		this.idMesa = idMesa;
+		this.position = position;
+		this.nombre = nombre;
+		this.total = total;
+		this.propina = propina;
 		this.pago = pago;
 		this.path = path;
 	}
@@ -48,6 +58,9 @@ public class Mesa {
 	}
 	public float getTotal(){
 		return total;
+	}
+	public float getPropina(){
+		return propina;
 	}
 	public int getPago(){
 		return pago;

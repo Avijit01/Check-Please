@@ -153,7 +153,7 @@ public class UserFunctions {
 		return json;
 	}
 	
-	public JSONObject guardaLista(int mesa, int idSistema, String nombre, float total, int isPaid, String path){
+	public JSONObject guardaLista(int mesa, int idSistema, String nombre, float total, int isPaid, String path, int posicion){
 		// Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", "guardaLista"));
@@ -163,6 +163,7 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("total", Float.toString(total)));
 		params.add(new BasicNameValuePair("pago", Integer.toString(isPaid)));
 		params.add(new BasicNameValuePair("path", path));
+		params.add(new BasicNameValuePair("posicion", Integer.toString(posicion)));
 
 		JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 		return json;

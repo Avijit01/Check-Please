@@ -56,8 +56,8 @@ public class ListMesa extends Activity implements OnItemClickListener, OnClickLi
 			for(int i=0;i<jArray.length();i++){
 				JSONObject json_data = jArray.getJSONObject(i);
 				idMesas.add(json_data.getString("mesa"));
-				restaurantes.add(json_data.getString("restaurante"));
-				totales.add(json_data.getString("total"));
+				totales.add(json_data.getString("restaurante"));//estan alreves para que se muestren bien
+				restaurantes.add(json_data.getString("total"));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

@@ -77,17 +77,20 @@ public class MesaViewAdapter extends BaseAdapter {
         
         TextView name = (TextView)vi.findViewById(R.id.ibNombreMesa);
         TextView totalUsr=(TextView)vi.findViewById(R.id.tvTotalMesa);
-        final CheckBox pago=(CheckBox)vi.findViewById(R.id.cbPaidMesa);
+        TextView totalUsrPropina=(TextView)vi.findViewById(R.id.tvTotalPropina);
+       // final CheckBox pago=(CheckBox)vi.findViewById(R.id.cbPaidMesa);
         totalUsr.setTextColor(Color.parseColor("#555555"));
         name.setTextColor(Color.parseColor("#555555"));
+        totalUsrPropina.setTextColor(Color.parseColor("#555555"));
         totalUsr.setText(m.get(position).getTotal()+"");
         name.setText(m.get(position).getNombre());
-        if(m.get(position).getPago() == 1) pago.setChecked(true);
+        totalUsrPropina.setText(m.get(position).getPropina()+"");
+        /*if(m.get(position).getPago() == 1) pago.setChecked(true);
         pago.setOnClickListener(new  View.OnClickListener(){
 			public void onClick(View view){
 				pago.setChecked(true);
 			}
-		});
+		});*/
         return vi;
     }
 }

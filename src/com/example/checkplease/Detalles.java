@@ -61,7 +61,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private List<String> restaurantes = new ArrayList<String>(); //lista de precios en la lista
 	private List<String> idMesas = new ArrayList<String>();
 	private Button agregar, terminar, okBtn; // boton  agregar y terminar de la vista  detalles
-	private TextView totalView, name; //cuadro de texto del total y del nombre del usuario
+	private TextView totalView, name, noRegistrado, totaltext, tvTotal, TextView01; //cuadro de texto del total y del nombre del usuario
 	private EditText nameChange; //cuadro de texto para editar el nombre
 	private ImageView foto; //imageview de la foto del usuario
 	private static final int SELECT_PICTURE = 1;
@@ -93,32 +93,56 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 		//Valores que se guardan mientras este abierta la aplicacion
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
-		if( path.equals("null")){
+		/*if( path.equals("null")){
 			path = prefs.getString("path","null"); //axesa al path pasado
 		}
 		if( nombrePref.equals("") ){
 			nombrePref = prefs.getString("name", "");
-		}
+		}*/
+		idUsr = prefs.getString("idUsr", "");
+		paid = prefs.getInt("paid", 0);
+		path = prefs.getString("path", "");
+		position = prefs.getInt("position", 0);
+		
 
 		//Recoleta  los parametros recibidos de la vista Lista
 		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad Main
 		if(extras !=null){//se agarra el parametro "position" y se le asigna la variable post
+			if(extras.getString("viene").equals("mesas")){
+				total = "" + extras.getString("Total");
+				Log.e("total al regresar","=="+total);
+
+				nombrePref = extras.getString("Nombre");
+				path = extras.getString("Picture");
+				position = extras.getInt("Position");
+				idUsr = extras.getString("IdUsr");
+				if(idUsr.length() < 3){
+					idUsr = "1";
+				}
+			}else{
 			total = "" + extras.getFloat("Total");
 			nombrePref = extras.getString("Nombre");
 			path = extras.getString("Picture");
 			position = extras.getInt("Position");
 			idUsr = extras.getString("IdUsr");
+			
 			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
 			//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
+			}
 		}
 
 		//inicializacion de Variables globales
 		totalView = (TextView)findViewById(R.id.total);
+		totaltext = (TextView)findViewById(R.id.totaltext);
+		tvTotal = (TextView)findViewById(R.id.tvTotal);
+		TextView01 = (TextView)findViewById(R.id.TextView01);
+		noRegistrado = (TextView)findViewById(R.id.noRegistrado);
 		name = (TextView)findViewById(R.id.name);
-		foto = (ImageView)findViewById(R.id.foto);
+		//foto = (ImageView)findViewById(R.id.foto);
 		agregar = (Button)findViewById(R.id.agregar);
 		terminar = (Button)findViewById(R.id.terminar);
 		agregar.setVisibility(RelativeLayout.INVISIBLE);
+		noRegistrado.setVisibility(RelativeLayout.INVISIBLE);
 		//se cambian los contenidos de las vistas si hay cambio en estas
 		if( !path.equals("null") )	foto.setImageBitmap( BitmapFactory.decodeFile(path));
 		if( !nombrePref.equals("") ) name.setText(nombrePref);
@@ -136,8 +160,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			for(int i=0;i<jArray.length();i++){
 				JSONObject json_data = jArray.getJSONObject(i);
 				idMesas.add(json_data.getString("mesa"));
-				restaurantes.add(json_data.getString("restaurante"));
-				totales.add(json_data.getString("total"));
+				totales.add(json_data.getString("restaurante"));
+				restaurantes.add(json_data.getString("total"));
 				//agrega las opciones al menu
 				//sugerencia.add(json_data.getString("nombre"));
 			}
@@ -147,7 +171,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		}
 		}else{
 			agregar.setVisibility(RelativeLayout.VISIBLE);
-
+			noRegistrado.setVisibility(RelativeLayout.VISIBLE);
+			totalView.setVisibility(RelativeLayout.INVISIBLE);
+			totaltext.setVisibility(RelativeLayout.INVISIBLE);
+			tvTotal.setVisibility(RelativeLayout.INVISIBLE);
+			TextView01.setVisibility(RelativeLayout.INVISIBLE);
+			noRegistrado.setText("Esta persona no esta registrada, si deseas puedes invitarla a traves de su mail, en el boton de abajo.");
 			
 		}
 		//se declara la lista asociada con la lista del layout
@@ -207,7 +236,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		 * foto que cambia la imgen a desplegar del usuario
 		 * @return void
 		 */
-		foto .setOnClickListener( new OnClickListener(){
+		/*foto .setOnClickListener( new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
@@ -216,7 +245,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				intent.setAction(Intent.ACTION_GET_CONTENT);
 				startActivityForResult(Intent.createChooser(intent,  "Selecciona Imagen"), SELECT_PICTURE);
 			}
-		});
+		});*/
 
 	}
 
@@ -321,6 +350,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			path = cursor.getString(columnIndex);
 			cursor.close();
 			foto.setImageBitmap(BitmapFactory.decodeFile(path));
+
 		}
 	}
 
@@ -335,10 +365,15 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		Log.e("entra","pause"+" "+position+" "+path+" "+paid);
+
 		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE);
 		editor = prefs.edit();
+		editor.putInt("position",  position);
+		editor.putInt("paid",  paid);
 		editor.putString("path",  path);
-		editor.putString("name",  name.getText().toString());
+		//editor.putString("name",  name.getText().toString());
+		editor.putString("idUsr",  idUsr);
 		editor.commit();
 	}
 
@@ -347,9 +382,10 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int pos, long id){
 		String idmesa = adapter.getMesaId(pos);
+		Log.e("total en detalles",":"+totalView.getText());
 		Intent intent = new Intent(view.getContext(), MesaView.class);
 		intent.putExtra("IdMesa", Integer.parseInt(idmesa));
-		intent.putExtra("Total",total);
+		intent.putExtra("Total", Float.parseFloat((String) totalView.getText()));
 		intent.putExtra("Nombre",nombrePref);
 		intent.putExtra("Picture",path);
 		intent.putExtra("Position",position);

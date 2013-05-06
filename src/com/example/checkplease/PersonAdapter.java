@@ -62,6 +62,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Detalles.class);
+						intent.putExtra("viene", "personAdapter");
 						intent.putExtra("Nombre", p.getName());
 						intent.putExtra("Picture", p.getPicture());
 						intent.putExtra("Total", p.getTotal());
@@ -87,7 +88,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				});
 				cb.setChecked(p.isPaid());
 				tvTotal.setText(String.valueOf(p.getTotal()));
-				tTip = p.getTotal() * (propina / 100.0f) + p.getTotal();
+				tTip = p.getTotal() * (propina / 100.0f) /*+ p.getTotal()*/;
 				int decimalPlaces = 2;
 				BigDecimal bd = new BigDecimal(tTip);
 				// setScale is immutable

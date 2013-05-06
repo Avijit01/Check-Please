@@ -12,7 +12,7 @@
         android:layout_height="50dp"
         android:layout_alignLeft="@+id/user"
         android:layout_below="@+id/user"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/blanco_btn"
         android:ems="10"
         android:gravity="center_vertical"
@@ -27,7 +27,7 @@
         android:layout_height="50dp"
         android:layout_alignLeft="@+id/pss"
         android:layout_below="@+id/pss"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/blanco_btn"
         android:ems="10"
         android:gravity="center_vertical"
@@ -42,7 +42,7 @@
         android:layout_height="50dp"
         android:layout_alignLeft="@+id/pssConf"
         android:layout_below="@+id/pssConf"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/blanco_btn"
         android:ems="10"
         android:gravity="center_vertical"
@@ -58,7 +58,7 @@
         android:layout_height="40dp"
         android:layout_below="@+id/mail"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="45dp"
         android:background="@drawable/green_btn"
         android:text="@string/registrar"
         android:textColor="#ffffffff"
@@ -71,9 +71,8 @@
         android:layout_below="@+id/mail"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text=""
-        android:textColor="#ffA00000"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#ffA00000" />
 
     <EditText
         android:id="@+id/user"
@@ -89,5 +88,17 @@
         android:inputType="text"
         android:paddingLeft="10dp"
         android:textColor="#999999" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mail"
+        android:layout_alignRight="@+id/mail"
+        android:layout_below="@+id/error"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/mensajeRegistro"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
