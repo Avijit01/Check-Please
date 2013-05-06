@@ -49,7 +49,7 @@
                  android:screenOrientation="portrait">
         </activity>
          <activity android:name="com.example.checkplease.Facebook"
-             
+             android:theme="@android:style/Theme.NoTitleBar"
                  android:screenOrientation="portrait">
         </activity>
                  <activity android:name="com.example.checkplease.Entra"

@@ -97,7 +97,7 @@ public class Facebook extends FragmentActivity{
     private Button pickPlaceButton;
     private LoginButton loginButton;
     private ProfilePictureView profilePictureView;
-    private TextView greeting;
+    private TextView greeting, mensaje;
     private PendingAction pendingAction = PendingAction.NONE;
     private ViewGroup controlsContainer;
     private GraphUser user;
@@ -160,6 +160,7 @@ public class Facebook extends FragmentActivity{
 
         setContentView(R.layout.main);
         acepta = (Button)findViewById(R.id.sigue);
+        mensaje = (TextView)findViewById(R.id.mensaje);
       //obtiene si la session de Facebook esta activa o desactiva
       		Session session = Session.getActiveSession();
       		if (session == null) {//si es nulla, pone los elementos inivibles
@@ -328,6 +329,7 @@ public class Facebook extends FragmentActivity{
           	acepta.setVisibility(RelativeLayout.VISIBLE);
 
             if(vieneDe.equals("Invita")){
+              	mensaje.setText("Espere unos segundos, estamos validando la cuenta");
             	Log.e("viende","invita");
             	vieneDe="otra";//para que no vuela a entrar
     			onClickPickFriends();
@@ -337,6 +339,7 @@ public class Facebook extends FragmentActivity{
 				intent.putExtra("friends", 1);//si va abrir el popup de seleccionar amigo
 				startActivity(intent);*/
     		}else if(vieneDe.equals("postea")){
+              	mensaje.setText("Espere unos segundos, estamos validando la cuenta");
             	Log.e("viende","post");
             	vieneDe="otra";//para que no vuela a entrar
             	 postStatusUpdate();
@@ -438,7 +441,7 @@ public class Facebook extends FragmentActivity{
     			e.printStackTrace();
     		}
             Bundle postParams = new Bundle();
-            final String message =  "Comiendo en las " + restaurante;
+            final String message =  "Comiendo en: " + restaurante;
             postParams.putString("message", message);
             if(!amigos.equals("")){
 	            postParams.putString("tags", amigos);
@@ -447,7 +450,8 @@ public class Facebook extends FragmentActivity{
 
             Request.Callback callback= new Request.Callback() {
                 public void onCompleted(Response response) {
-                	showPublishResult(message, response.getGraphObject(), response.getError());
+                	mensaje.setText("Posteado con exito, dale click en continuar para seguir usando la aplicación");
+                	/*showPublishResult(message, response.getGraphObject(), response.getError());*/
                    // JSONObject graphResponse = (JSONObject) response
                                               // .getGraphObject();
                                                //.getInnerJSONObject();
@@ -711,7 +715,7 @@ public class Facebook extends FragmentActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		cargaMenu();
+		//cargaMenu();
 		uiHelper.onResume();
 
         updateUI();
@@ -723,7 +727,7 @@ public class Facebook extends FragmentActivity{
 	 */
 	void cargaMenu(){
 		ActionBar actionBar = getActionBar();//obtiene el ActionBar
-		actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
+		//actionBar.setDisplayHomeAsUpEnabled(true);//habilita la opcion de regresar a la actividad anterios
 		actionBar.setBackgroundDrawable(getResources().getDrawable(
 				R.drawable.bar_color));//pone color gris
 		actionBar.setTitle("Facebook    ");//pone el titulo
