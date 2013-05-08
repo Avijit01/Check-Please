@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import com.checkplease.R;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;

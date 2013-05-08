@@ -3,6 +3,7 @@ package com.example.checkplease;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import com.checkplease.R;
 import com.example.checkplease.libreria.UserFunctions;
 
 import android.app.ActionBar;

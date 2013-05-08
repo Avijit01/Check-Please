@@ -1,6 +1,6 @@
 package com.example.checkplease;
 
-
+import com.checkplease.R;
 import java.util.ArrayList;
 
 import org.json.JSONException;

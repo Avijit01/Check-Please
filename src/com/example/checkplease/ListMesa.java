@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import com.checkplease.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

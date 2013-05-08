@@ -1,5 +1,6 @@
 package com.example.checkplease;
 
+import com.checkplease.R;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
