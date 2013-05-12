@@ -424,51 +424,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			break;
 		}
 	}
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case PICK_FRIENDS_ACTIVITY:
-			displaySelectedFriends(resultCode);
-			break;
-		default:
-			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-			break;
-		}
-	}
-	private void displaySelectedFriends(int resultCode) {
-		String results = "";
-		FriendPickerApplication application = (FriendPickerApplication) getApplication();
-
-		Collection<GraphUser> selection = application.getSelectedUsers();
-		if (selection != null && selection.size() > 0) {
-			ArrayList<String> names = new ArrayList<String>();
-			for (GraphUser user : selection) {
-				//Toast.makeText(getApplicationContext(),user.getId(),Toast.LENGTH_SHORT).show();
-
-				names.add(user.getName());
-				Log.e("id-usuario-antes", ":" +usuarios.size());
-				usuarios.add(new Person(usuarios.size(), user.getName().toString()));
-
-				//profilePictureView.setProfileId(user.getId());
-				if(amigos.equals(""))//si es el primer usuario que se agrega solo se pone ese sin como
-				{amigos = user.getId();}
-				else//sino todo lo que ya esta , el nuevo usuario
-				{amigos = amigos + ","+ user.getId();}
-
-				userFunctions.agregaUsuarioMesa(idMesa,user.getName().toString(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
-				Person person = usuarios.get(usuarios.size()-1);
-				person.setuId("1");
-				Log.e("id-usuario-antes", ":" +user.getId());
-
-
-			}
-			results = TextUtils.join(", ", names);
-		} else {
-			results = "<No friends selected>";
-		}
-		Toast.makeText(getApplicationContext(),results,Toast.LENGTH_SHORT).show();
-		adapter.notifyDataSetChanged();		
-		// mensajeFace.setText(results);
-	}
 	private void postStatusUpdate() {
 		Log.d("entra", "ONCLICK");
 		if (user != null ) {
@@ -687,18 +642,6 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		AlertDialog helpDialog = helpBuilder.create();
 		//se muestra la ventana de dialogo
 		helpDialog.show();
-	}
-
-	private void onClickPickFriends() {
-		FriendPickerApplication application = (FriendPickerApplication) getApplication();
-		application.setSelectedUsers(null);
-		Intent intent = new Intent(this, FriendPicker.class);
-		// Note: The following line is optional, as multi-select behavior is the default for
-		// FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
-		// friend picker if single-select functionality was desired, or if a different user ID was
-		// desired (for instance, to see friends of a friend).
-		FriendPicker.populateParameters(intent, null, true, true);
-		startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
 	}
 	
 	/**
