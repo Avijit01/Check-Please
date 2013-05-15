@@ -81,8 +81,9 @@ public class Calculadora extends Activity{
 		asignar = (Button)findViewById(R.id.asignar);
 
 		result = (EditText)findViewById(R.id.cuadroCalc);
-		result.setText(getIntent().getExtras().getInt("Total"));
-
+		texto = getIntent().getExtras().getFloat("Total")+"";
+		result.setText(texto);
+		
 		// Desactiva el teclado del EditText
 		result.setInputType(InputType.TYPE_NULL);
 		result.setTextColor(Color.parseColor("#787878"));
