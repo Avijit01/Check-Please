@@ -55,6 +55,7 @@ public class JSONParser {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		try {

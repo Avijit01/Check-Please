@@ -249,7 +249,7 @@ public class MainActivity extends FragmentActivity   {
 			if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
 				return true;
 			} else {
-				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
 				toast.show();
 				return false;
 			}

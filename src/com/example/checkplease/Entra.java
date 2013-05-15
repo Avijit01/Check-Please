@@ -14,9 +14,12 @@ import com.facebook.Session;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.OnNavigationListener;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -59,198 +62,204 @@ public class Entra extends Activity {
 	 * @param Bundle savedInstanceState
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.forma_de_pago);
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.forma_de_pago);
 
-		//cargaMenu();
-		SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
-		numeroMesa = prefs.getInt("Mesa", 0);
-		nombreRestaurante = prefs.getString("RESTAURANTE", "");
-		Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
+			//cargaMenu();
+			SharedPreferences prefs = getSharedPreferences("PREFS_KEY",Activity.MODE_PRIVATE); 
+			numeroMesa = prefs.getInt("Mesa", 0);
+			nombreRestaurante = prefs.getString("RESTAURANTE", "");
+			Bundle extras = getIntent().getExtras(); //si tiene parametos que envio la actividad anterios
 
-		if(extras !=null){//si no es nulo
-			estaLogeado = extras.getInt("logeado");//toma el valor de 1
-			usuario = extras.getString("nombre");
+			if(extras !=null){//si no es nulo
+				estaLogeado = extras.getInt("logeado");//toma el valor de 1
+				usuario = extras.getString("nombre");
 
-			if(extras.getInt("mesa")!=0)
-			{ numeroMesa = extras.getInt("mesa");}
-		}
-		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
-		numeroMesa = Integer.parseInt(user.get("mesa"));
-		//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
-		igual = (Button)findViewById(R.id.igual);
-		individual = (Button)findViewById(R.id.individual);
-		restaurante = (EditText)findViewById(R.id.restaurante);
-		restaurante.setTextColor(Color.parseColor("#787878"));
-		etTotal = (EditText)findViewById(R.id.total);
-		etPropina = (EditText)findViewById(R.id.propina);
-		etPersonas = (EditText)findViewById(R.id.personas);
-		tvPagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
-		divIgual = (RelativeLayout)findViewById(R.id.divIgual);
-		mensaje = (TextView)findViewById(R.id.textView1);
+				if(extras.getInt("mesa")!=0)
+				{ numeroMesa = extras.getInt("mesa");}
+			}
+			HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+			numeroMesa = Integer.parseInt(user.get("mesa"));
+			//Toast.makeText(getApplicationContext(),"la mesa es:"+numeroMesa,Toast.LENGTH_SHORT).show();
+			igual = (Button)findViewById(R.id.igual);
+			individual = (Button)findViewById(R.id.individual);
+			restaurante = (EditText)findViewById(R.id.restaurante);
+			restaurante.setTextColor(Color.parseColor("#787878"));
+			etTotal = (EditText)findViewById(R.id.total);
+			etPropina = (EditText)findViewById(R.id.propina);
+			etPersonas = (EditText)findViewById(R.id.personas);
+			tvPagoPorPersona = (TextView)findViewById(R.id.pagoPorPersona);
+			divIgual = (RelativeLayout)findViewById(R.id.divIgual);
+			mensaje = (TextView)findViewById(R.id.textView1);
 
-		divIgual.setVisibility(RelativeLayout.INVISIBLE);
+			divIgual.setVisibility(RelativeLayout.INVISIBLE);
 
-		if(numeroMesa != 0){//si tiene una mesa cargada
-			try {//si la respuesta de KEY_Succes contiene algo
-				JSONObject json = userFunctions.getInfoMesa(numeroMesa);
+			if(numeroMesa != 0){//si tiene una mesa cargada
+				try {//si la respuesta de KEY_Succes contiene algo
+					JSONObject json = userFunctions.getInfoMesa(numeroMesa);
 
-				if (json.getString("success") != null) {
-					String res = json.getString("success"); 					
-					if(Integer.parseInt(res) == 1){//si se accedio
-						JSONObject json_mesa = json.getJSONObject("mesa");
-						restaurante.setText(json_mesa.getString("restaurante"));
-						restaurante.setInputType(InputType.TYPE_NULL);
-						mensaje.setText("Tu mesa actual es de manera:");
-						if(json_mesa.getInt("tipo")==0){
-							individual.setVisibility(RelativeLayout.INVISIBLE);
-							divIgual.setVisibility(RelativeLayout.VISIBLE);
-							total = (float)json_mesa.getDouble("total");
-							propina = (float)json_mesa.getDouble("propina");
-							personas = json_mesa.getInt("personas");
-							etTotal.setHint(" "+total); 
-							etPropina.setHint(" "+propina); 
-							etPersonas.setHint(" "+personas);
-							getTotalPerPerson();
-							
-						}else
-							igual.setVisibility(RelativeLayout.INVISIBLE);
-						//cambiar color a null					
-					}else{
-						// Error al cargar los datos
-						//mensajeError.setText("Usuario y/o contraseña incorrectos");
+					if (json.getString("success") != null) {
+						String res = json.getString("success"); 					
+						if(Integer.parseInt(res) == 1){//si se accedio
+							JSONObject json_mesa = json.getJSONObject("mesa");
+							restaurante.setText(json_mesa.getString("restaurante"));
+							restaurante.setInputType(InputType.TYPE_NULL);
+							mensaje.setText("Tu mesa actual es de manera:");
+							if(json_mesa.getInt("tipo")==0){
+								individual.setVisibility(RelativeLayout.INVISIBLE);
+								divIgual.setVisibility(RelativeLayout.VISIBLE);
+								total = (float)json_mesa.getDouble("total");
+								propina = (float)json_mesa.getDouble("propina");
+								personas = json_mesa.getInt("personas");
+								etTotal.setHint(" "+total); 
+								etPropina.setHint(" "+propina); 
+								etPersonas.setHint(" "+personas);
+								getTotalPerPerson();
+
+							}else
+								igual.setVisibility(RelativeLayout.INVISIBLE);
+							//cambiar color a null					
+						}else{
+							// Error al cargar los datos
+							//mensajeError.setText("Usuario y/o contraseña incorrectos");
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			igual.setOnClickListener(new  View.OnClickListener(){
+				public void onClick(View view){
+					if(isConnected()) {
+						if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
+						{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+						restaurante.requestFocus ();
+						}else{//si el numero de mesa es cero
+							ActionBar actionBar = getActionBar();
+							actionBar.setTitle("Pago igual ");
+							etTotal.requestFocus ();
+							restaurante.setBackgroundResource(R.drawable.blanco_btn);
+							divIgual.setVisibility(view.VISIBLE);
+							individual.setVisibility(view.INVISIBLE);
+							restaurante.setInputType(InputType.TYPE_NULL);
+							if(numeroMesa == 0){
+								numeroMesa = agregaRestaurante(restaurante, 0);
+								nombreRestaurante = restaurante.getText().toString();
+								DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+								db.addMesa(usuario, numeroMesa);
+							}
+							esIgual = true;
+						}
 					}
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			});
 
-		}
+			individual.setOnClickListener(new  View.OnClickListener(){
+				public void onClick(View view){
+					if(isConnected()) {
+						if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
+						{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
+						restaurante.requestFocus ();
+						}else{
+							if(numeroMesa == 0){//si el numero de mesa es cero la agrega
+								numeroMesa = agregaRestaurante(restaurante,1);
+								DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+								db.addMesa(usuario, numeroMesa);
+							}			
+							divIgual.setVisibility(RelativeLayout.INVISIBLE);
+							restaurante.setInputType(InputType.TYPE_NULL);
+							restaurante.setBackgroundResource(R.drawable.blanco_btn);
 
-		igual.setOnClickListener(new  View.OnClickListener(){
-			public void onClick(View view){
-				Log.e("restaurante",":"+restaurante);
-				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
-				{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
-					restaurante.requestFocus ();
-				}else{//si el numero de mesa es cero
-					ActionBar actionBar = getActionBar();
-					actionBar.setTitle("Pago igual ");
-					etTotal.requestFocus ();
-					restaurante.setBackgroundResource(R.drawable.blanco_btn);
-					divIgual.setVisibility(view.VISIBLE);
-					individual.setVisibility(view.INVISIBLE);
-					restaurante.setInputType(InputType.TYPE_NULL);
-					if(numeroMesa == 0){
-						numeroMesa = agregaRestaurante(restaurante, 0);
-						nombreRestaurante = restaurante.getText().toString();
-						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-						db.addMesa(usuario, numeroMesa);
+							//Llamada a la vista de Lista
+							Intent intent = new Intent(view.getContext(), Lista.class);
+							intent.putExtra("viene", "entra");
+							intent.putExtra("idMesa", numeroMesa);
+							intent.putExtra("restaurante", nombreRestaurante);
+							if(numeroMesa != prevNumeroMesa)
+								intent.putExtra("clearPrefs", true);
+							prevNumeroMesa = numeroMesa;
+							startActivity(intent);
+						}
 					}
-					esIgual = true;
 				}
-			}
+			});
 
-		});
+			//agrega  el total de todos los comensales
+			etTotal.addTextChangedListener(new TextWatcher() {
 
-		individual.setOnClickListener(new  View.OnClickListener(){
-			public void onClick(View view){
-				if(restaurante.getText().toString().equals(""))//si falta el restaurante lo pone en rojo y focus
-				{	restaurante.setBackgroundResource(R.drawable.rojo_btn);
-				restaurante.requestFocus ();
-				}else{
-					if(numeroMesa == 0){//si el numero de mesa es cero la agrega
-						numeroMesa = agregaRestaurante(restaurante,1);
-						DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-						db.addMesa(usuario, numeroMesa);
-					}			
-					divIgual.setVisibility(RelativeLayout.INVISIBLE);
-					restaurante.setInputType(InputType.TYPE_NULL);
-					restaurante.setBackgroundResource(R.drawable.blanco_btn);
-
-					//Llamada a la vista de Lista
-					Intent intent = new Intent(view.getContext(), Lista.class);
-					intent.putExtra("viene", "entra");
-					intent.putExtra("idMesa", numeroMesa);
-					intent.putExtra("restaurante", nombreRestaurante);
-					if(numeroMesa != prevNumeroMesa)
-						intent.putExtra("clearPrefs", true);
-					prevNumeroMesa = numeroMesa;
-					startActivity(intent);
+				@Override
+				public void onTextChanged(CharSequence seq, int start, int before, int count) {
+					try {
+						total = Float.parseFloat(etTotal.getText().toString());
+					} catch(Exception e) {
+						total = 0.0f;
+					}
+					getTotalPerPerson();
 				}
 
-			}
-		});
+				@Override
+				public void afterTextChanged(Editable arg0) {
 
-		//agrega  el total de todos los comensales
-		etTotal.addTextChangedListener(new TextWatcher() {
-			
-			@Override
-			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				try {
-					total = Float.parseFloat(etTotal.getText().toString());
-				} catch(Exception e) {
-					total = 0.0f;
 				}
-				getTotalPerPerson();
-			}
 
-			@Override
-			public void afterTextChanged(Editable arg0) {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-		});
-
-		//agrega el total de la propina de los comensales
-		etPropina.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				try {
-					propina = Float.parseFloat(etPropina.getText().toString());
-				} catch (Exception e) {
-					propina = 0.0f;
 				}
-				getTotalPerPerson();
-			}
+			});
 
-			@Override
-			public void afterTextChanged(Editable arg0) {
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-		});
-
-		//agrega el numero de comensales en la mesa
-		etPersonas.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence seq, int start, int before, int count) {
-				try {
-					personas = Integer.parseInt(etPersonas.getText().toString());
-				} catch (NumberFormatException e) {
-					personas = 0;
+			//agrega el total de la propina de los comensales
+			etPropina.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void onTextChanged(CharSequence seq, int start, int before, int count) {
+					try {
+						propina = Float.parseFloat(etPropina.getText().toString());
+					} catch (Exception e) {
+						propina = 0.0f;
+					}
+					getTotalPerPerson();
 				}
-				getTotalPerPerson();
-			}
 
-			@Override
-			public void afterTextChanged(Editable arg0) {
+				@Override
+				public void afterTextChanged(Editable arg0) {
 
-			}
+				}
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-			}
-		});
+				}
+			});
+
+			//agrega el numero de comensales en la mesa
+			etPersonas.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void onTextChanged(CharSequence seq, int start, int before, int count) {
+					try {
+						personas = Integer.parseInt(etPersonas.getText().toString());
+					} catch (NumberFormatException e) {
+						personas = 0;
+					}
+					getTotalPerPerson();
+				}
+
+				@Override
+				public void afterTextChanged(Editable arg0) {
+
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+				}
+			});
+		} catch (Exception e) {
+			Toast toast = Toast.makeText(this, "Error con la conexión a internet", Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -286,9 +295,9 @@ public class Entra extends Activity {
 		if(!Float.isNaN(ppp) && !Float.isInfinite(ppp))
 			tvPagoPorPersona.setText("$" + String.valueOf(ppp) + " por persona");
 		esIgual = true;
-		
-		
-	//	updateMesa(total, propina, personas);
+
+
+		//	updateMesa(total, propina, personas);
 	}
 	/**
 	 * Metodo: agregaRestaurante,
@@ -360,7 +369,7 @@ public class Entra extends Activity {
 		etPersonas.setHint("Persona");
 
 	}
-	
+
 	/**
 	/**
 	 * Metodo: mesas usuario,
@@ -482,4 +491,22 @@ public class Entra extends Activity {
 		editor.commit(); 
 	}
 
+	private boolean isConnected() {
+		// Revisa si hay conexion a internet (Wifi o red movil)
+		try{
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
+				return true;
+			} else {
+				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
+				toast.show();
+				return false;
+			}
+		}catch(Exception e){
+			Log.d("error",e + "");
+			return false;
+		}
+	}
 }

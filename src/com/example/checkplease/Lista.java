@@ -1,6 +1,8 @@
 package com.example.checkplease;
 
 import com.checkplease.R;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -168,7 +170,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		try {
 			json = userFunctions.obtenerUsuarioMesa(idMesa);
 			if (json.getString("success") != null) {
-				String res = json.getString("success"); 
+				String res = json.getString("success");
 				if(Integer.parseInt(res) == 1){
 					jArray = json.getJSONArray("usuariosMesa");
 					if(jArray.length()==0){
@@ -180,24 +182,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 						Person person = usuarios.get(usuarios.size()-1);
 						person.setuId((String)useractual.get("uid"));
 					}else{
-					Log.e("dimension","==="+jArray.length());
-					for(int i=0;i<jArray.length();i++){
-						JSONObject json_data = jArray.getJSONObject(i);
-						boolean pagado2 = false;
-						String imagen;
-						if(json_data.getInt("pagado")==1){
-							pagado2 = true;
-						}
-						if(json_data.getString("path").equals("path")){
-							imagen = "null";
-						}else{
-							imagen = json_data.getString("path");
-						}
-						etTip.setText(json_data.getString("propina"));
-						Person p = new Person(json_data.getInt("idSistema"), json_data.getString("nombre"), (float)json_data.getDouble("total"), pagado2, imagen);
-						p.setuId(json_data.getString("idUsuario"));
-						usuarios.add(p);
-					}}
+						Log.e("dimension","==="+jArray.length());
+						for(int i=0;i<jArray.length();i++){
+							JSONObject json_data = jArray.getJSONObject(i);
+							boolean pagado2 = false;
+							String imagen;
+							if(json_data.getInt("pagado")==1){
+								pagado2 = true;
+							}
+							if(json_data.getString("path").equals("path")){
+								imagen = "null";
+							}else{
+								imagen = json_data.getString("path");
+							}
+							etTip.setText(json_data.getString("propina"));
+							Person p = new Person(json_data.getInt("idSistema"), json_data.getString("nombre"), (float)json_data.getDouble("total"), pagado2, imagen);
+							p.setuId(json_data.getString("idUsuario"));
+							usuarios.add(p);
+						}}
 				}else{
 					if(!users[0].equalsIgnoreCase("")) { // Existe algun usuario en la lista
 						Arrays.sort(users);
@@ -209,7 +211,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 							p.setuId("1");
 							usuarios.add(p);
 						}
-						
+
 					}else {
 						//agrega el prime usuario que es la persona que esta logeada
 						HashMap<String, String> useractual = userFunctions.getUsuarioId(getApplicationContext());
@@ -222,16 +224,16 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 						//Person p = new Person(usuarios.size(), "Yo", 0.0f, false, "null");
 						//usuarios.add(p);
 					}
-					
+
 				}
 			}
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
-		
+
 
 		if(extras != null) {
 			if(extras.getString("viene").equals("calculadora")){
@@ -268,15 +270,13 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 						userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 						Person person = usuarios.get(usuarios.size()-1);
 						person.setuId("1");
-						
+
 					}
 
 				}
 			}
 
 		}
-		
-		Toast.makeText(getApplicationContext(),"Agrega"+idMesa,Toast.LENGTH_SHORT).show();
 
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
 		//agrega el total de la mesa  en la pantalla
@@ -331,7 +331,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		editor.commit();
 		finish();
 	}
-	
+
 	/**
 	 * Metodo para actualizar la lista de usuarios y sus totales
 	 * @param tip
@@ -409,14 +409,14 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			break;
 		case R.id.bFacebook:
 
-				//Log.e("restaurante",restaurante);
-				Intent intent = new Intent(this, Facebook.class);
-				intent.putExtra("viene", "postea");
-				intent.putExtra("IdMesa", idMesa);
-				intent.putExtra("amigos", amigos);
-				startActivity(intent);
-			
-			
+			//Log.e("restaurante",restaurante);
+			Intent intent = new Intent(this, Facebook.class);
+			intent.putExtra("viene", "postea");
+			intent.putExtra("IdMesa", idMesa);
+			intent.putExtra("amigos", amigos);
+			startActivity(intent);
+
+
 			break;
 		case R.id.bEliminar:
 			positions.clear();
@@ -493,18 +493,22 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				if(!etNombre.getText().toString().equals(""))
 					//agrega la persona que se agregoa la base y servidor
 					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
-				userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+				if(userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1)) == null) {
+					usuarios.remove(usuarios.size()-1);
+					Toast toast = Toast.makeText(Lista.this, "Error con la conexión a internet", Toast.LENGTH_LONG);
+					toast.show();
+				}
 				Person person = usuarios.get(usuarios.size()-1);
 				person.setuId("1");//pone uno al no estar registrado
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				
-					Intent intent = new Intent(view.getContext(), Facebook.class);
-					intent.putExtra("viene", "Invita");
-					startActivity(intent);
-				
+
+				Intent intent = new Intent(view.getContext(), Facebook.class);
+				intent.putExtra("viene", "Invita");
+				startActivity(intent);
+
 			}
 		});
 
@@ -634,6 +638,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 					editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
 				}
 				editor.commit();
+				Log.d("Prefs", sharedPrefs.getAll().toString());
 				adapter.notifyDataSetChanged();
 			}
 		});
@@ -643,7 +648,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//se muestra la ventana de dialogo
 		helpDialog.show();
 	}
-	
+
 	/**
 	 * Metodo: facebook,
 	 * Metodo que realiza la accion de abrir la actividad de Facebook
