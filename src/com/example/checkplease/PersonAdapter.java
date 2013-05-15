@@ -96,6 +96,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 					public void onClick(View view){
 						Intent intent = new Intent(view.getContext(), Calculadora.class);
 						intent.putExtra("Position", this.getPosition());
+						intent.putExtra("Total", p.getTotal());
 						context.startActivity(intent);
 					}
 				});

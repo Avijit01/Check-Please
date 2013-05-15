@@ -81,6 +81,7 @@ public class Calculadora extends Activity{
 		asignar = (Button)findViewById(R.id.asignar);
 
 		result = (EditText)findViewById(R.id.cuadroCalc);
+		result.setText(getIntent().getExtras().getInt("Total"));
 
 		// Desactiva el teclado del EditText
 		result.setInputType(InputType.TYPE_NULL);
