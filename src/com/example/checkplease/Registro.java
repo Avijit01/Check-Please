@@ -2,6 +2,7 @@ package com.example.checkplease;
 
 import com.checkplease.R;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +47,7 @@ public class Registro extends Activity{
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
 	UserFunctions userFunctions = new UserFunctions();//carga la case userFunctions
+	private static final Pattern rfc2822 = Pattern.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
 	/**
 	 * Metodo que maneja la actividad de Registro, dar de alta en servidor y validaciones correspondientes
@@ -125,7 +127,10 @@ public class Registro extends Activity{
         				user.requestFocus ();
 	        		}
 				}
-				else if(password.equals(passwordcon)){//si todo esta completo valida que sean iguaes las contraseñas
+				else 					
+					if (!rfc2822.matcher(email).matches()) {
+						mensajeError.setText("Mail Invalido");
+					}else if(password.equals(passwordcon)){//si todo esta completo valida que sean iguaes las contraseñas
 					mensajeError.setText("");//pone todo en blanco
 					passcon.setBackgroundResource(R.drawable.blanco_btn);
         			pass.setBackgroundResource(R.drawable.blanco_btn);

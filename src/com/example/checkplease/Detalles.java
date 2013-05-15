@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,6 +73,8 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 	private String idUsr;
 	private String idUsr2 = "0";
 	SharedPreferences.Editor editor;
+	
+	private static final Pattern rfc2822 = Pattern.compile("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
 
 	//Mail variable
 	private String to = "";
@@ -312,6 +315,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				if( !nameChange.getText().toString().equals("") )
+					if (!rfc2822.matcher(nameChange.getText().toString()).matches()) {
+						Toast.makeText(getApplicationContext(),"Mail Invalido",Toast.LENGTH_SHORT).show();
+					}else{
+						
+					
+
 					to = nameChange.getText().toString();
 				@SuppressWarnings("deprecation")
 				String uriText =
@@ -328,6 +337,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
 				sendIntent.setData(uri);
 				startActivity(Intent.createChooser(sendIntent, "Send email")); 
+					}
 			}
 		});
 

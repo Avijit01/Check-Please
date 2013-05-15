@@ -501,7 +501,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		helpBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				if(!etNombre.getText().toString().equals(""))
+				if(!etNombre.getText().toString().equals("")){
 					//agrega la persona que se agregoa la base y servidor
 					usuarios.add(new Person(usuarios.size(), etNombre.getText().toString().trim()));
 				if(userFunctions.agregaUsuarioMesa(idMesa, etNombre.getText().toString().trim(),Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1)) == null) {
@@ -511,6 +511,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				Person person = usuarios.get(usuarios.size()-1);
 				person.setuId("1");//pone uno al no estar registrado
+				}
 			}
 		});
 		helpBuilder.setNeutralButton("Facebook", new DialogInterface.OnClickListener() {
@@ -574,17 +575,20 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				if(!buscar.getText().toString().equals("")){
 					//agrega a un usuario existente a la mesa 
-					usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
 					JSONObject json = userFunctions.agregaUsuarioMesa(idMesa, buscar.getText().toString(), Integer.toString(usuarios.size()-1),"si");
 					try {
 						if(json.getString("success") != null) {
 							String res = json.getString("success"); 
 							if(Integer.parseInt(res) == 1){//si es uno el succes, entro con exito
 								//se crea la base de datos interna
+								usuarios.add(new Person(usuarios.size(), buscar.getText().toString()));
+
 								Person person = usuarios.get(json.getInt("id"));
 								person.setuId(json.getString("regresa"));
 								Log.e("id-regresa","-"+ json.getInt("id")+":"+person.getuId());
 							}else{//error en la conexion
+								  Toast.makeText(getApplicationContext(),"No es un usuario valido",Toast.LENGTH_SHORT).show();
+
 							}
 						} }catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -654,10 +658,12 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				for(Person p : usuarios) {
 					Log.e("pagado",":"+p.isPaid());
 					pagado = 1;
+					
 					if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
 					Log.e("totalpersona", ":"+p.getTotal());
 					userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture(), posicionLista, p.getuId());
 					Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture()+" "+posicionLista );
+					p.setId(posicionLista);
 					posicionLista++;
 				}
 				editor.commit();

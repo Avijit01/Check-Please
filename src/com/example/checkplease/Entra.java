@@ -170,6 +170,8 @@ public class Entra extends Activity {
 								db.addMesa(usuario, numeroMesa);
 							}			
 							divIgual.setVisibility(RelativeLayout.INVISIBLE);
+							igual.setVisibility(view.INVISIBLE);
+
 							restaurante.setInputType(InputType.TYPE_NULL);
 							restaurante.setBackgroundResource(R.drawable.blanco_btn);
 
