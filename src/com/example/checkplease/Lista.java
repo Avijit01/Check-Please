@@ -31,10 +31,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ActionBar.OnNavigationListener;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -231,51 +234,58 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
+			toast.show();
 		}
 		// Recorre las SharedPreferences y crea el ArrayList con esta informacion
 
 
 		if(extras != null) {
-			if(extras.getString("viene").equals("calculadora")){
-				Person person = usuarios.get(extras.getInt("Position"));
-				person.setTotal((float)extras.getDouble("totalIndi"));
-			}
-			if(extras.getString("viene").equals("detalles")){
-				Person person = usuarios.get(extras.getInt("Position"));
-				//person.setTotal((float)extras.getDouble("totalIndi"));
-				//person.setPicture(extras.getString("Path"));
-				person.setName(extras.getString("Nombre"));	
-				//editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
-				//editor.commit();
-			}
-			//si viene de la vista de estra
-			if(extras.getString("viene").equals("entra")){
-				restaurante = extras.getString("restaurante");
-				idMesa = extras.getInt("idMesa");
-			}
-			//si viene de la vista de facebook
-			if(extras.getString("viene").equals("facebook")){
-				//seleccionaAmigos = extras.getInt("friends");
-				seleccionaAmigos = extras.getString("selecciono");
-				amigos = extras.getString("amigos");
-				if(seleccionaAmigos.equals("")){
-					Log.e("entra",":amigos");
-					//onClickPickFriends();
-				}else{
-					usersFacebook = seleccionaAmigos.split(",.?");
-					for(int i = 0; i < usersFacebook.length; i++) {
-						String s = usersFacebook[i];
-						Log.e("Los que selecciono===",s);
-						usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
-						userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
-						Person person = usuarios.get(usuarios.size()-1);
-						person.setuId("1");
+			try {
+				if(extras.getString("viene").equals("calculadora")){
+					Person person = usuarios.get(extras.getInt("Position"));
+					person.setTotal((float)extras.getDouble("totalIndi"));
+				}
+				if(extras.getString("viene").equals("detalles")){
+					Person person = usuarios.get(extras.getInt("Position"));
+					//person.setTotal((float)extras.getDouble("totalIndi"));
+					//person.setPicture(extras.getString("Path"));
+					person.setName(extras.getString("Nombre"));	
+					//editor.putString(String.valueOf(person.getId()), person.getName() + ";" + person.getTotal() + ";" + person.isPaid() + ";" + person.getPicture());
+					//editor.commit();
+				}
+				//si viene de la vista de estra
+				if(extras.getString("viene").equals("entra")){
+					restaurante = extras.getString("restaurante");
+					idMesa = extras.getInt("idMesa");
+				}
+				//si viene de la vista de facebook
+				if(extras.getString("viene").equals("facebook")){
+					//seleccionaAmigos = extras.getInt("friends");
+					seleccionaAmigos = extras.getString("selecciono");
+					amigos = extras.getString("amigos");
+					if(seleccionaAmigos.equals("")){
+						Log.e("entra",":amigos");
+						//onClickPickFriends();
+					}else{
+						usersFacebook = seleccionaAmigos.split(",.?");
+						for(int i = 0; i < usersFacebook.length; i++) {
+							String s = usersFacebook[i];
+							Log.e("Los que selecciono===",s);
+							usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
+							userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+							Person person = usuarios.get(usuarios.size()-1);
+							person.setuId("1");
+
+						}
 
 					}
-
 				}
+			} catch (Exception e) {
+				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
+				toast.show();
 			}
-
 		}
 
 		updatePersonAdapter(Float.valueOf(etTip.getText().toString()));
@@ -405,7 +415,8 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			addPerson();
 			break;
 		case R.id.bInvitar:
-			showInfo();
+			if(isConnected())
+				showInfo();
 			break;
 		case R.id.bFacebook:
 
@@ -726,5 +737,24 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		};
 		//set los elementos del dropdown del actionbar
 		getActionBar().setListNavigationCallbacks(adapter, navigationListener); 
+	}
+	
+	public boolean isConnected() {
+		// Revisa si hay conexion a internet (Wifi o red movil)
+		try{
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			if ((wifi != null && wifi.isConnectedOrConnecting()) || (mobile != null && mobile.isConnectedOrConnecting())) {
+				return true;
+			} else {
+				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
+				toast.show();
+				return false;
+			}
+		}catch(Exception e){
+			Log.d("error",e + "");
+			return false;
+		}
 	}
 }
