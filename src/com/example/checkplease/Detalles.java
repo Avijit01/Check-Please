@@ -114,16 +114,16 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 					idUsr2 = "1";
 				}
 			}else{
-			total = "" + extras.getFloat("Total");
-			nombrePref = extras.getString("Nombre");
-			path = extras.getString("Picture");
-			position = extras.getInt("Position");
-			idUsr = extras.getString("IdUsr");
-			if(idUsr.length() < 3){
-				idUsr2 = "1";
-			}
-			if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
-			//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
+				total = "" + extras.getFloat("Total");
+				nombrePref = extras.getString("Nombre");
+				path = extras.getString("Picture");
+				position = extras.getInt("Position");
+				idUsr = extras.getString("IdUsr");
+				if(idUsr.length() < 3){
+					idUsr2 = "1";
+				}
+				if( extras.getBoolean("Paid") ) paid = 1; else paid = 0;
+				//Toast.makeText(getApplicationContext(),nombrePref,Toast.LENGTH_SHORT).show();
 			}
 		}
 
@@ -149,23 +149,26 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		//Jala los datos de la base de datos hacia la vista
 		Log.e("id",":"+idUsr);
 		if(!idUsr2.equals("1")){
-		JSONObject json = new JSONObject();
-		JSONArray jArray;
-		try {
-			json = userFunctions.obtenerMesasUsuario(idUsr);
-			jArray = json.getJSONArray("usuariosMesa");
-			for(int i=0;i<jArray.length();i++){
-				JSONObject json_data = jArray.getJSONObject(i);
-				idMesas.add(json_data.getString("mesa"));
-				totales.add(json_data.getString("restaurante"));
-				restaurantes.add(json_data.getString("total"));
-				//agrega las opciones al menu
-				//sugerencia.add(json_data.getString("nombre"));
+			JSONObject json = new JSONObject();
+			JSONArray jArray;
+			try {
+				json = userFunctions.obtenerMesasUsuario(idUsr);
+				jArray = json.getJSONArray("usuariosMesa");
+				for(int i=0;i<jArray.length();i++){
+					JSONObject json_data = jArray.getJSONObject(i);
+					idMesas.add(json_data.getString("mesa"));
+					totales.add(json_data.getString("restaurante"));
+					restaurantes.add(json_data.getString("total"));
+					//agrega las opciones al menu
+					//sugerencia.add(json_data.getString("nombre"));
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				Toast toast = Toast.makeText(this, "No hay conexión a internet", Toast.LENGTH_LONG);
+				toast.show();
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		}else{
 			agregar.setVisibility(RelativeLayout.VISIBLE);
 			noRegistrado.setVisibility(RelativeLayout.VISIBLE);
@@ -174,7 +177,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 			tvTotal.setVisibility(RelativeLayout.INVISIBLE);
 			TextView01.setVisibility(RelativeLayout.INVISIBLE);
 			noRegistrado.setText("Esta persona no esta registrada, si deseas puedes invitarla a traves de su mail, en el boton de abajo.");
-			
+
 		}
 		//se declara la lista asociada con la lista del layout
 		l = (ListView) findViewById(R.id.mesasList);
@@ -203,7 +206,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 					editor.clear();
 					editor.commit();
 				}*/
-				
+
 			}
 		});
 
@@ -377,7 +380,7 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 
 	@Override
 	public void onClick(View v) {}
-	
+
 	@Override
 	/**
 	 * Metodo que maneja el evento del click sobre los items de la Lista
