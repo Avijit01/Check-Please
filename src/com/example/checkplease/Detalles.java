@@ -305,7 +305,9 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 		nameChange = (EditText)view.findViewById(R.id.nameChange);
 		nameChange.setTextColor(Color.parseColor("#787878"));
 		nameChange.setInputType(TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
+		HashMap<String, String> user = userFunctions.getUsuarioId(getApplicationContext());
+		final String nombre2 = user.get("name");
+		
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		dialog.setPositiveButton("Ok",	new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
@@ -314,8 +316,12 @@ public class Detalles extends Activity implements OnItemClickListener, OnClickLi
 				@SuppressWarnings("deprecation")
 				String uriText =
 				"mailto:"+to + 
-				"?subject=" + URLEncoder.encode("Bienvenido a CheckPlease") + 
-				"&body=" + URLEncoder.encode("Descarga la app desde Google Play");
+				"?subject=" + URLEncoder.encode(nombre2 + " te invita a unirte a Check-Please") + 
+				"&body=" + URLEncoder.encode("Entra a la liga y descarga nuestra aplicacion Check-Please\n\n" +
+        				" ¡Olvidate de problemas al hacer cuentas en la mesa, con esta " +
+        				"aplicacion las cuentas saldran en uninstante.\n\n" +
+        				"Descargalo YA!!!\n\n" +
+        				"http://goo.gl/m7ZOB");
 
 				Uri uri = Uri.parse(uriText);
 

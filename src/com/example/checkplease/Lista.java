@@ -274,7 +274,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 							String s = usersFacebook[i];
 							Log.e("Los que selecciono===",s);
 							usuarios.add(new Person(usuarios.size(), usersFacebook[i]));
-							userFunctions.agregaUsuarioMesa(idMesa, usersFacebook[i], Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
+							userFunctions.agregaUsuarioMesa(idMesa, s, Integer.toString(usuarios.size()-1), Integer.toString(usuarios.size()-1));
 							Person person = usuarios.get(usuarios.size()-1);
 							person.setuId("1");
 
@@ -333,7 +333,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 			pagado = 1;
 			if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
 			Log.e("totalpersona", ":"+p.getTotal());
-			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture(), posicionLista);
+			userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture(), posicionLista, p.getuId());
 			Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture()+" "+posicionLista );
 			posicionLista++;
 		}
@@ -620,7 +620,7 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 		lvDelete.setAdapter(deleteAdapter);
 		//se asigna esa vista a la ventana de dialogo
 		helpBuilder.setView(lvView);
-
+		
 
 		//para manejar la acción del boton OK, de la ventana de dialogo
 		helpBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -645,8 +645,20 @@ public class Lista extends FragmentActivity  implements OnClickListener {
 				}
 				editor.clear();
 				for(Person p : usuarios) {
-					p.setId(index++);
+					
+					//p.setId(index++);
 					editor.putString(String.valueOf(p.getId()), p.getName() + ";" + p.getTotal() + ";" + p.isPaid() + ";" + p.getPicture());
+					
+				}
+				posicionLista = 0;
+				for(Person p : usuarios) {
+					Log.e("pagado",":"+p.isPaid());
+					pagado = 1;
+					if(!p.isPaid())pagado = 0; //si esta pagado pone uno, sino 0
+					Log.e("totalpersona", ":"+p.getTotal());
+					userFunctions.guardaLista(idMesa, p.getId(), p.getName(), p.getTotal(), pagado, p.getPicture(), posicionLista, p.getuId());
+					Log.d("Uploaded", idMesa + " " + p.getId() + " " + p.getName() + " " + p.getTotal() + " " + pagado + " " + p.getPicture()+" "+posicionLista );
+					posicionLista++;
 				}
 				editor.commit();
 				Log.d("Prefs", sharedPrefs.getAll().toString());
