@@ -58,7 +58,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 		this.action = action;
 		this.positions = positions;
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
@@ -79,17 +79,19 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				ib.setText(p.getName());
 				ib.setOnClickListener(new  CustomOnClickListener(position){
 					public void onClick(View view){
-						//llama a la actividad Detalles
-						Intent intent = new Intent(view.getContext(), Detalles.class);
-						intent.putExtra("viene", "personAdapter");
-						intent.putExtra("Nombre", p.getName());
-						intent.putExtra("Picture", p.getPicture());
-						intent.putExtra("Total", p.getTotal());
-						intent.putExtra("Path", p.getPicture());
-						intent.putExtra("Position", this.getPosition());
-						intent.putExtra("Paid", p.isPaid());
-						intent.putExtra("IdUsr", p.getuId());
-						context.startActivity(intent);
+						if(((Lista)context).isConnected()) {
+							//llama a la actividad Detalles
+							Intent intent = new Intent(view.getContext(), Detalles.class);
+							intent.putExtra("viene", "personAdapter");
+							intent.putExtra("Nombre", p.getName());
+							intent.putExtra("Picture", p.getPicture());
+							intent.putExtra("Total", p.getTotal());
+							intent.putExtra("Path", p.getPicture());
+							intent.putExtra("Position", this.getPosition());
+							intent.putExtra("Paid", p.isPaid());
+							intent.putExtra("IdUsr", p.getuId());
+							context.startActivity(intent);
+						}
 					}
 				});
 				tvTotal.setOnClickListener(new  CustomOnClickListener(position){
@@ -128,7 +130,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				tvNombre.setText(p.getName());
 				tvTotal.setText(String.valueOf(p.getTotal()));
 				Log.e("nombres", p.getName());
-				
+
 				/*if(!p.getPicture().equals("null")) {
 					iv.setImageBitmap(BitmapFactory.decodeFile(p.getPicture()));
 				}*/
@@ -164,7 +166,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	public void setUsuarios(ArrayList<Person> usuarios) {
 		this.usuarios = usuarios;
 	}
-	
+
 	public ArrayList<Integer> getPositions() {
 		return positions;
 	}
